@@ -42,7 +42,7 @@ code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 .shell{display:grid;grid-template-columns:272px 1fr;gap:0;min-height:100vh;max-width:1560px;margin:0 auto}
 @media (max-width:900px){.shell{grid-template-columns:1fr}}
 
-.side{border-right:1px solid var(--line);background:var(--surface);padding:26px 0 40px}
+.side{border-right:1px solid var(--line);background:var(--surface);padding:26px 0 40px;min-width:0}
 @media (max-width:900px){.side{border-right:0;border-bottom:1px solid var(--line);padding:16px 0 12px;position:sticky;top:0;z-index:20}}
 .brand{padding:0 22px 18px}
 .brand .kick{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
@@ -56,6 +56,7 @@ code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
   .nav-cap{display:none}
   .brand{padding:0 16px 12px}
 }
+.nav{min-width:0}
 .nav button{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--ink-2);flex:none;white-space:nowrap;transition:background .12s}
 .nav button:hover{background:var(--surface-2)}
 .nav button .no{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink-3);width:17px;flex:none}
@@ -87,7 +88,9 @@ code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 .strip-cap{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:30px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
 .strip{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px}
 .arrow{align-self:center;color:var(--line-2);font-size:18px;margin-top:-46px}
-@media (max-width:560px){.arrow{display:none}}
+@media (max-width:560px){.arrow{display:none}
+.card{width:100%;max-width:280px;margin:0 auto}
+.strip{gap:22px}}
 .card{width:224px;flex:none}
 .card-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px}
 .step{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:#fff;background:var(--ink);width:19px;height:19px;border-radius:50%;display:grid;place-items:center;flex:none}
