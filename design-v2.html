@@ -1,0 +1,1811 @@
+<!doctype html>
+<html lang="th">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"></head>
+<body style="margin:0">
+<title>พิมพ์เขียว Tripster สาธารณะ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#EEF2F8;
+  --surface:#FFFFFF;
+  --surface-2:#F5F8FC;
+  --ink:#14294F;
+  --ink-2:#53678B;
+  --ink-3:#8A9AB4;
+  --line:#DDE5EF;
+  --line-2:#C6D3E3;
+  --accent:#D95A0F;
+  --accent-soft:#FDEEE0;
+  --teal:#0E7C90;
+  --teal-soft:#E1F1F4;
+  --gold:#B07407;
+  --danger:#B23B2C;
+  --wire-fill:#E5EAF2;
+  --wire-line:#C2CFE0;
+  --wire-ink:#7E8FA8;
+  --wire-solid:#B7C6D9;
+  --wire-hero:#C9D5E4;
+  --shadow-sm:0 1px 2px rgba(20,41,79,.06);
+  --shadow-md:0 2px 8px rgba(20,41,79,.07),0 18px 38px -26px rgba(20,41,79,.45);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#080E19;
+    --surface:#121D2F;
+    --surface-2:#182740;
+    --ink:#E7EEF9;
+    --ink-2:#A3B4CD;
+    --ink-3:#75879F;
+    --line:#233149;
+    --line-2:#33455F;
+    --accent:#FF9A4D;
+    --accent-soft:#33210F;
+    --teal:#4BC6DA;
+    --teal-soft:#0E2E36;
+    --gold:#F0B845;
+    --danger:#F0776A;
+    --wire-fill:#1C2A41;
+    --wire-line:#354864;
+    --wire-ink:#8195B0;
+    --wire-solid:#41566F;
+    --wire-hero:#2B3D57;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-md:0 2px 8px rgba(0,0,0,.45),0 18px 38px -26px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#080E19;
+  --surface:#121D2F;
+  --surface-2:#182740;
+  --ink:#E7EEF9;
+  --ink-2:#A3B4CD;
+  --ink-3:#75879F;
+  --line:#233149;
+  --line-2:#33455F;
+  --accent:#FF9A4D;
+  --accent-soft:#33210F;
+  --teal:#4BC6DA;
+  --teal-soft:#0E2E36;
+  --gold:#F0B845;
+  --danger:#F0776A;
+  --wire-fill:#1C2A41;
+  --wire-line:#354864;
+  --wire-ink:#8195B0;
+  --wire-solid:#41566F;
+  --wire-hero:#2B3D57;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-md:0 2px 8px rgba(0,0,0,.45),0 18px 38px -26px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:'IBM Plex Sans Thai','IBM Plex Sans',system-ui,sans-serif;
+  font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 96px}
+h1,h2,h3,h4{margin:0;text-wrap:balance;line-height:1.28}
+p{margin:0}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 34px;border-bottom:1px solid var(--line)}
+.mast .kick{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.mast h1{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:800;font-size:clamp(34px,5.6vw,54px);letter-spacing:-.5px;margin:10px 0 12px}
+.mast .lede{font-size:17px;color:var(--ink-2);max-width:64ch}
+.mast .facts{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:24px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-3)}
+.mast .facts b{color:var(--ink);font-weight:600}
+
+/* ---------- sections ---------- */
+.sec{padding:52px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;padding-bottom:6px}
+.sec-num{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.1em}
+.sec-head h2{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,33px)}
+.sec-sub{color:var(--ink-2);max-width:70ch;margin-top:2px}
+.rule{height:1px;background:var(--line);margin:22px 0 26px;border:0}
+
+h3.blk{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:700;font-size:21px;margin:38px 0 6px}
+h4.blk{font-size:16px;font-weight:700;margin:26px 0 8px;color:var(--ink)}
+.note{color:var(--ink-2);max-width:72ch}
+
+/* ---------- table ---------- */
+.tw{overflow-x:auto;margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.old{color:var(--ink-2)}
+td.new{font-weight:500}
+
+/* ---------- principles ---------- */
+.prin{display:grid;gap:14px;margin-top:18px}
+.prin li{list-style:none;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start}
+.prin .n{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--line-2);border-radius:7px;height:26px;display:grid;place-items:center}
+.prin b{display:block;font-weight:700}
+.prin span{color:var(--ink-2);font-size:14.5px}
+ul.plain{margin:10px 0 0;padding-left:20px;color:var(--ink-2)}
+ul.plain li{margin-bottom:5px}
+ul.plain b{color:var(--ink)}
+
+/* ---------- flow chains ---------- */
+.flow{margin-top:22px;border-left:2px solid var(--line-2);padding-left:0}
+.flow-item{padding:0 0 22px 22px;position:relative;margin-left:-1px;border-left:2px solid transparent}
+.flow-name{font-weight:700;display:flex;align-items:center;gap:9px}
+.flow-name .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:2px 6px}
+.flow-item::before{content:"";position:absolute;left:-6px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--ground)}
+.steps{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px;align-items:center}
+.step{font-size:13px;background:var(--surface);border:1px solid var(--line-2);border-radius:8px;padding:5px 10px;box-shadow:var(--shadow-sm)}
+.step .sid{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);margin-right:5px}
+.arrow{color:var(--ink-3);font-size:13px}
+.branch{font-size:13px;color:var(--ink-2);margin-top:8px;padding-left:2px;border-left:2px solid var(--teal);padding:2px 0 2px 10px}
+.branch b{color:var(--teal);font-weight:600}
+
+/* ---------- IA map ---------- */
+.ia{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:18px}
+.ia-col{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px}
+.ia-col h5{margin:0 0 4px;font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+.ia-col .c{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3)}
+.ia-col ul{margin:8px 0 0;padding-left:17px;font-size:13.5px;color:var(--ink-2)}
+.ia-col li{margin-bottom:3px}
+
+/* ---------- code ---------- */
+pre{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px;overflow-x:auto;font-size:12.7px;line-height:1.7;margin:16px 0 0;color:var(--ink-2)}
+pre b{color:var(--ink);font-weight:600}
+pre i{color:var(--teal);font-style:normal}
+
+/* ---------- screen spec ---------- */
+.grp{margin-top:40px;padding-top:22px;border-top:2px solid var(--line-2)}
+.grp-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.grp-badge{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:15px;color:#fff;background:var(--ink);width:30px;height:30px;border-radius:8px;display:grid;place-items:center}
+.grp-head h3{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:700;font-size:22px}
+.grp-head .cnt{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);margin-left:auto}
+.grp-note{color:var(--ink-2);font-size:14.5px;margin-top:6px;max-width:72ch}
+
+.scr{display:grid;grid-template-columns:296px 1fr;gap:30px;padding:26px 0;border-bottom:1px solid var(--line)}
+.scr:last-child{border-bottom:0}
+@media (max-width:760px){.scr{grid-template-columns:1fr;gap:20px}}
+.scr-info h4{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-size:19px;font-weight:700;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sid-badge{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:5px;padding:1px 6px;letter-spacing:.04em}
+.io{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.io b{color:var(--ink-2);font-weight:500}
+.purpose{margin-top:9px;color:var(--ink-2);font-size:14.5px}
+
+ol.ann{margin:14px 0 0;padding:0;list-style:none;counter-reset:a}
+ol.ann li{counter-increment:a;position:relative;padding-left:30px;margin-bottom:8px;font-size:14.5px}
+ol.ann li::before{content:counter(a);position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;display:grid;place-items:center}
+ol.ann b{font-weight:600}
+.gate{margin-top:12px;background:var(--teal-soft);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:9px 12px;font-size:13.5px;color:var(--ink-2)}
+.gate b{color:var(--teal);font-weight:600}
+
+/* ---------- wireframe phone ---------- */
+.ph{width:100%;max-width:296px;border:1.5px solid var(--line-2);border-radius:22px;background:var(--surface);box-shadow:var(--shadow-md);overflow:hidden;position:sticky;top:16px}
+@media (max-width:760px){.ph{position:static;margin:0 auto}}
+.ph-st{height:20px;background:var(--surface-2);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 11px;font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--ink-3)}
+.ph-scr{padding:11px;display:flex;flex-direction:column;gap:8px;min-height:430px}
+.ph-scr.short{min-height:330px}
+.wb{background:var(--wire-fill);border:1px solid var(--wire-line);border-radius:9px;padding:9px 10px;position:relative;font-size:10.8px;line-height:1.5;color:var(--wire-ink)}
+.wb[data-n]::before{content:attr(data-n);position:absolute;left:-6px;top:-6px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;display:grid;place-items:center;z-index:2}
+.wb .t{font-weight:600;color:var(--ink-2);font-size:11.2px;display:block}
+.wb.hero{background:var(--wire-hero);min-height:74px;display:flex;flex-direction:column;justify-content:flex-end}
+.wb.img{background:var(--wire-hero);min-height:52px;display:grid;place-items:center;font-size:10px}
+.wb.cta{background:var(--wire-solid);border-color:var(--wire-solid);color:var(--surface);text-align:center;font-weight:600;font-size:11.2px;padding:9px}
+.wb.ghost{background:transparent;border-style:dashed}
+.wb.flat{background:var(--surface);border-color:var(--line)}
+.wb.grow{flex:1}
+.ln{height:5px;border-radius:3px;background:var(--wire-line);margin-top:5px}
+.ln.w80{width:80%}.ln.w60{width:60%}.ln.w45{width:45%}.ln.w30{width:30%}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:9.5px;border:1px solid var(--wire-line);border-radius:20px;padding:2px 8px;color:var(--wire-ink);background:var(--surface)}
+.chip.on{background:var(--wire-solid);color:var(--surface);border-color:var(--wire-solid)}
+.lst{display:flex;gap:7px;align-items:center;margin-top:7px}
+.lst:first-of-type{margin-top:6px}
+.sq{width:26px;height:26px;border-radius:6px;background:var(--wire-line);flex:none}
+.sq.rnd{border-radius:50%}
+.lst .col{flex:1}
+.tabs{display:flex;border-top:1px solid var(--line);background:var(--surface-2)}
+.tabs div{flex:1;text-align:center;font-size:8.6px;color:var(--ink-3);padding:7px 0;border-right:1px solid var(--line)}
+.tabs div:last-child{border-right:0}
+.tabs div.on{color:var(--accent);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.sheet-lip{height:4px;width:34px;border-radius:2px;background:var(--wire-line);margin:0 auto 2px}
+.ovl{border-top:1px dashed var(--wire-line);margin-top:2px;padding-top:8px;display:flex;flex-direction:column;gap:8px}
+.ovl-cap{font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--ink-3);text-align:center;letter-spacing:.08em}
+
+/* ---------- UI summary ---------- */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px;margin-top:16px}
+.sw{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.sw .chipbox{height:46px}
+.sw .meta{padding:7px 9px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);line-height:1.5}
+.sw .meta b{display:block;font-family:'IBM Plex Sans Thai',sans-serif;font-size:12.5px;color:var(--ink);font-weight:600}
+.typerow{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px 18px;margin-top:12px;display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center}
+@media (max-width:620px){.typerow{grid-template-columns:1fr;gap:6px}}
+.typerow .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);line-height:1.6}
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:16px}
+.comp-c{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 15px}
+.comp-c h5{margin:0;font-size:15px;font-weight:700;display:flex;align-items:baseline;gap:8px}
+.comp-c .st{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);margin-top:5px;display:block;line-height:1.6}
+.comp-c p{font-size:13.5px;color:var(--ink-2);margin-top:5px}
+.phase{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:16px}
+.ph-card{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:15px 16px;border-top:3px solid var(--accent)}
+.ph-card:nth-child(2){border-top-color:var(--teal)}
+.ph-card:nth-child(3){border-top-color:var(--gold)}
+.ph-card h5{margin:0;font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-size:17px;font-weight:700}
+.ph-card .when{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3)}
+.ph-card ul{margin:9px 0 0;padding-left:17px;font-size:13.5px;color:var(--ink-2)}
+.ph-card li{margin-bottom:4px}
+.foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Tripster · v2 public</div>
+  <h1>พิมพ์เขียวเวอร์ชันสาธารณะ</h1>
+  <p class="lede">เอกสารออกแบบสำหรับยก Tripster จากแอปจัดทริปส่วนตัว (ภูเก็ต 66 ที่ · localStorage · ไฟล์เดียว) ไปเป็นแอปที่คนทั่วไปใช้ได้ — เริ่มจาก flow การใช้งาน ตามด้วย wireframe ครบทุกหน้าทุกขั้นตอน แล้วจึงสรุปลงเป็นระบบ UI</p>
+  <div class="facts">
+    <span><b>42</b> หน้าจอ</span>
+    <span><b>6</b> flow หลัก</span>
+    <span><b>9</b> กลุ่มหน้าจอ</span>
+    <span>ฐาน: <b>Tripster v1.01</b></span>
+    <span>ไทยเป็นหลัก · ทั่วไทย · guest-first</span>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">00</span><h2>เปลี่ยนอะไรบ้างจากเวอร์ชันส่วนตัว</h2></div>
+  <p class="sec-sub">ของเดิมออกแบบมาเพื่อผู้ใช้คนเดียวที่รู้ข้อมูลอยู่แล้ว เวอร์ชันสาธารณะต้องรับคนที่เพิ่งเปิดครั้งแรกและไม่รู้จักอะไรเลย นี่คือ 9 จุดที่ต้องรื้อ</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:24%">เรื่อง</th><th style="width:36%">v1.01 (ส่วนตัว)</th><th style="width:40%">v2 (สาธารณะ)</th></tr></thead>
+      <tbody>
+        <tr><td>ผู้ใช้</td><td class="old">ไม่มีบัญชี เปิดมาเจอทริป "พาแม่ ๆ ลุยภูเก็ต" ของเจ้าของเลย</td><td class="new">Guest ใช้ได้ทันที · สมัครเมื่อจะ sync/แชร์ · ย้ายข้อมูล guest เข้าบัญชีได้</td></tr>
+        <tr><td>ข้อมูล</td><td class="old">localStorage ก้อนเดียว (~5 MB) ไม่ข้ามเครื่อง</td><td class="new">localStorage เป็น cache ออฟไลน์ + cloud เป็นต้นฉบับเมื่อล็อกอิน</td></tr>
+        <tr><td>จุดหมาย</td><td class="old">ภูเก็ต 1 จังหวัด (<code>DESTS</code> ตัวเดียว) จังหวัดอื่นเปิดเองเมื่อมีที่</td><td class="new">ทั่วไทย 77 จังหวัด · จังหวัดที่ข้อมูลยังบางขึ้นป้าย "ยังไม่ครบ" แต่เข้าไปจัดได้</td></tr>
+        <tr><td>สถานที่</td><td class="old">seed ในไฟล์ 66 ที่ + ที่ผู้ใช้เพิ่มเอง</td><td class="new">คลังกลางที่ curate ไว้ + ที่ผู้ใช้เพิ่ม (ส่วนตัว) + ที่ชุมชนเสนอ (ต้องตรวจก่อนขึ้นคลัง)</td></tr>
+        <tr><td>รูป</td><td class="old">data URI ฝังในไฟล์ 24 รูป · อัปโหลดเองเก็บ base64</td><td class="new">CDN + srcset · เครดิตทุกใบ · อัปโหลดผ่าน object storage ไม่ใช่ localStorage</td></tr>
+        <tr><td>แชร์</td><td class="old">ไม่มี</td><td class="new">3 ระดับ: ลิงก์อ่านอย่างเดียว → เชิญร่วมแก้ → เผยแพร่เข้าฟีดชุมชน</td></tr>
+        <tr><td>ค้นหา</td><td class="old">กรองในลิสต์ 66 ที่ ด้วย substring</td><td class="new">ค้นหาข้ามจังหวัด + ตัวกรอง (หมวด/แนว/เปิดอยู่/ระยะ) + แผนที่</td></tr>
+        <tr><td>แจ้งเตือน</td><td class="old">geofence ในเบราว์เซอร์ ทำงานเฉพาะตอนเปิดแอปค้าง</td><td class="new">เหมือนเดิมเป็นค่าเริ่มต้น + push จากเซิร์ฟเวอร์สำหรับเรื่องทริป (คนแก้ทริป/พรุ่งนี้ออกเดินทาง)</td></tr>
+        <tr><td>ขนาดไฟล์</td><td class="old">3.3 MB ไฟล์เดียว โหลดทุกอย่างพร้อมกัน</td><td class="new">shell เล็ก + โหลดข้อมูลรายจังหวัดตอนใช้ · เป้าหมาย first paint &lt; 1.5s บน 4G</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="blk">สามเรื่องที่ต้องตัดสินใจก่อนเขียนโค้ด</h4>
+  <ul class="plain">
+    <li><b>ลิขสิทธิ์รูป</b> — README ระบุไว้เองว่ารูปจากเว็บรีวิวใช้ส่วนตัวได้แต่ห้ามทำโปรดักต์ ต้องเปลี่ยนไป Google Places (มีเครดิต) หรือรูปที่ผู้ใช้อัปเองพร้อมยินยอม ก่อนเปิดสาธารณะ</li>
+    <li><b>ที่มาของข้อมูลร้าน</b> — จากผลทดสอบเดิม Wikidata/OSM ไม่มีร้านเล็กเลยสักร้านใน 43 ที่ ถ้าจะครอบคลุมทั่วไทยต้องพึ่ง Places API (มีค่าใช้จ่ายต่อ request) หรือให้ชุมชนช่วยเติมแล้วมีคนตรวจ</li>
+    <li><b>เนื้อหาที่ผู้ใช้สร้าง</b> — พอเปิด feed สาธารณะ ต้องมีปุ่มรายงาน คิวตรวจ และเงื่อนไขการใช้งาน ตั้งแต่วันแรก ไม่ใช่ค่อยเติมทีหลัง</li>
+  </ul>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Flow</h2></div>
+  <p class="sec-sub">คิดจากคำถามเดียว: คนที่เพิ่งกดลิงก์เข้ามา ไม่รู้จักแอป ไม่อยากสมัคร จะได้ "แผนเที่ยวที่ใช้จริงได้" ภายในกี่ก้าว — คำตอบที่ตั้งไว้คือ 4 ก้าว ไม่เกิน 90 วินาที</p>
+  <hr class="rule">
+
+  <h3 class="blk">1.1 หลักคิด 5 ข้อ</h3>
+  <ul class="prin">
+    <li><span class="n">01</span><div><b>ได้ของก่อน ค่อยขอตัวตน</b><span>ไม่มีหน้า login ขวางทางเข้า ทุกคนเริ่มเป็น guest และมีทริปจริงในมือก่อน ระบบจะขอให้สมัครก็ต่อเมื่อผู้ใช้ต้องการสิ่งที่ guest ทำไม่ได้ — แชร์ ร่วมแก้ ย้ายเครื่อง</span></div></li>
+    <li><span class="n">02</span><div><b>ทริปคือหน่วยกลางของทุกอย่าง</b><span>ทุกหน้าตอบคำถามเดียวว่า "สิ่งนี้เข้าทริปไหนวันไหน" ปุ่มเพิ่มเข้าทริปต้องอยู่ทุกที่ที่เห็นสถานที่ ไม่ว่าจะอยู่หน้าไหน</span></div></li>
+    <li><span class="n">03</span><div><b>เลือกแนวก่อน แล้วค่อยเลือกที่</b><span>ต่อยอดจาก VIBES เดิม (ทะเล ภูเขา เมือง สายกิน วัฒนธรรม) — คนทั่วไปตอบ "อยากไปแบบไหน" ได้ง่ายกว่า "อยากไปที่ไหน" ระบบใช้คำตอบนี้จัดร่างแผนให้ทันที</span></div></li>
+    <li><span class="n">04</span><div><b>แชร์ไล่ระดับ ไม่ใช่สวิตช์เดียว</b><span>ลิงก์อ่านอย่างเดียว (ใครมีลิงก์ก็ดูได้) → เชิญร่วมแก้ (ระบุคน) → เผยแพร่เข้าฟีด (ทุกคนค้นเจอ) แต่ละระดับต้องยืนยันแยกกัน และลดระดับกลับได้เสมอ</span></div></li>
+    <li><span class="n">05</span><div><b>วันเดินทางจริงคือคนละแอป</b><span>ก่อนไป = หน้าจัดแผน · วันที่ไป = หน้าที่บอกว่า "ตอนนี้ควรอยู่ไหน ไปยังไง เหลืออีกกี่ที่" แอปสลับโหมดเองตามวันที่ในทริป ไม่ต้องให้ผู้ใช้กดสลับ</span></div></li>
+  </ul>
+
+  <h3 class="blk">1.2 โครงข้อมูลใหม่</h3>
+  <p class="note">ต่อยอดจาก <code>place</code> / <code>trip</code> เดิม เพิ่มเจ้าของ สิทธิ์ และการเผยแพร่ ส่วนที่ขีดเส้นใต้คือของใหม่</p>
+  <pre><b>user</b>    = { id, kind:<i>'guest'|'member'</i>, name, avatar, handle, homeProvince, createdAt }
+
+<b>place</b>   = { id, province, cat, name, q, lat, lng, desc, photos[], credit,
+            <i>source</i>:<i>'curated'|'user'|'community'</i>, <i>ownerId</i>, <i>status</i>:<i>'live'|'pending'|'hidden'</i>,
+            rating, openHours, priceLevel }
+
+<b>trip</b>    = { id, <i>ownerId</i>, name, province, startDate, days:[ {id, label, items:[{pid, time, note}]} ],
+            <i>visibility</i>:<i>'private'|'link'|'public'</i>, <i>linkToken</i>, <i>publishedAt</i>,
+            <i>forkedFrom</i>, <i>stats</i>:{saves, forks, views} }
+
+<b>member</b>  = { tripId, userId, role:<i>'owner'|'editor'|'viewer'</i>, invitedBy, joinedAt }
+
+<b>alert</b>   = { id, userId, type:<i>'nearby'|'trip-edit'|'invite'|'reminder'</i>, refId, seenAt }</pre>
+
+  <h3 class="blk">1.3 โครงหน้าจอ — 5 แท็บ</h3>
+  <p class="note">ของเดิมมี 4 แท็บ (หน้าแรก · แผนทริป · ค้นหา · แจ้งเตือน) เวอร์ชันใหม่แยก "ทริปของฉัน" ออกจาก "หน้าแรก" เพราะคนจะมีหลายทริป และย้ายแจ้งเตือนไปเป็นกระดิ่งบนหัวเพื่อคืนช่องแท็บให้ "บันทึกไว้"</p>
+  <div class="ia">
+    <div class="ia-col"><h5>หน้าแรก <span class="c">A·B</span></h5><ul><li>ทริปที่กำลังจะถึง</li><li>โหมดระหว่างทริป</li><li>แนะนำตามแนวที่ชอบ</li><li>ทริปเด่นจากชุมชน</li></ul></div>
+    <div class="ia-col"><h5>สำรวจ <span class="c">C·F</span></h5><ul><li>จุดหมายทั่วไทย</li><li>หน้าจังหวัด</li><li>ค้นหา + ตัวกรอง</li><li>แผนที่</li><li>ฟีดทริปชุมชน</li></ul></div>
+    <div class="ia-col"><h5>ทริป <span class="c">D·E</span></h5><ul><li>ทริปทั้งหมด</li><li>ไทม์ไลน์รายวัน</li><li>เพิ่ม/แก้จุด</li><li>นำทางทั้งวัน</li><li>แชร์ &amp; ร่วมแก้</li></ul></div>
+    <div class="ia-col"><h5>บันทึกไว้ <span class="c">C5</span></h5><ul><li>ที่ปักหมุด</li><li>ทริปที่เซฟจากคนอื่น</li><li>จัดเป็นคอลเลกชัน</li></ul></div>
+    <div class="ia-col"><h5>ฉัน <span class="c">G·H</span></h5><ul><li>บัญชี/สมัคร</li><li>โปรไฟล์สาธารณะ</li><li>ตั้งค่าแจ้งเตือน</li><li>ออฟไลน์ &amp; พื้นที่</li></ul></div>
+  </div>
+
+  <h3 class="blk">1.4 Flow หลัก 6 เส้น</h3>
+
+  <div class="flow">
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F1</span>เปิดครั้งแรก → มีร่างแผนในมือ</div>
+      <div class="steps">
+        <span class="step"><span class="sid">A1</span>Splash</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">A2</span>ต้อนรับ</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">A3</span>เลือกจังหวัด</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">A4</span>เลือกแนว</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">A5</span>วัน + จำนวนคน</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">A6</span>ร่างแผน</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">D3</span>แผนทริป</span>
+      </div>
+      <div class="branch"><b>ทางลัด</b> — A2 มีปุ่ม "ข้ามไปดูของก่อน" ไป C1 ได้เลย คนที่ยังไม่อยากตอบคำถามจะไม่ตัน · <b>ไม่มีการสมัครในเส้นนี้เลย</b></div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F2</span>เจอที่น่าไป → เข้าแผน</div>
+      <div class="steps">
+        <span class="step"><span class="sid">C2/C3</span>จังหวัด/ค้นหา</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">C5</span>รายละเอียดที่</span><span class="arrow">→</span>
+        <span class="step">กด "เพิ่มเข้าทริป"</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">D4</span>เลือกทริป + วัน</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">D3</span>เข้าไทม์ไลน์</span>
+      </div>
+      <div class="branch"><b>ยังไม่มีทริป</b> — ข้ามไป D2 สร้างทริปในแผงเดียว ไม่เด้งออกจากหน้าที่ดูอยู่ · <b>เลือกทีละหลายที่</b> — จาก C2 กด "เลือกหลายที่" เข้า D4 โหมดติ๊ก แล้วไล่เวลาให้อัตโนมัติ (ของเดิมมีอยู่แล้วใน <code>openPickSheet</code>)</div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F3</span>แชร์ให้เพื่อน → ร่วมแก้</div>
+      <div class="steps">
+        <span class="step"><span class="sid">D3</span>แผนทริป</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">E1</span>แผงแชร์</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">G1</span>ชวนสมัคร</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">G2</span>สมัคร</span><span class="arrow">→</span>
+        <span class="step">ได้ลิงก์</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">E3</span>เชิญร่วมแก้</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">E4</span>แก้พร้อมกัน</span>
+      </div>
+      <div class="branch"><b>จุดที่ต้องสมัคร</b> — ลิงก์แชร์ต้องผูกเจ้าของ ไม่งั้นล้างเบราว์เซอร์แล้วลิงก์ตาย จึงเป็นจุดแรกและจุดเดียวที่บังคับสมัคร · <b>ฝั่งผู้รับ</b> เปิดลิงก์ → E2 ดูได้ทันทีโดยไม่ต้องสมัคร</div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F4</span>เห็นทริปคนอื่น → ก๊อปมาใช้</div>
+      <div class="steps">
+        <span class="step"><span class="sid">F1</span>ฟีดชุมชน</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">E2</span>เปิดทริปสาธารณะ</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">E5</span>ก๊อปเป็นทริปฉัน</span><span class="arrow">→</span>
+        <span class="step">เลือกวันเริ่ม</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">D3</span>แก้ต่อได้อิสระ</span>
+      </div>
+      <div class="branch"><b>กติกา</b> — ก๊อปแล้วขาดจากต้นฉบับทันที (ต้นฉบับแก้ทีหลังไม่กระทบ) แต่เก็บ <code>forkedFrom</code> ไว้ให้เครดิตเจ้าของเดิมบนหัวทริป</div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F5</span>guest → สมาชิก (ย้ายข้อมูล)</div>
+      <div class="steps">
+        <span class="step"><span class="sid">G1</span>จุดชวนสมัคร</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">G2</span>สมัคร</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">G3</span>เลือกว่าจะย้ายอะไร</span><span class="arrow">→</span>
+        <span class="step">รวมข้อมูล</span><span class="arrow">→</span>
+        <span class="step">กลับหน้าที่ค้างไว้</span>
+      </div>
+      <div class="branch"><b>ห้ามพลาด</b> — ถ้าบัญชีนั้นมีข้อมูลอยู่แล้ว ต้องให้เลือกทีละทริปว่าจะเก็บอันไหน ห้ามเขียนทับเงียบ ๆ · หลังย้ายเสร็จต้องพากลับไปหน้าที่กดสมัคร ไม่ใช่โยนไปหน้าแรก</div>
+    </div>
+
+    <div class="flow-item">
+      <div class="flow-name"><span class="tag">F6</span>วันเดินทางจริง</div>
+      <div class="steps">
+        <span class="step">ถึงวันในทริป</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">B3</span>โหมดระหว่างทริป</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">H2</span>เปิดเตือนเข้าใกล้</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">H3</span>การ์ดเตือน</span><span class="arrow">→</span>
+        <span class="step"><span class="sid">C5</span>รายละเอียด/นำทาง</span>
+      </div>
+      <div class="branch"><b>ข้อจำกัดที่ต้องบอกผู้ใช้ตรง ๆ</b> — เว็บติดตามตำแหน่งตอนปิดแอปไม่ได้ ต้องเปิดแอปค้างไว้ · iPhone ต้อง Add to Home Screen ก่อนถึงจะมี notification · เขียนไว้ในหน้า H2 ไม่ใช่ซ่อนใน FAQ</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Wireframe ทุกหน้า</h2></div>
+  <p class="sec-sub">วาดเป็นจอมือถือเป็นหลัก (390 × 844) เพราะเป็นจอที่คนใช้จริงตอนเดินทาง · ตัวเลขบนกล่องตรงกับข้อด้านขวาแบบหนึ่งต่อหนึ่ง · แต่ละหน้าบอกไว้ด้วยว่า <b>เข้าจากไหน</b> และ <b>ออกไปไหน</b> เพื่อให้ไล่ต่อกันเป็น flow ได้</p>
+
+<!-- ============ A ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">A</span><h3>เข้าใช้ครั้งแรก</h3><span class="cnt">6 หน้า</span></div>
+  <p class="grp-note">เป้าหมายเดียว: จากเปิดแอปถึงมีร่างแผนในมือภายใน 90 วินาที โดยไม่ต้องสมัคร ทุกหน้าในกลุ่มนี้ข้ามได้หมด</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>Tripster</span></div>
+      <div class="ph-scr short" style="justify-content:center;align-items:center">
+        <div class="wb ghost" data-n="1" style="width:96px;height:96px;display:grid;place-items:center">โลโก้</div>
+        <div class="wb ghost" data-n="2" style="border:0;text-align:center">Your Trip, Your Way</div>
+        <div class="wb ghost" data-n="3" style="border:0;text-align:center;font-size:9.5px;margin-top:auto">แตะเพื่อเริ่ม</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A1</span>Splash</h4>
+      <div class="io"><span>เข้าจาก: <b>เปิดแอป</b></span><span>ออกไป: <b>A2</b> (ครั้งแรก) / <b>B2</b> (เคยใช้)</span></div>
+      <p class="purpose">คงของเดิมไว้ ไม่ต้องเปลี่ยน แค่เพิ่มเงื่อนไขว่าใครควรเห็นอะไรต่อ</p>
+      <ol class="ann">
+        <li><b>โลโก้</b> — พื้นขาว/ดำตามธีม ค้างสูงสุด 1.2 วินาที</li>
+        <li><b>Tagline</b> — เก็บไว้ ช่วยบอกว่าแอปนี้คืออะไรตั้งแต่วินาทีแรก</li>
+        <li><b>แตะเพื่อข้าม</b> — แตะที่ไหนก็ได้ ไม่ใช่แค่บรรทัดนี้</li>
+      </ol>
+      <div class="gate"><b>กติกา</b> โชว์ครั้งเดียวต่อ session เหมือนเดิม · ถ้าเปิดจากลิงก์แชร์ (E2) ให้ <b>ข้าม A1 ทั้งหมด</b> พาไปหน้าทริปนั้นตรง ๆ ไม่งั้นคนกดลิงก์เพื่อนจะงง</div>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">จัดทริปเที่ยวไทย ให้จบใน 5 นาที</span><div class="ln w80"></div></div>
+        <div class="wb" data-n="2"><span class="t">1 · บอกว่าอยากไปไหน แบบไหน</span></div>
+        <div class="wb"><span class="t">2 · แอปจัดร่างแผนรายวันให้</span></div>
+        <div class="wb"><span class="t">3 · แก้เวลา นำทาง แชร์ให้เพื่อน</span></div>
+        <div class="wb cta" data-n="3">เริ่มจัดทริป</div>
+        <div class="wb ghost" data-n="4" style="text-align:center">ข้ามไปดูที่เที่ยวก่อน</div>
+        <div class="wb ghost" data-n="5" style="text-align:center;font-size:9.5px;border:0">เคยใช้แล้ว? เข้าสู่ระบบ</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A2</span>หน้าต้อนรับ</h4>
+      <div class="io"><span>เข้าจาก: <b>A1</b></span><span>ออกไป: <b>A3</b> / <b>C1</b> / <b>G2</b></span></div>
+      <p class="purpose">หน้าเดียวที่ต้องขายให้ได้ว่าแอปนี้ทำอะไร ห้ามยาวเกินหนึ่งจอ ห้ามมีหน้า onboarding เลื่อนซ้ายขวาหลายจอ</p>
+      <ol class="ann">
+        <li><b>พาดหัว + รูปหนึ่งใบ</b> — รูปจริงจากจังหวัดยอดนิยม ไม่ใช่ภาพ stock ทั่วไป</li>
+        <li><b>3 ขั้นเรียงกัน</b> — บอกกลไกทั้งหมดของแอปใน 3 บรรทัด ไม่ใช้ไอคอนลอย ๆ</li>
+        <li><b>ปุ่มหลัก</b> — ไปต่อ A3 ทันที ไม่มีคำว่าสมัครในปุ่มนี้</li>
+        <li><b>ทางออกสำหรับคนไม่พร้อมตอบ</b> — ไป C1 ดูจุดหมายก่อน สร้างทริปทีหลังได้</li>
+        <li><b>เข้าสู่ระบบ</b> — ตัวเล็กสุดบนหน้า สำหรับคนที่มีบัญชีอยู่แล้วเท่านั้น</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>1 / 3</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">อยากไปจังหวัดไหน?</span><div class="ln w60"></div></div>
+        <div class="wb flat" data-n="2">ค้นหาจังหวัด อำเภอ หรือสถานที่</div>
+        <div class="wb ghost" data-n="3">ใกล้ฉัน · ใช้ตำแหน่งปัจจุบัน</div>
+        <div class="row2">
+          <div class="wb img" data-n="4">ภูเก็ต<br><span style="font-size:8.5px">66 ที่</span></div>
+          <div class="wb img">เชียงใหม่</div>
+          <div class="wb img">กระบี่</div>
+          <div class="wb img">น่าน<br><span style="font-size:8.5px">ยังไม่ครบ</span></div>
+        </div>
+        <div class="wb ghost" data-n="5" style="text-align:center">ดูทั้ง 77 จังหวัด</div>
+        <div class="wb cta" data-n="6">ถัดไป</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A3</span>เลือกจุดหมาย</h4>
+      <div class="io"><span>เข้าจาก: <b>A2</b></span><span>ออกไป: <b>A4</b></span></div>
+      <p class="purpose">ขยายจาก <code>DESTS</code> ที่มีจังหวัดเดียว เป็นทั่วไทย โดยยังบอกความจริงว่าจังหวัดไหนข้อมูลพร้อมแค่ไหน</p>
+      <ol class="ann">
+        <li><b>คำถามเดียวต่อหน้า</b> — ตัวชี้ความคืบหน้า 1/3 อยู่บนแถบสถานะ</li>
+        <li><b>ช่องค้นหา</b> — พิมพ์ชื่ออำเภอหรือสถานที่ก็เด้งจังหวัดที่ถูกต้องขึ้นมา</li>
+        <li><b>ใกล้ฉัน</b> — ขอสิทธิ์ตำแหน่งแบบอธิบายก่อน (ดู I1) ไม่เด้ง dialog ทันที</li>
+        <li><b>การ์ดจังหวัด</b> — รูป + จำนวนสถานที่จริง จังหวัดที่ยังบางติดป้าย "ยังไม่ครบ" แต่กดเข้าได้ (ต่อยอดจาก <code>isSoon()</code> เดิมที่ซ่อนจังหวัดว่างไปเลย)</li>
+        <li><b>ดูทั้งหมด</b> — เปิดรายการ 77 จังหวัดแยกตามภาค</li>
+        <li><b>ถัดไป</b> — ปิดอยู่จนกว่าจะเลือก บอกด้วยสีจาง ไม่ใช่ซ่อนปุ่ม</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>2 / 3</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">ไปภูเก็ตแบบไหนดี?</span>เลือกได้หลายแบบ</div>
+        <div class="row2">
+          <div class="wb" data-n="2">ทะเล</div><div class="wb">ภูเขา</div>
+          <div class="wb">เมือง</div><div class="wb">สายกิน</div>
+          <div class="wb">วัฒนธรรม</div><div class="wb">ชิล ๆ ไม่รีบ</div>
+        </div>
+        <div class="wb flat" data-n="3"><span class="t">ไปกับใคร</span><div class="chips"><span class="chip on">ครอบครัว</span><span class="chip">คู่รัก</span><span class="chip">เพื่อน</span><span class="chip">คนเดียว</span></div></div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">เลือกครอบครัว → ลดการเดินไกล เพิ่มเวลาพักระหว่างจุด</div>
+        <div class="wb cta" data-n="5">ถัดไป</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A4</span>เลือกแนวทริป</h4>
+      <div class="io"><span>เข้าจาก: <b>A3</b></span><span>ออกไป: <b>A5</b></span></div>
+      <p class="purpose">ใช้ <code>VIBES</code> เดิมทั้ง 5 ตัวพร้อมสีประจำแนว แล้วเพิ่มมิติ "ไปกับใคร" ซึ่งเป็นตัวแปรที่เปลี่ยนแผนมากที่สุด</p>
+      <ol class="ann">
+        <li><b>เลือกได้หลายอัน</b> — ต่างจาก v1 ที่กรองได้ทีละแนว เพราะคนจริง ๆ อยากได้ทั้งทะเลและสายกิน</li>
+        <li><b>ไทล์แนว</b> — ใช้สี <code>--vibe-*</code> เดิม ติ๊กแล้วขอบหนาขึ้น ไม่ใช่แค่เปลี่ยนสีจาง</li>
+        <li><b>ไปกับใคร</b> — เลือกได้อันเดียว มีผลกับจังหวะแผนใน A6</li>
+        <li><b>บอกผลของตัวเลือก</b> — บรรทัดอธิบายว่าเลือกแล้วแผนจะเปลี่ยนยังไง ทำให้คนไม่รู้สึกว่าตอบไปลอย ๆ</li>
+        <li><b>ข้ามได้</b> — ไม่เลือกเลยก็กดถัดไปได้ ระบบใช้ค่ากลาง</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>3 / 3</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">ไปวันไหน กี่วัน?</span></div>
+        <div class="wb" data-n="2" style="min-height:96px"><span class="t">ปฏิทิน — เลือกช่วงวัน</span><div class="ln"></div><div class="ln w80"></div><div class="ln w60"></div></div>
+        <div class="wb flat" data-n="3"><span class="t">3 วัน 2 คืน</span>ศ 14 – อา 16 พ.ย.</div>
+        <div class="wb ghost" data-n="4" style="text-align:center">ยังไม่รู้วัน จัดแบบไม่ระบุวันที่</div>
+        <div class="wb flat" data-n="5"><span class="t">ชื่อทริป</span>เที่ยวภูเก็ต พ.ย. 68</div>
+        <div class="wb cta" data-n="6">สร้างแผนให้เลย</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A5</span>วันเดินทางและชื่อทริป</h4>
+      <div class="io"><span>เข้าจาก: <b>A4</b></span><span>ออกไป: <b>A6</b></span></div>
+      <p class="purpose">v1 ให้กรอกชื่อ/จำนวนวัน/วันเริ่มในแผงเดียวแบบแห้ง ๆ ตรงนี้ทำให้เลือกจากปฏิทินจริงและตั้งชื่อให้อัตโนมัติ</p>
+      <ol class="ann">
+        <li><b>หัวข้อคำถาม</b> — ขั้นสุดท้าย บอกชัดว่าเหลืออีกข้อเดียว</li>
+        <li><b>ปฏิทินเลือกช่วง</b> — แตะวันแรก–วันสุดท้าย ระบบนับจำนวนวันเอง ไม่ต้องกรอกตัวเลข</li>
+        <li><b>สรุปที่เลือก</b> — เขียนกลับเป็นภาษาคน "3 วัน 2 คืน" พร้อมชื่อวัน</li>
+        <li><b>ยังไม่รู้วัน</b> — ทางออกสำคัญ คนวางแผนล่วงหน้ามักยังไม่ล็อกวัน ระบบสร้าง Day 1–3 แบบไม่มีวันที่ ใส่ทีหลังได้</li>
+        <li><b>ชื่อทริป</b> — เติมให้อัตโนมัติจากจังหวัด + เดือน แก้ทับได้</li>
+        <li><b>ปุ่มสร้าง</b> — คำกริยาบอกผลลัพธ์ ไม่ใช่ "ถัดไป"</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>ร่างแผน</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">จัดให้แล้ว 3 วัน 14 ที่</span>ปรับได้ทุกอย่าง</div>
+        <div class="wb" data-n="2"><span class="t">Day 1 · ศ 14 พ.ย.</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w45"></div></div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w30"></div></div></div>
+        </div>
+        <div class="wb"><span class="t">Day 2 · ส 15 พ.ย.</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+        </div>
+        <div class="wb ghost" data-n="3" style="text-align:center">สลับที่อื่นให้ · จัดใหม่</div>
+        <div class="wb cta" data-n="4">ใช้แผนนี้</div>
+        <div class="wb ghost" data-n="5" style="text-align:center;font-size:9.5px;border:0">เริ่มจากแผนเปล่าแทน</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">A6</span>ร่างแผนอัตโนมัติ</h4>
+      <div class="io"><span>เข้าจาก: <b>A5</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">หน้าที่ทำให้ทั้ง flow คุ้มค่า — ผู้ใช้ตอบ 3 คำถามแล้วได้แผนจริงกลับมา ไม่ใช่หน้าเปล่าให้ไปหาเอง</p>
+      <ol class="ann">
+        <li><b>สรุปผล</b> — บอกจำนวนวัน/จำนวนที่ทันที และย้ำว่าแก้ได้ทุกอย่าง ลดความรู้สึกว่าถูกยัดเยียด</li>
+        <li><b>ไทม์ไลน์ย่อรายวัน</b> — เห็นทุกวันในจอเดียว ยังไม่ต้องแสดงเวลาละเอียด</li>
+        <li><b>สลับที่ให้ใหม่</b> — สุ่มชุดใหม่จากแนวเดิม ไม่ต้องย้อนกลับไปตอบใหม่</li>
+        <li><b>ใช้แผนนี้</b> — บันทึกลงเครื่อง (guest) แล้วเข้า D3</li>
+        <li><b>เริ่มจากแผนเปล่า</b> — ทางออกสำหรับคนที่มีแผนในหัวอยู่แล้ว สร้างทริปว่างตามวันที่เลือกไว้</li>
+      </ol>
+      <div class="gate"><b>กฎการจัดร่าง</b> วันละ 4–6 จุด · เว้นมื้อเที่ยง 12:00 และเย็น 18:00 เสมอ · เรียงตามระยะทางจริงด้วย Haversine ที่มีอยู่แล้ว (<code>legKm</code>) เพื่อไม่ให้วิ่งข้ามเกาะไปกลับ · เลือก "ครอบครัว" ลดเหลือวันละ 4 จุด</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ B ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">B</span><h3>หน้าแรก</h3><span class="cnt">3 สถานะ</span></div>
+  <p class="grp-note">หน้าเดียวกันแต่เปลี่ยนหน้าตาตามสถานะผู้ใช้ ระบบตัดสินเองจากวันที่ในทริป ไม่มีปุ่มให้สลับโหมด</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>🔔</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">สวัสดี · วันนี้อยากไปไหน</span></div>
+        <div class="wb flat" data-n="2"><span class="t">ยังไม่มีทริป</span>ตอบ 3 คำถาม แล้วได้แผนเลย</div>
+        <div class="wb cta" data-n="3">เริ่มจัดทริปแรก</div>
+        <div class="wb" data-n="4"><span class="t">จุดหมายยอดนิยม</span>
+          <div class="row3" style="margin-top:6px"><div class="wb img" style="min-height:44px">ภูเก็ต</div><div class="wb img" style="min-height:44px">เชียงใหม่</div><div class="wb img" style="min-height:44px">กระบี่</div></div>
+        </div>
+        <div class="wb" data-n="5"><span class="t">ทริปที่คนอื่นจัดไว้</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w45"></div></div></div>
+        </div>
+      </div>
+      <div class="tabs"><div class="on">หน้าแรก</div><div>สำรวจ</div><div>ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">B1</span>หน้าแรก — ยังไม่มีทริป</h4>
+      <div class="io"><span>เข้าจาก: <b>แท็บหน้าแรก</b></span><span>ออกไป: <b>A3</b> / <b>C2</b> / <b>E2</b></span></div>
+      <p class="purpose">สถานะที่คนกด "ข้ามไปดูก่อน" จาก A2 จะเจอ ต้องไม่ใช่หน้าว่างเปล่า</p>
+      <ol class="ann">
+        <li><b>Hero</b> — สูงคงที่ทุกหน้าเหมือน v1 (min-height 274px) เพื่อไม่ให้เนื้อหากระโดดตอนสลับแท็บ</li>
+        <li><b>สถานะว่างที่พูดจา</b> — บอกว่าต้องทำอะไรและได้อะไรกลับ ไม่ใช่แค่ "ยังไม่มีข้อมูล"</li>
+        <li><b>ปุ่มหลักเดียว</b> — เข้า A3</li>
+        <li><b>จุดหมายยอดนิยม</b> — แถวเลื่อนแนวนอน ลากได้ (ของเดิมมี <code>markDraggable</code> อยู่แล้ว)</li>
+        <li><b>ทริปจากชุมชน</b> — จุดที่ทำให้คนไม่มีไอเดียเริ่มได้ ไปต่อ F1</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>🔔 2</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">เที่ยวภูเก็ต พ.ย. 68</span>อีก 12 วัน · 3 วัน 14 ที่</div>
+        <div class="wb flat" data-n="2"><span class="t">ยังไม่ครบ</span>Day 3 ยังไม่มีที่ · ยังไม่มีที่พัก
+          <div class="chips"><span class="chip on">เติม Day 3</span><span class="chip">หาที่พัก</span></div>
+        </div>
+        <div class="wb" data-n="3"><span class="t">แก้ล่าสุด</span>
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+        </div>
+        <div class="wb" data-n="4"><span class="t">แนะนำเพิ่ม — สายกิน ใกล้เมืองเก่า</span>
+          <div class="row3" style="margin-top:6px"><div class="wb img" style="min-height:42px"></div><div class="wb img" style="min-height:42px"></div><div class="wb img" style="min-height:42px"></div></div>
+        </div>
+        <div class="wb ghost" data-n="5">ทริปอื่นของฉัน (2)</div>
+      </div>
+      <div class="tabs"><div class="on">หน้าแรก</div><div>สำรวจ</div><div>ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">B2</span>หน้าแรก — มีทริปกำลังจะถึง</h4>
+      <div class="io"><span>เข้าจาก: <b>A1</b> / <b>แท็บหน้าแรก</b></span><span>ออกไป: <b>D3</b> / <b>D4</b> / <b>C5</b></span></div>
+      <p class="purpose">สถานะปกติของคนที่ใช้อยู่ หน้าแรกต้องพาไปทำงานที่ค้าง ไม่ใช่แค่โชว์ว่ามีทริป</p>
+      <ol class="ann">
+        <li><b>ทริปหลัก</b> — นับถอยหลังเป็นวัน + สรุปจำนวนวัน/จำนวนที่ กดแล้วเข้า D3</li>
+        <li><b>สิ่งที่ยังขาด</b> — ตรวจให้อัตโนมัติ (วันว่าง ไม่มีที่พัก ไม่มีมื้อเย็น) พร้อมปุ่มลัดไปแก้ตรงจุด</li>
+        <li><b>แก้ล่าสุด</b> — ถ้ามีคนร่วมแก้ ให้ขึ้นรูปคนที่แก้ด้วย เชื่อมกับ E4</li>
+        <li><b>แนะนำเพิ่ม</b> — อิงจากแนวที่เลือกไว้ + จุดที่มีในแผนแล้ว ไม่ใช่รายการสุ่ม</li>
+        <li><b>ทริปอื่น</b> — ทางเข้า D1 แบบไม่ต้องกดแท็บ</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>● กำลังเที่ยว</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">Day 2 · วันนี้</span>เหลืออีก 4 ที่</div>
+        <div class="wb" data-n="2"><span class="t">ตอนนี้ · 14:30 หาดกะตะ</span>
+          <div class="chips"><span class="chip on">นำทาง</span><span class="chip">เช็คอินแล้ว</span><span class="chip">ข้าม</span></div>
+        </div>
+        <div class="wb" data-n="3"><span class="t">ถัดไป 16:00 · จุดชมวิวกะรน</span>ห่าง 3.2 กม. · ขับ 9 นาที</div>
+        <div class="wb flat" data-n="4"><span class="t">พระอาทิตย์ตก 18:12</span>ควรถึงแหลมพรหมเทพก่อน 17:40</div>
+        <div class="wb ghost" data-n="5">ดูทั้งวัน · แผนที่เส้นทาง</div>
+        <div class="wb ghost" data-n="6" style="font-size:9.8px">🔔 เตือนเมื่อเข้าใกล้ · เปิดอยู่ (300 ม.)</div>
+      </div>
+      <div class="tabs"><div class="on">หน้าแรก</div><div>สำรวจ</div><div>ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">B3</span>หน้าแรก — โหมดระหว่างทริป</h4>
+      <div class="io"><span>เข้าจาก: <b>ถึงวันในทริปอัตโนมัติ</b></span><span>ออกไป: <b>C5</b> / <b>D6</b> / <b>H2</b></span></div>
+      <p class="purpose">ฟีเจอร์ที่ v1 ยังไม่มี ทั้งที่ข้อมูลพร้อมหมดแล้ว — วันเดินทางจริงคนไม่ได้อยากเห็นทั้งแผน อยากรู้แค่ "ต่อไปไปไหน"</p>
+      <ol class="ann">
+        <li><b>ตัวบอกโหมด</b> — จุดสีบนแถบสถานะ + หัวเรื่องเป็นวันปัจจุบัน ไม่ใช่ชื่อทริป</li>
+        <li><b>จุดปัจจุบัน</b> — เลือกจากเวลาในเครื่องเทียบกับ <code>sortedItems</code> ของวันนั้น มีปุ่มเช็คอิน/ข้าม เพื่อให้แผนขยับตามจริง</li>
+        <li><b>จุดถัดไป + ระยะ</b> — ใช้ <code>legKm</code> เดิมคำนวณ แล้วประมาณเวลาขับที่ 30 กม./ชม. ในเมือง</li>
+        <li><b>ข้อมูลตามเวลา</b> — เวลาพระอาทิตย์ตกมีอยู่แล้วใน <code>sunsetFor()</code> เอามาใช้เตือนล่วงหน้า</li>
+        <li><b>กลับไปดูทั้งวัน</b> — ไป D3/D6</li>
+        <li><b>สถานะการเตือน</b> — บอกว่าเปิดอยู่ไหม รัศมีเท่าไร กดเข้า H2</li>
+      </ol>
+      <div class="gate"><b>เงื่อนไขเข้าโหมด</b> วันนี้อยู่ในช่วง startDate ถึง startDate + จำนวนวัน · ถ้าทริปไม่ระบุวันที่ จะไม่เข้าโหมดนี้เลย · ออกจากโหมดอัตโนมัติเมื่อพ้นวันสุดท้าย แล้วเด้งหน้าสรุปทริปให้เขียนรีวิว/เผยแพร่ (ต่อ F3)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ C ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">C</span><h3>สำรวจ &amp; ค้นหา</h3><span class="cnt">6 หน้า</span></div>
+  <p class="grp-note">v1 ค้นหาในลิสต์ 66 ที่ของจังหวัดเดียว เวอร์ชันนี้ต้องรับหลายจังหวัดและคนที่ยังไม่มีจุดหมายในใจ</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1">ค้นหาที่เที่ยว ร้านอาหาร จังหวัด</div>
+        <div class="wb" data-n="2"><span class="t">อยากไปแบบไหน</span><div class="chips"><span class="chip on">ทั้งหมด</span><span class="chip">ทะเล</span><span class="chip">ภูเขา</span><span class="chip">เมือง</span><span class="chip">สายกิน</span><span class="chip">วัฒนธรรม</span></div></div>
+        <div class="wb" data-n="3"><span class="t">ใกล้ฉัน · ชลบุรี 82 กม.</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+        </div>
+        <div class="wb" data-n="4"><span class="t">ยอดนิยมตอนนี้</span>
+          <div class="row2" style="margin-top:6px"><div class="wb img" style="min-height:52px">ภูเก็ต</div><div class="wb img" style="min-height:52px">เชียงใหม่</div></div>
+        </div>
+        <div class="wb" data-n="5"><span class="t">เลือกตามภาค</span><div class="chips"><span class="chip">เหนือ</span><span class="chip">อีสาน</span><span class="chip">กลาง</span><span class="chip">ตะวันออก</span><span class="chip">ใต้</span></div></div>
+      </div>
+      <div class="tabs"><div>หน้าแรก</div><div class="on">สำรวจ</div><div>ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C1</span>สำรวจ — ทั่วไทย</h4>
+      <div class="io"><span>เข้าจาก: <b>แท็บสำรวจ</b> / <b>A2</b></span><span>ออกไป: <b>C2</b> / <b>C3</b> / <b>C5</b></span></div>
+      <p class="purpose">หน้าตั้งต้นสำหรับคนที่ยังไม่รู้ว่าจะไปไหน เรียงจากใกล้ตัวไปไกลตัว</p>
+      <ol class="ann">
+        <li><b>ช่องค้นหา</b> — ค้นข้ามจังหวัด กดแล้วเข้า C3</li>
+        <li><b>ตัวกรองแนว</b> — เหมือน <code>VIBES</code> เดิม แต่กรองระดับประเทศ ไม่ใช่ในจังหวัด</li>
+        <li><b>ใกล้ฉัน</b> — ถ้าให้สิทธิ์ตำแหน่ง แสดงจังหวัดที่ไปได้ในวันเดียว ถ้าไม่ให้ ซ่อนบล็อกนี้ทั้งก้อน</li>
+        <li><b>ยอดนิยม</b> — เรียงจากจำนวนทริปที่คนสร้างจริงในระบบ ไม่ใช่รายการที่ตั้งไว้ตายตัว</li>
+        <li><b>เลือกตามภาค</b> — ทางเข้าสำรวจแบบเป็นระบบ สำหรับคนที่อยากไล่ดูทั้งหมด</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>←  ♡  ⋯</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">ภูเก็ต</span>อันดามัน · ใต้ · 66 ที่</div>
+        <div class="wb flat" data-n="2" style="font-size:10px">เมืองเก่าชิโน-โปรตุกีส ติ่มซำตั้งแต่เช้า คาเฟ่ทั้งย่าน แล้วลงทะเลตอนบ่าย</div>
+        <div class="wb" data-n="3"><div class="row3"><div class="wb flat" style="text-align:center">ที่เที่ยว<br>15</div><div class="wb flat" style="text-align:center">หาด<br>14</div><div class="wb flat" style="text-align:center">คาเฟ่<br>8</div></div></div>
+        <div class="wb" data-n="4"><span class="t">หาด · เลื่อนดู</span>
+          <div class="row3" style="margin-top:6px"><div class="wb img" style="min-height:56px"></div><div class="wb img" style="min-height:56px"></div><div class="wb img" style="min-height:56px"></div></div>
+        </div>
+        <div class="wb ghost" data-n="5">เลือกหลายที่พร้อมกัน</div>
+        <div class="wb cta" data-n="6">เริ่มจัดทริปภูเก็ต</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C2</span>หน้าจังหวัด</h4>
+      <div class="io"><span>เข้าจาก: <b>C1</b> / <b>A3</b> / <b>B1</b></span><span>ออกไป: <b>C5</b> / <b>D2</b> / <b>D4</b></span></div>
+      <p class="purpose">ต่อยอดจาก <code>openDest()</code> เดิมซึ่งดีอยู่แล้ว — รูปใหญ่ ไทล์หมวด แถวเลื่อนรายหมวด แล้วปิดท้ายด้วย CTA</p>
+      <ol class="ann">
+        <li><b>รูปปกจังหวัด</b> — ใช้ <code>destHero()</code> เดิมที่เลือกรูปจากสถานที่เด่นตามลำดับหมวด</li>
+        <li><b>คำบรรยายจังหวัด</b> — ประโยคเดียวที่บอกว่าจังหวัดนี้เด่นเรื่องอะไร</li>
+        <li><b>ไทล์หมวด</b> — นับจำนวนจริงต่อหมวด กดแล้วกรอง</li>
+        <li><b>แถวเลื่อนรายหมวด</b> — การ์ดใหญ่เน้นรูป (แก้ไปแล้วใน commit <code>da59a9d</code>)</li>
+        <li><b>เลือกหลายที่</b> — เข้าโหมดติ๊กของ D4 ตรงจากหน้านี้</li>
+        <li><b>CTA ท้ายหน้า</b> — ถ้ายังไม่มีทริปในจังหวัดนี้ ขึ้น "เริ่มจัดทริป" ถ้ามีแล้ว เปลี่ยนเป็น "เพิ่มเข้าทริปที่มีอยู่"</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>ยกเลิก</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1">ติ่มซำ|</div>
+        <div class="wb" data-n="2"><div class="chips"><span class="chip on">ภูเก็ต</span><span class="chip">ทุกจังหวัด</span></div></div>
+        <div class="wb" data-n="3"><span class="t">ตัวกรอง</span><div class="chips"><span class="chip">เปิดอยู่ตอนนี้</span><span class="chip">ห่างไม่เกิน 5 กม.</span><span class="chip">มีรูป</span><span class="chip on">ราคา ฿฿</span></div></div>
+        <div class="wb" data-n="4"><span class="t">ค้นล่าสุด</span><div class="chips"><span class="chip">คาเฟ่เมืองเก่า</span><span class="chip">หาดกะตะ</span></div></div>
+        <div class="wb ghost" data-n="5" style="text-align:center">🗺 ดูเป็นแผนที่</div>
+        <div class="wb grow ghost" style="border:0"></div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C3</span>ค้นหา &amp; ตัวกรอง</h4>
+      <div class="io"><span>เข้าจาก: <b>C1</b> / <b>C2</b></span><span>ออกไป: <b>C4</b> / <b>C6</b></span></div>
+      <p class="purpose">v1 กรองด้วย substring ในลิสต์เดียว ตรงนี้ต้องบอกให้ชัดว่ากำลังค้นในขอบเขตไหน</p>
+      <ol class="ann">
+        <li><b>ช่องค้นหาโฟกัสอยู่</b> — คีย์บอร์ดขึ้นทันที ปุ่มยกเลิกอยู่มุมขวาบน</li>
+        <li><b>ขอบเขตการค้น</b> — สลับระหว่างจังหวัดปัจจุบันกับทั้งประเทศ ค่าเริ่มต้นคือจังหวัดของทริปที่กำลังจัด</li>
+        <li><b>ตัวกรอง</b> — เปิดอยู่ตอนนี้ต้องมี <code>openHours</code> ซึ่ง v1 ยังไม่มีข้อมูล ถ้าไม่มีให้ซ่อนตัวกรองนี้ ไม่ใช่แสดงแล้วกรองได้ 0 อัน</li>
+        <li><b>ค้นล่าสุด</b> — เก็บในเครื่อง 8 รายการล่าสุด ลบได้</li>
+        <li><b>สลับเป็นแผนที่</b> — ไป C6</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>ผลลัพธ์ 8</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1">ติ่มซำ · ภูเก็ต<div class="chips"><span class="chip on">ราคา ฿฿ ✕</span></div></div>
+        <div class="wb" data-n="2">
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w45"></div></div><div class="chip">+</div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w30"></div></div><div class="chip">+</div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w45"></div></div><div class="chip">+</div></div>
+        </div>
+        <div class="wb ghost" data-n="3" style="text-align:center;font-size:9.8px">— ไม่พบใน 5 กม. —</div>
+        <div class="wb flat" data-n="4"><span class="t">ไม่เจอที่ต้องการ?</span><div class="chips"><span class="chip on">เพิ่มสถานที่เอง</span><span class="chip">ค้นทั้งประเทศ</span></div></div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C4</span>ผลการค้นหา &amp; ไม่พบ</h4>
+      <div class="io"><span>เข้าจาก: <b>C3</b></span><span>ออกไป: <b>C5</b> / <b>D4</b> / <b>D7</b></span></div>
+      <p class="purpose">รวมสองสถานะไว้หน้าเดียวเพราะมักเจอพร้อมกัน — เจอบางส่วน แต่ไม่ครบตามตัวกรอง</p>
+      <ol class="ann">
+        <li><b>สรุปเงื่อนไข</b> — แสดงตัวกรองที่ใช้อยู่เป็นชิปที่กดปิดได้ทีละอัน</li>
+        <li><b>รายการผล</b> — รูป ชื่อ หมวด ระยะ และปุ่ม + เพิ่มเข้าทริปในแถวเดียว ไม่ต้องเข้าไปในหน้ารายละเอียดก่อน</li>
+        <li><b>เส้นแบ่งเมื่อผลหมด</b> — บอกตรง ๆ ว่าที่เหลือไม่เข้าเงื่อนไข แทนที่จะแสดงต่อแบบเนียน ๆ</li>
+        <li><b>ทางออกเมื่อไม่พบ</b> — เสนอ 2 ทาง คือเพิ่มเองด้วยลิงก์ Google Maps (D7) หรือขยายขอบเขตการค้น</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>←  ♡  ↗</span></div>
+      <div class="ph-scr">
+        <div class="wb img" data-n="1" style="min-height:96px">รูป 1/6 · เครดิต</div>
+        <div class="wb flat" data-n="2"><span class="t">ติ่มซำ ก. โกปี๊</span>ติ่มซำ · เมืองเก่า · ★ 4.5 (312)</div>
+        <div class="wb" data-n="3"><span class="t">เปิด 06:00–11:00 · เปิดอยู่</span>ห่างจากที่พัก 2.1 กม.</div>
+        <div class="wb flat" data-n="4" style="font-size:10px">ร้านติ่มซำเช้าในตึกแถวชิโน-โปรตุกีส… <span style="color:var(--teal)">แก้ไข</span></div>
+        <div class="row2" style="gap:7px">
+          <div class="wb cta" data-n="5">+ เพิ่มเข้าทริป</div>
+          <div class="wb" data-n="6" style="text-align:center">นำทาง</div>
+        </div>
+        <div class="wb" data-n="7"><span class="t">ใกล้เคียง</span><div class="chips"><span class="chip">ถนนถลาง 400 ม.</span><span class="chip">คาเฟ่ 600 ม.</span></div></div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C5</span>รายละเอียดสถานที่</h4>
+      <div class="io"><span>เข้าจาก: <b>C2</b> / <b>C4</b> / <b>D3</b> / <b>H3</b></span><span>ออกไป: <b>D4</b> / Google Maps</span></div>
+      <p class="purpose">หน้าที่ถูกเปิดบ่อยที่สุดในแอป ต่อยอดจาก <code>openDetail()</code> เดิม เพิ่มสิ่งที่ v1 เตรียม UI ไว้แล้วแต่ยังไม่มีข้อมูล</p>
+      <ol class="ann">
+        <li><b>แกลเลอรีรูป</b> — เลื่อนได้ มีเครดิตทุกใบ (บังคับ เพราะเป็นโปรดักต์สาธารณะแล้ว) แตะเพื่อดูเต็มจอ</li>
+        <li><b>ชื่อ หมวด เรตติ้ง</b> — เรตติ้งมาจากแหล่งข้อมูล ไม่ใช่ผู้ใช้ให้เอง ต้องระบุที่มา</li>
+        <li><b>เวลาเปิด + ระยะ</b> — ระยะวัดจากที่พักในทริป ถ้าไม่มีที่พักให้วัดจากจุดก่อนหน้าในวัน</li>
+        <li><b>คำบรรยาย</b> — ลำดับเดิม: ที่ผู้ใช้เขียน → seed → API → โน้ต · ปุ่มแก้ไขเฉพาะเจ้าของทริป</li>
+        <li><b>ปุ่มหลัก</b> — เพิ่มเข้าทริป เปิด D4</li>
+        <li><b>นำทาง</b> — ใช้พิกัดถ้ามี ไม่งั้นใช้คำค้น (<code>navUrlFor</code> เดิม)</li>
+        <li><b>ใกล้เคียง</b> — ที่อื่นในรัศมี 1 กม. ช่วยให้จัดวันได้แน่นขึ้นโดยไม่ต้องกลับไปค้นใหม่</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>รายการ</span></div>
+      <div class="ph-scr" style="gap:6px">
+        <div class="wb flat" data-n="1">ค้นหาในบริเวณนี้<div class="chips"><span class="chip on">ติ่มซำ</span><span class="chip">คาเฟ่</span><span class="chip">หาด</span></div></div>
+        <div class="wb img grow" data-n="2" style="min-height:170px">แผนที่ · หมุดตามหมวด<br><span style="font-size:9px">เส้นทางวันที่เลือกซ้อนอยู่</span></div>
+        <div class="wb" data-n="3"><span class="t">ติ่มซำ ก. โกปี๊ · 2.1 กม.</span>
+          <div class="chips"><span class="chip on">+ เพิ่มเข้าทริป</span><span class="chip">รายละเอียด</span></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="text-align:center;font-size:9.8px">◎ ตำแหน่งฉัน</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">C6</span>มุมมองแผนที่</h4>
+      <div class="io"><span>เข้าจาก: <b>C3</b> / <b>C4</b> / <b>D6</b></span><span>ออกไป: <b>C5</b> / <b>D4</b></span></div>
+      <p class="purpose">ของใหม่ทั้งหมด v1 ทำไม่ได้เพราะ CSP ของ Artifact บล็อก <code>maps.googleapis.com</code> — พอย้ายมาโฮสต์เองแล้วข้อจำกัดนี้หายไป</p>
+      <ol class="ann">
+        <li><b>ค้นหาในบริเวณนี้</b> — เลื่อนแผนที่แล้วกดค้นใหม่ ไม่ค้นอัตโนมัติทุกครั้งที่ขยับ (กินโควตา API)</li>
+        <li><b>แผนที่</b> — หมุดใช้สีหมวดเดิม (<code>--cat-*</code>) · ถ้ากำลังดูทริปอยู่ ให้ลากเส้นทางของวันนั้นทับ</li>
+        <li><b>การ์ดเมื่อแตะหมุด</b> — ขึ้นจากด้านล่าง เพิ่มเข้าทริปได้เลยโดยไม่ปิดแผนที่</li>
+        <li><b>ปุ่มตำแหน่งฉัน</b> — ทำงานเมื่อให้สิทธิ์แล้วเท่านั้น ไม่งั้นแตะแล้วเข้า I1</li>
+      </ol>
+      <div class="gate"><b>ทางเลือกเทคนิค</b> ถ้าไม่อยากผูก Google Maps ตั้งแต่แรก ใช้ MapLibre + แผ่นกระเบื้องฟรีก่อนได้ แล้วยังใช้ลิงก์ <code>maps/dir/?api=1</code> เดิมสำหรับนำทางจริง — ตรงนี้ไม่ต้องมี key</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ D ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">D</span><h3>ทริป</h3><span class="cnt">7 หน้า</span></div>
+  <p class="grp-note">แกนหลักของแอป ส่วนใหญ่ต่อยอดจาก <code>renderPlan()</code> / <code>openPickSheet()</code> / <code>openNewPlaceSheet()</code> ที่ทำงานได้ดีอยู่แล้ว เพิ่มเรื่องหลายทริปและหลายคน</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>+ ทริปใหม่</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">ทริปของฉัน</span><div class="chips"><span class="chip on">กำลังจะถึง</span><span class="chip">ร่าง</span><span class="chip">ไปแล้ว</span><span class="chip">ที่ร่วมแก้</span></div></div>
+        <div class="wb" data-n="2"><span class="t">เที่ยวภูเก็ต พ.ย. 68</span>อีก 12 วัน · 3 วัน · 14 ที่
+          <div class="chips"><span class="chip">🔗 แชร์แล้ว</span><span class="chip">👥 3 คน</span></div>
+        </div>
+        <div class="wb" data-n="3"><span class="t">เชียงใหม่ปีใหม่</span>ร่าง · ยังไม่ระบุวัน · 5 ที่</div>
+        <div class="wb" data-n="4" style="opacity:.72"><span class="t">กระบี่ ส.ค. 68</span>ไปแล้ว · เผยแพร่อยู่ · 42 คนบันทึก</div>
+        <div class="wb ghost" data-n="5">⋯ ทำสำเนา · เปลี่ยนชื่อ · ลบ</div>
+      </div>
+      <div class="tabs"><div>หน้าแรก</div><div>สำรวจ</div><div class="on">ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D1</span>ทริปทั้งหมด</h4>
+      <div class="io"><span>เข้าจาก: <b>แท็บทริป</b> / <b>B2</b></span><span>ออกไป: <b>D2</b> / <b>D3</b> / <b>E3</b></span></div>
+      <p class="purpose">v1 มีหลายทริปได้อยู่แล้วแต่ไม่มีหน้ารวม ต้องสลับผ่านแผงเล็ก ๆ เวอร์ชันนี้ยกเป็นแท็บของตัวเอง</p>
+      <ol class="ann">
+        <li><b>ตัวกรองสถานะ</b> — กำลังจะถึง / ร่าง (ไม่ระบุวัน) / ไปแล้ว / ที่ร่วมแก้กับคนอื่น</li>
+        <li><b>การ์ดทริปหลัก</b> — นับถอยหลัง + ป้ายบอกว่าแชร์แล้วและมีกี่คนร่วม</li>
+        <li><b>ทริปร่าง</b> — ทริปไม่ระบุวันไม่ต้องมีนับถอยหลัง แต่ต้องกดเข้าไปใส่วันได้</li>
+        <li><b>ทริปที่จบแล้ว</b> — จางลง แต่ยังกดเข้าได้ ถ้าเผยแพร่อยู่ให้โชว์ยอดคนบันทึก</li>
+        <li><b>เมนู ⋯ ต่อการ์ด</b> — ทำสำเนา / เปลี่ยนชื่อ / ลบ (ลบต้องมีขั้นยืนยันแบบ <code>askConfirm</code> เดิม)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">ทริปใหม่</span></div>
+          <div class="wb" data-n="2" style="margin-top:6px">ชื่อทริป · เที่ยวเชียงใหม่ ธ.ค. 68</div>
+          <div class="wb" data-n="3" style="margin-top:7px">จังหวัด · เชียงใหม่</div>
+          <div class="wb" data-n="4" style="margin-top:7px">วันเริ่ม · 28 ธ.ค. 68 <span style="font-size:9px">(เว้นไว้ได้)</span></div>
+          <div class="wb" data-n="5" style="margin-top:7px">จำนวนวัน · − 3 +</div>
+          <div class="wb cta" data-n="6" style="margin-top:8px">สร้างทริป</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D2</span>สร้างทริปใหม่</h4>
+      <div class="io"><span>เข้าจาก: <b>D1</b> / <b>C2</b> / <b>D4</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">เป็นแผงเลื่อนขึ้น ไม่ใช่หน้าเต็ม เพราะมักถูกเรียกกลางทางตอนกำลังจะเพิ่มสถานที่ ต้องไม่พาผู้ใช้ออกจากบริบทเดิม</p>
+      <ol class="ann">
+        <li><b>หัวแผง + ที่จับลาก</b> — ลากลงเพื่อปิด แตะนอกแผงก็ปิด</li>
+        <li><b>ชื่อ</b> — เติมให้อัตโนมัติจากจังหวัด + เดือน</li>
+        <li><b>จังหวัด</b> — เติมมาจากหน้าที่เรียก ถ้าเรียกจาก C2 ล็อกไว้เป็นจังหวัดนั้น</li>
+        <li><b>วันเริ่ม</b> — เว้นได้ กลายเป็นทริปร่าง</li>
+        <li><b>จำนวนวัน</b> — ปุ่ม − / + แทนการพิมพ์ (นิ้วเดียวกดได้บนมือถือ)</li>
+        <li><b>ปุ่มสร้าง</b> — สร้างแล้วถ้ามาจาก flow เพิ่มสถานที่ ให้เพิ่มที่นั้นเข้าทริปใหม่ทันที ไม่ต้องกดซ้ำ</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>↗ แชร์  ⋯</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">เที่ยวภูเก็ต พ.ย. 68</span>👤👤👤 · อีก 12 วัน</div>
+        <div class="wb flat" data-n="2"><div class="chips"><span class="chip on">Day 1 ศ14</span><span class="chip">Day 2 ส15</span><span class="chip">Day 3 อา16</span><span class="chip">+</span></div></div>
+        <div class="wb" data-n="3"><span class="t">11:30 · สนามบินภูเก็ต</span>ถึงภูเก็ต รับรถ</div>
+        <div class="wb ghost" data-n="4" style="text-align:center;font-size:9.5px">↓ 12 กม. · 22 นาที</div>
+        <div class="wb" data-n="5"><span class="t">12:15 · ติ่มซำ ก. โกปี๊</span>มื้อกลางวัน<div class="chips"><span class="chip">นำทาง</span><span class="chip">แก้เวลา</span><span class="chip">⋮⋮ ลาก</span></div></div>
+        <div class="wb ghost" data-n="6">+ เพิ่มสถานที่เข้าวันนี้</div>
+        <div class="wb cta" data-n="7">นำทางทั้งวัน (5 จุด)</div>
+      </div>
+      <div class="tabs"><div>หน้าแรก</div><div>สำรวจ</div><div class="on">ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D3</span>แผนทริป — ไทม์ไลน์รายวัน</h4>
+      <div class="io"><span>เข้าจาก: <b>ทุกที่</b></span><span>ออกไป: <b>D4</b> / <b>D5</b> / <b>D6</b> / <b>E1</b></span></div>
+      <p class="purpose">หน้าที่ทำได้ดีที่สุดใน v1 อยู่แล้ว เปลี่ยนน้อยที่สุด เพิ่มแค่ร่องรอยของคนอื่นและปุ่มแชร์</p>
+      <ol class="ann">
+        <li><b>หัวทริป</b> — ชื่อ + รูปคนที่ร่วมแก้ + นับถอยหลัง กดที่ชื่อเพื่อเปลี่ยนชื่อ</li>
+        <li><b>แถบวัน</b> — เลื่อนแนวนอน ปุ่ม + เพิ่มวัน · วันที่จริงแสดงคู่กับ Day n เสมอ</li>
+        <li><b>จุดในวัน</b> — เวลา ชื่อ โน้ต เรียงตามเวลาอัตโนมัติ (<code>sortedItems</code>)</li>
+        <li><b>ระยะระหว่างจุด</b> — คำนวณจากพิกัดจริง (<code>legKm</code>) ถ้าจุดใดไม่มีพิกัดให้เว้นบรรทัดนี้ ไม่ใช่แสดง 0 กม.</li>
+        <li><b>การกระทำต่อจุด</b> — นำทาง / แก้เวลา / ลากสลับลำดับ · ปัดซ้ายเพื่อลบ</li>
+        <li><b>เพิ่มเข้าวันนี้</b> — เข้า D4 โดยจำวันที่เปิดอยู่</li>
+        <li><b>นำทางทั้งวัน</b> — เส้นเดียวจากจุดแรกถึงจุดสุดท้าย ใส่ waypoints สูงสุด 9 (<code>routeUrl</code>) · ถ้าเกิน 9 ให้เตือนว่าจะตัดจุดไหนออก</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>เลือกแล้ว 3</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">เพิ่มเข้า Day 1 · ศ 14 พ.ย.</span><div class="chips"><span class="chip">เปลี่ยนวัน</span></div></div>
+        <div class="wb" data-n="2"><div class="chips"><span class="chip on">ทั้งหมด</span><span class="chip">ติ่มซำ</span><span class="chip">คาเฟ่</span><span class="chip">หาด</span></div>
+          <div class="chips" style="margin-top:5px"><span class="chip on">เรียงตามระยะ</span><span class="chip">ตามลิสต์</span></div>
+        </div>
+        <div class="wb" data-n="3">
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div><div class="chip on">✓ 1</div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w45"></div></div><div class="chip on">✓ 2</div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div><div class="chip">+</div></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">ห่างจากจุดล่าสุดที่ติ๊ก 1.4 กม.</div>
+        <div class="wb cta" data-n="5">เพิ่ม 3 ที่ · ไล่เวลาให้</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D4</span>เลือกสถานที่เข้าวัน</h4>
+      <div class="io"><span>เข้าจาก: <b>D3</b> / <b>C2</b> / <b>C5</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">ฟีเจอร์ที่ v1 ทำไว้ดีมากแล้ว (<code>openPickSheet</code> + <code>pickRef</code>) — เก็บไว้ทั้งหมด แค่ทำให้เข้าถึงได้จากหลายทาง</p>
+      <ol class="ann">
+        <li><b>ปลายทางชัดเจน</b> — บอกว่ากำลังเพิ่มเข้าวันไหน เปลี่ยนวันได้ในที่เดียวกัน</li>
+        <li><b>กรอง + เรียง</b> — เรียงตามระยะคือค่าเริ่มต้นเมื่อวันนั้นมีจุดอยู่แล้ว เพราะช่วยไม่ให้แผนวิ่งไปกลับ</li>
+        <li><b>ติ๊กหลายอัน</b> — เลขบนเครื่องหมายถูกคือลำดับที่จะถูกใส่ ไม่ใช่แค่ ✓ เฉย ๆ</li>
+        <li><b>จุดอ้างอิงขยับตาม</b> — ระยะวัดจากที่ติ๊กล่าสุด ทำให้ไล่เส้นทางได้ทีละก้าว</li>
+        <li><b>ปุ่มยืนยัน</b> — บอกจำนวนและบอกว่าจะไล่เวลาให้ · เว้นระยะ 45 นาทีต่อจุดเป็นค่าเริ่มต้น แก้ทีหลังได้</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">ติ่มซำ ก. โกปี๊</span>Day 1</div>
+          <div class="wb" data-n="2" style="margin-top:6px">เวลา · 12:15 <span style="font-size:9px">(ล้อหมุน)</span></div>
+          <div class="wb" data-n="3" style="margin-top:7px">โน้ต · มื้อกลางวัน สั่งซาลาเปาไส้หมูแดง</div>
+          <div class="wb" data-n="4" style="margin-top:7px">ย้ายไปวันอื่น · Day 1 ▾</div>
+          <div class="wb" data-n="5" style="margin-top:7px;color:var(--danger);border-color:var(--danger)">ลบออกจากแผน</div>
+          <div class="wb cta" data-n="6" style="margin-top:8px">บันทึก</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D5</span>แก้ไขจุดในวัน</h4>
+      <div class="io"><span>เข้าจาก: <b>D3</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">รวมทุกการแก้ไขต่อหนึ่งจุดไว้ที่เดียว แทนที่จะกระจายอยู่หลายปุ่มเล็ก ๆ ในไทม์ไลน์</p>
+      <ol class="ann">
+        <li><b>บอกว่ากำลังแก้อะไร</b> — ชื่อสถานที่ + วันที่อยู่</li>
+        <li><b>เวลา</b> — ล้อเลือกเวลาแบบระบบ ไม่ใช่ช่องพิมพ์ · แก้แล้วเรียงใหม่อัตโนมัติทันที</li>
+        <li><b>โน้ต</b> — ข้อความอิสระ เก็บใน <code>item.note</code> เดิม</li>
+        <li><b>ย้ายวัน</b> — ของใหม่ที่ v1 ยังไม่มี ต้องลบแล้วเพิ่มใหม่ ซึ่งเสียโน้ตที่เขียนไว้</li>
+        <li><b>ลบ</b> — สีแดง มีขั้นยืนยันตามแบบ v1.01</li>
+        <li><b>บันทึก</b> — ถ้าเป็นทริปที่มีคนร่วมแก้ ให้ขึ้น toast ว่าใครจะเห็นการเปลี่ยนแปลงนี้</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>Day 1</span></div>
+      <div class="ph-scr" style="gap:6px">
+        <div class="wb flat" data-n="1"><span class="t">เส้นทาง Day 1 · 5 จุด</span>รวม 38 กม. · ขับ 1 ชม. 12 น.</div>
+        <div class="wb img grow" data-n="2" style="min-height:150px">แผนที่ + เส้นทางเรียงตามเวลา</div>
+        <div class="wb" data-n="3">
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w60"></div></div><div class="chip">11:30</div></div>
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w80"></div></div><div class="chip">12:15</div></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">⚠ เกิน 9 จุดกลาง — จุดที่ 11–14 จะไม่อยู่ในเส้นทางเดียว</div>
+        <div class="wb cta" data-n="5">เปิดใน Google Maps</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D6</span>นำทางทั้งวัน</h4>
+      <div class="io"><span>เข้าจาก: <b>D3</b> / <b>B3</b></span><span>ออกไป: <b>Google Maps</b> / <b>C6</b></span></div>
+      <p class="purpose">v1 ยิงเข้า Google Maps ตรง ๆ ตรงนี้แทรกหน้ายืนยันก่อน เพราะข้อจำกัด 9 waypoints ทำให้แผนบางวันถูกตัดเงียบ ๆ</p>
+      <ol class="ann">
+        <li><b>สรุปเส้นทาง</b> — จำนวนจุด ระยะรวม เวลาขับรวม คำนวณจาก <code>legKm</code> ต่อช่วง</li>
+        <li><b>พรีวิวแผนที่</b> — เห็นรูปร่างเส้นทางก่อนออกจากแอป จับได้ว่าวันนี้วิ่งไปกลับผิดปกติไหม</li>
+        <li><b>ลำดับจุด</b> — เรียงตามเวลา ลากสลับที่นี่ได้ แล้วเวลาจะไล่ใหม่</li>
+        <li><b>เตือนเมื่อเกินขีดจำกัด</b> — บอกตรง ๆ ว่าจุดไหนจะหลุด พร้อมเสนอแยกเป็น 2 เส้นทาง</li>
+        <li><b>เปิด Google Maps</b> — ใช้ <code>routeUrl(items)</code> เดิม</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>ขั้น 2/3</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">เพิ่มสถานที่เอง</span>① ค้น → ② วางลิงก์ → ③ เลือกหมวด</div>
+        <div class="wb" data-n="2">ชื่อ · ร้านโกอ่าง ข้าวต้มปลา</div>
+        <div class="wb ghost" data-n="3" style="text-align:center">🔎 ค้นบน Google Maps (เปิดแท็บใหม่)</div>
+        <div class="wb" data-n="4">วางลิงก์ที่ก๊อปมา…</div>
+        <div class="wb flat" data-n="5" style="font-size:10px">✓ อ่านได้: ร้านโกอ่าง · 7.8834, 98.3912</div>
+        <div class="wb" data-n="6"><span class="t">หมวด</span><div class="chips"><span class="chip on">ร้านอาหาร</span><span class="chip">คาเฟ่</span><span class="chip">ที่เที่ยว</span><span class="chip">หาด</span></div></div>
+        <div class="wb cta" data-n="7">บันทึกและเพิ่มเข้าทริป</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">D7</span>เพิ่มสถานที่เอง</h4>
+      <div class="io"><span>เข้าจาก: <b>C4</b> / <b>D4</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">กลไก 3 ขั้นของ v1 ที่แก้ปัญหาได้จริง (<code>parseMapsUrl</code> รองรับลิงก์ 4 แบบ) เก็บไว้ทั้งหมด เพิ่มการจัดการกรณีที่แกะไม่ได้</p>
+      <ol class="ann">
+        <li><b>บอก 3 ขั้นตั้งแต่ต้น</b> — คนจะได้รู้ว่าต้องสลับไป Google Maps ก่อน ไม่ใช่ค้นพบกลางทาง</li>
+        <li><b>ชื่อ</b> — พิมพ์ก่อน ใช้เป็นคำค้นและเป็นชื่อตั้งต้น</li>
+        <li><b>ปุ่มค้น</b> — เปิดแท็บใหม่ไป Google Maps ด้วยคำค้นนั้น</li>
+        <li><b>ช่องวางลิงก์</b> — วางแล้วแกะทันที ไม่ต้องกดปุ่มเพิ่ม</li>
+        <li><b>ผลการแกะ</b> — โชว์ชื่อและพิกัดที่ได้ · <b>ลิงก์ย่อ <code>maps.app.goo.gl</code> แกะไม่ได้ใน v1 เพราะ CSP</b> พอมีเซิร์ฟเวอร์แล้วให้ backend ตามลิงก์ให้ แล้วปัญหานี้หายไป</li>
+        <li><b>หมวด</b> — บังคับเลือก เพราะมีผลกับสีหมุดและไอคอน</li>
+        <li><b>บันทึก</b> — เก็บเป็น <code>source:'user'</code> เห็นเฉพาะเจ้าของ · มีปุ่มเสนอเข้าคลังกลางแยกต่างหาก ไม่ใช่ส่งอัตโนมัติ</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ============ E ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">E</span><h3>แชร์ &amp; ร่วมแก้</h3><span class="cnt">5 หน้า</span></div>
+  <p class="grp-note">ของใหม่ทั้งกลุ่ม เป็นเหตุผลหลักที่ต้องมี backend · หลักการคือไล่ระดับทีละขั้น และลดระดับกลับได้เสมอ</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">แชร์ · เที่ยวภูเก็ต พ.ย. 68</span></div>
+          <div class="wb" data-n="2" style="margin-top:6px"><span class="t">🔒 ส่วนตัว</span>เห็นคนเดียว · ใช้อยู่</div>
+          <div class="wb" data-n="3" style="margin-top:7px"><span class="t">🔗 ใครมีลิงก์ก็ดูได้</span>ดูอย่างเดียว แก้ไม่ได้</div>
+          <div class="wb" data-n="4" style="margin-top:7px"><span class="t">🌏 เผยแพร่สาธารณะ</span>ขึ้นฟีดและค้นเจอ</div>
+          <div class="wb ghost" data-n="5" style="margin-top:8px">👥 เชิญคนร่วมแก้ →</div>
+          <div class="wb cta" data-n="6" style="margin-top:8px">ก๊อปลิงก์</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">E1</span>แผงแชร์</h4>
+      <div class="io"><span>เข้าจาก: <b>D3</b> / <b>D1</b></span><span>ออกไป: <b>G1</b> (ถ้ายัง guest) / <b>E3</b> / <b>F3</b></span></div>
+      <p class="purpose">จุดที่ต้องออกแบบให้ระวังที่สุดในแอปทั้งหมด เพราะเป็นที่เดียวที่ข้อมูลส่วนตัวกลายเป็นสาธารณะ</p>
+      <ol class="ann">
+        <li><b>ชื่อทริปในหัวแผง</b> — ย้ำว่ากำลังจะแชร์อันไหน</li>
+        <li><b>ระดับ 1 ส่วนตัว</b> — ค่าเริ่มต้นเสมอ ทุกทริปเกิดมาเป็นส่วนตัว</li>
+        <li><b>ระดับ 2 ลิงก์</b> — อธิบายผลตรง ๆ ว่าใครเห็นและทำอะไรได้ · เลือกแล้วจึงสร้าง <code>linkToken</code></li>
+        <li><b>ระดับ 3 สาธารณะ</b> — ไม่ใช่แค่สวิตช์ กดแล้วต้องผ่าน F3 ที่ให้ตรวจก่อนเผยแพร่</li>
+        <li><b>เชิญร่วมแก้</b> — แยกจากระดับการมองเห็น เพราะเป็นคนละเรื่อง (ทริปส่วนตัวก็เชิญคนร่วมแก้ได้)</li>
+        <li><b>ก๊อปลิงก์</b> — ปุ่มหลักจะเปลี่ยนตามระดับที่เลือก · ถ้าเป็นส่วนตัวอยู่ ปุ่มนี้จะเป็นสีจางกดไม่ได้</li>
+      </ol>
+      <div class="gate"><b>ต้องมี</b> ลดระดับกลับได้ตลอดเวลา และเมื่อลดระดับ ลิงก์เดิมต้องตายทันที · ก่อนเผยแพร่ต้องเตือนว่ามีโน้ตส่วนตัวกี่บรรทัดที่คนอื่นจะเห็นด้วย</div>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>tripster.app/t/…</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">เที่ยวภูเก็ต 3 วัน 2 คืน</span>โดย @ploy · 14 ที่</div>
+        <div class="wb flat" data-n="2"><div class="chips"><span class="chip on">Day 1</span><span class="chip">Day 2</span><span class="chip">Day 3</span></div></div>
+        <div class="wb" data-n="3">
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w45"></div></div></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">อ่านอย่างเดียว · แก้ไม่ได้</div>
+        <div class="row2" style="gap:7px">
+          <div class="wb cta" data-n="5">ก๊อปเป็นทริปฉัน</div>
+          <div class="wb" data-n="6" style="text-align:center">♡ บันทึก</div>
+        </div>
+        <div class="wb ghost" data-n="7" style="font-size:9.5px;text-align:center">รายงานเนื้อหาไม่เหมาะสม</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">E2</span>หน้าทริปสาธารณะ (มุมคนนอก)</h4>
+      <div class="io"><span>เข้าจาก: <b>ลิงก์แชร์</b> / <b>F1</b></span><span>ออกไป: <b>E5</b> / <b>G2</b> / <b>F4</b></span></div>
+      <p class="purpose">หน้าแรกที่คนใหม่จำนวนมากจะเห็น (เพื่อนส่งลิงก์มา) ต้องอ่านรู้เรื่องโดยไม่ต้องสมัคร และต้องเชิญชวนให้ลองใช้</p>
+      <ol class="ann">
+        <li><b>ชื่อทริป + เจ้าของ</b> — ต้องเห็นว่าใครจัด กดชื่อไป F2</li>
+        <li><b>แถบวัน</b> — เหมือน D3 แต่ไม่มีปุ่มเพิ่ม/ลบ</li>
+        <li><b>ไทม์ไลน์อ่านอย่างเดียว</b> — โน้ตส่วนตัวที่เจ้าของทำเครื่องหมายว่าไม่แชร์ ต้องไม่ขึ้นตรงนี้</li>
+        <li><b>ป้ายบอกสถานะ</b> — บอกชัดว่าแก้ไม่ได้ กันคนเข้าใจผิดว่าแก้แล้วเจ้าของจะเห็น</li>
+        <li><b>ก๊อปเป็นทริปฉัน</b> — ปุ่มหลัก เข้า E5 · ทำได้แม้ยังเป็น guest</li>
+        <li><b>บันทึกไว้ดูทีหลัง</b> — เข้าแท็บบันทึก ต้องสมัครก่อนถึงจะข้ามเครื่องได้</li>
+        <li><b>รายงาน</b> — ต้องมีในทุกหน้าที่แสดงเนื้อหาจากผู้ใช้คนอื่น</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>← เสร็จ</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">คนในทริปนี้ · 3</span></div>
+        <div class="wb" data-n="2">
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w60"></div></div><div class="chip">เจ้าของ</div></div>
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w45"></div></div><div class="chip on">แก้ได้ ▾</div></div>
+          <div class="lst"><div class="sq rnd"></div><div class="col"><div class="ln w60"></div></div><div class="chip">ดูอย่างเดียว ▾</div></div>
+        </div>
+        <div class="wb" data-n="3"><span class="t">เชิญเพิ่ม</span>อีเมล หรือชื่อผู้ใช้</div>
+        <div class="wb" data-n="4"><span class="t">สิทธิ์ที่จะให้</span><div class="chips"><span class="chip on">แก้ได้</span><span class="chip">ดูอย่างเดียว</span></div></div>
+        <div class="wb ghost" data-n="5">🔗 ลิงก์เชิญ · หมดอายุใน 7 วัน</div>
+        <div class="wb cta" data-n="6">ส่งคำเชิญ</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">E3</span>จัดการสิทธิ์ &amp; คำเชิญ</h4>
+      <div class="io"><span>เข้าจาก: <b>E1</b> / <b>D3</b></span><span>ออกไป: <b>E4</b></span></div>
+      <p class="purpose">แยกจากแผงแชร์เพราะ "ใครเห็นได้" กับ "ใครแก้ได้" เป็นคนละคำถาม รวมกันเมื่อไรผู้ใช้จะตั้งค่าผิด</p>
+      <ol class="ann">
+        <li><b>รายชื่อคนในทริป</b> — เห็นทุกคนพร้อมสิทธิ์ปัจจุบัน</li>
+        <li><b>เปลี่ยน/ถอดสิทธิ์</b> — เจ้าของเท่านั้นที่ทำได้ · ถอดแล้วสิ่งที่คนนั้นเพิ่มไว้ยังอยู่ แต่เข้าไม่ได้แล้ว</li>
+        <li><b>ช่องเชิญ</b> — อีเมลหรือ handle · คนที่ยังไม่มีบัญชีจะได้ลิงก์ที่พาไปสมัครก่อน</li>
+        <li><b>ระดับสิทธิ์</b> — มีแค่ 2 ระดับ ไม่ต้องมีสิทธิ์ย่อยรายวัน จะซับซ้อนเกินความจำเป็น</li>
+        <li><b>ลิงก์เชิญ</b> — หมดอายุได้ ยกเลิกได้ เพื่อไม่ให้ลิงก์เก่าถูกส่งต่อไปเรื่อย ๆ</li>
+        <li><b>ส่งคำเชิญ</b> — คนที่ถูกเชิญได้ทั้งอีเมลและการแจ้งเตือนในแอป (H1)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>👤👤 ออนไลน์</span></div>
+      <div class="ph-scr">
+        <div class="wb hero" data-n="1"><span class="t">เที่ยวภูเก็ต พ.ย. 68</span>ปอ กำลังแก้ Day 2</div>
+        <div class="wb" data-n="2"><span class="t">12:15 · ติ่มซำ ก. โกปี๊</span>
+          <div class="chips"><span class="chip on">ปอ เพิ่งเพิ่ม · 2 นาทีที่แล้ว</span></div>
+        </div>
+        <div class="wb" data-n="3" style="border-style:dashed"><span class="t">14:00 · หาดกะตะ</span>ปอ กำลังแก้อยู่ — แก้ไม่ได้ชั่วคราว</div>
+        <div class="wb" data-n="4"><span class="t">💬 3 ความเห็นในวันนี้</span>"เปลี่ยนเป็นเช้าได้ไหม รถติดแน่"</div>
+        <div class="wb ghost" data-n="5">ดูประวัติการแก้ทั้งหมด</div>
+        <div class="wb ghost" data-n="6" style="font-size:9.8px">⚡ ออฟไลน์อยู่ — จะซิงก์ให้เมื่อกลับมาออนไลน์</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">E4</span>ร่วมแก้พร้อมกัน</h4>
+      <div class="io"><span>เข้าจาก: <b>D3</b> (ทริปที่มีหลายคน)</span><span>ออกไป: <b>D5</b> / <b>H1</b></span></div>
+      <p class="purpose">ไม่ต้องทำ realtime แบบ Google Docs ทริปเปลี่ยนไม่บ่อยพอ · ใช้ระดับ "เห็นว่าใครทำอะไรเมื่อไร" ก็พอ</p>
+      <ol class="ann">
+        <li><b>ใครออนไลน์อยู่</b> — รูปคนบนหัว + บอกว่ากำลังอยู่วันไหน</li>
+        <li><b>ร่องรอยการแก้</b> — ป้ายบอกว่าใครเพิ่ม/แก้ล่าสุด จางหายไปเองใน 24 ชม.</li>
+        <li><b>ล็อกระดับรายการ</b> — ขณะที่คนหนึ่งเปิด D5 แก้จุดนั้นอยู่ อีกคนแก้ไม่ได้ ป้องกันการเขียนทับโดยไม่ต้องทำ merge ที่ซับซ้อน</li>
+        <li><b>ความเห็นรายวัน</b> — ที่คุยกันว่าจะเปลี่ยนอะไร แทนที่จะไปคุยกันในแชตแล้วลืม</li>
+        <li><b>ประวัติการแก้</b> — ย้อนกลับได้ อย่างน้อย 30 รายการล่าสุด</li>
+        <li><b>สถานะออฟไลน์</b> — แก้ต่อได้ตอนไม่มีเน็ต แล้วซิงก์ทีหลัง (เชื่อมกับ I2)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">ก๊อปทริปนี้เป็นของฉัน</span>14 ที่ · 3 วัน</div>
+          <div class="wb" data-n="2" style="margin-top:6px">ชื่อ · เที่ยวภูเก็ต 3 วัน 2 คืน (สำเนา)</div>
+          <div class="wb" data-n="3" style="margin-top:7px">วันเริ่มของฉัน · 14 ธ.ค. 68</div>
+          <div class="wb" data-n="4" style="margin-top:7px"><div class="chips"><span class="chip on">เอาโน้ตของเจ้าของมาด้วย</span></div></div>
+          <div class="wb ghost" data-n="5" style="margin-top:7px;font-size:9.8px">แก้ได้อิสระ ไม่กระทบต้นฉบับ · จะให้เครดิต @ploy บนหัวทริป</div>
+          <div class="wb cta" data-n="6" style="margin-top:8px">ก๊อปเลย</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">E5</span>ก๊อปเป็นทริปของฉัน</h4>
+      <div class="io"><span>เข้าจาก: <b>E2</b> / <b>F1</b></span><span>ออกไป: <b>D3</b></span></div>
+      <p class="purpose">ทางที่ทำให้ฟีดชุมชนมีประโยชน์จริง ไม่ใช่แค่ดูเพลิน ๆ · ทำได้ตั้งแต่ยังเป็น guest</p>
+      <ol class="ann">
+        <li><b>สรุปสิ่งที่จะได้</b> — จำนวนที่และจำนวนวัน</li>
+        <li><b>ตั้งชื่อใหม่</b> — เติมคำว่า (สำเนา) ให้ แก้ได้</li>
+        <li><b>เลื่อนวันให้ตรงของเรา</b> — ต้นฉบับเป็นวันของเจ้าของ ระบบต้องเลื่อนทั้งชุดมาที่วันที่เราเลือก</li>
+        <li><b>เลือกว่าจะเอาโน้ตมาด้วยไหม</b> — บางคนอยากได้แค่โครง</li>
+        <li><b>อธิบายความสัมพันธ์</b> — บอกชัดว่าขาดจากต้นฉบับแล้ว แต่ยังให้เครดิต</li>
+        <li><b>ปุ่มก๊อป</b> — เสร็จแล้วเข้า D3 ของทริปใหม่ทันที และเพิ่ม <code>stats.forks</code> ให้ต้นฉบับ</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ============ F ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">F</span><h3>ชุมชน</h3><span class="cnt">4 หน้า</span></div>
+  <p class="grp-note">ชั้นนอกสุด ทำทีหลังได้ แต่ต้องออกแบบเผื่อไว้ตั้งแต่ตอนวางโครงข้อมูล ไม่งั้นต้องรื้อ</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><div class="chips"><span class="chip on">แนะนำ</span><span class="chip">ภูเก็ต</span><span class="chip">3 วัน</span><span class="chip">ครอบครัว</span></div></div>
+        <div class="wb" data-n="2"><div class="wb img" style="min-height:60px;margin:-2px 0 6px">รูปปกทริป</div>
+          <span class="t">ภูเก็ต 3 วัน ฉบับพาพ่อแม่</span>@ploy · 14 ที่ · ♡ 128 · ก๊อป 42
+        </div>
+        <div class="wb" data-n="3"><span class="t">เชียงใหม่ 4 วัน สายคาเฟ่</span>@nut · 18 ที่ · ♡ 96</div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">ทริปที่คนก๊อปเยอะสุดสัปดาห์นี้</div>
+        <div class="wb ghost" data-n="5">แชร์ทริปของคุณบ้าง →</div>
+      </div>
+      <div class="tabs"><div>หน้าแรก</div><div class="on">สำรวจ</div><div>ทริป</div><div>บันทึก</div><div>ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">F1</span>ฟีดทริปชุมชน</h4>
+      <div class="io"><span>เข้าจาก: <b>C1</b> / <b>B1</b></span><span>ออกไป: <b>E2</b> / <b>F2</b> / <b>F3</b></span></div>
+      <p class="purpose">อยู่ใต้แท็บสำรวจ ไม่ใช่แท็บของตัวเอง เพราะเป็นวิธีหาไอเดีย ไม่ใช่โซเชียลที่ต้องเข้ามาทุกวัน</p>
+      <ol class="ann">
+        <li><b>ตัวกรอง</b> — จังหวัด จำนวนวัน และรูปแบบการเดินทาง (ตรงกับคำถามใน A4)</li>
+        <li><b>การ์ดทริป</b> — รูปปก ชื่อ เจ้าของ จำนวนที่ และตัวเลขที่มีความหมายจริง คือยอดก๊อป ไม่ใช่ยอดวิว</li>
+        <li><b>รายการต่อไป</b> — เลื่อนไม่รู้จบแบบมีที่สิ้นสุด (โหลดทีละ 20)</li>
+        <li><b>การจัดอันดับ</b> — เรียงจากยอดก๊อปเป็นหลัก เพราะวัดว่าทริปนั้นใช้ได้จริง</li>
+        <li><b>ชวนให้แชร์</b> — ทางเข้า F3 สำหรับคนที่มีทริปที่ไปมาแล้ว</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>↗</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1" style="text-align:center"><div class="sq rnd" style="width:44px;height:44px;margin:0 auto 6px"></div><span class="t">@ploy</span>ชอบทะเลกับของกิน · ภูเก็ต</div>
+        <div class="wb" data-n="2"><div class="row3"><div class="wb flat" style="text-align:center">ทริป<br>6</div><div class="wb flat" style="text-align:center">ถูกก๊อป<br>84</div><div class="wb flat" style="text-align:center">ที่แนะนำ<br>31</div></div></div>
+        <div class="wb" data-n="3"><span class="t">ทริปที่เผยแพร่</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w45"></div></div></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="font-size:9.5px;text-align:center">รายงานผู้ใช้นี้</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">F2</span>โปรไฟล์สาธารณะ</h4>
+      <div class="io"><span>เข้าจาก: <b>F1</b> / <b>E2</b></span><span>ออกไป: <b>E2</b> / <b>F4</b></span></div>
+      <p class="purpose">น้อยที่สุดเท่าที่จำเป็น — พอให้รู้ว่าคนแนะนำทริปนี้เป็นใคร ไม่ต้องมีระบบติดตาม/ไลก์เต็มรูปแบบ</p>
+      <ol class="ann">
+        <li><b>ชื่อและคำแนะนำตัว</b> — รูปกับ handle เท่านั้น ไม่บังคับชื่อจริง</li>
+        <li><b>ตัวเลขที่แสดง</b> — เลือกเฉพาะที่บ่งบอกความน่าเชื่อถือ ไม่ใช่ยอดผู้ติดตาม</li>
+        <li><b>ทริปที่เผยแพร่</b> — เห็นเฉพาะที่ตั้งเป็นสาธารณะ ทริปลิงก์และส่วนตัวต้องไม่โผล่</li>
+        <li><b>รายงาน</b> — มีในทุกหน้าโปรไฟล์</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>← ก่อนเผยแพร่</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">ตรวจก่อนเผยแพร่</span>3 อย่างที่ควรดู</div>
+        <div class="wb" data-n="2"><span class="t">⚠ โน้ตส่วนตัว 4 บรรทัด</span>"หมายเลขจองโรงแรม 88213…"<div class="chips"><span class="chip on">ซ่อนทั้งหมด</span><span class="chip">ดูทีละอัน</span></div></div>
+        <div class="wb" data-n="3"><span class="t">รูปที่คุณอัปเอง 6 ใบ</span>ยืนยันว่าเป็นรูปที่คุณถ่ายเอง</div>
+        <div class="wb" data-n="4"><span class="t">รูปปก + คำอธิบาย</span>เขียนสั้น ๆ ว่าทริปนี้เหมาะกับใคร</div>
+        <div class="wb" data-n="5"><div class="chips"><span class="chip on">ภูเก็ต</span><span class="chip on">3 วัน</span><span class="chip on">ครอบครัว</span></div></div>
+        <div class="wb cta" data-n="6">เผยแพร่</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">F3</span>เผยแพร่ทริป</h4>
+      <div class="io"><span>เข้าจาก: <b>E1</b> / <b>B3</b> (จบทริป)</span><span>ออกไป: <b>F1</b></span></div>
+      <p class="purpose">ขั้นกันพลาดที่จำเป็น — ทริปส่วนตัวมักมีเลขที่จอง เบอร์โทร ชื่อคนในครอบครัว ปนอยู่ในโน้ต</p>
+      <ol class="ann">
+        <li><b>บอกว่ามีอะไรให้ตรวจบ้าง</b> — ไม่ใช่หน้ายืนยันเปล่า ๆ</li>
+        <li><b>ตรวจโน้ตส่วนตัว</b> — ระบบไฮไลต์บรรทัดที่มีตัวเลขยาว/เบอร์โทร/อีเมล แล้วให้เลือกซ่อน</li>
+        <li><b>ยืนยันสิทธิ์รูป</b> — จำเป็นทางกฎหมายเมื่อรูปจะไปอยู่หน้าสาธารณะ</li>
+        <li><b>ปกและคำอธิบาย</b> — สิ่งเดียวที่คนในฟีดเห็นก่อนกด</li>
+        <li><b>ป้ายกำกับ</b> — ใช้กรองในฟีด เติมให้อัตโนมัติจากข้อมูลทริป แก้ได้</li>
+        <li><b>เผยแพร่</b> — บอกด้วยว่าเอาออกได้ตลอดเวลา</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">รายงานเนื้อหานี้</span></div>
+          <div class="wb" data-n="2" style="margin-top:6px">ข้อมูลผิด / สถานที่ปิดแล้ว</div>
+          <div class="wb" style="margin-top:6px">สแปมหรือโฆษณา</div>
+          <div class="wb" style="margin-top:6px">รูปไม่ใช่ของผู้โพสต์</div>
+          <div class="wb" style="margin-top:6px">เนื้อหาไม่เหมาะสม</div>
+          <div class="wb" data-n="3" style="margin-top:7px">อธิบายเพิ่ม (ไม่บังคับ)</div>
+          <div class="wb ghost" data-n="4" style="margin-top:7px;font-size:9.8px">ซ่อนทริปของ @ploy ทั้งหมดจากฟีดของฉัน</div>
+          <div class="wb cta" data-n="5" style="margin-top:8px">ส่งรายงาน</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">F4</span>รายงาน &amp; ซ่อน</h4>
+      <div class="io"><span>เข้าจาก: <b>E2</b> / <b>F1</b> / <b>F2</b> / <b>C5</b></span><span>ออกไป: <b>กลับหน้าเดิม</b></span></div>
+      <p class="purpose">ต้องมีตั้งแต่วันแรกที่เปิดฟีด ไม่ใช่ค่อยเติมเมื่อมีปัญหา</p>
+      <ol class="ann">
+        <li><b>เหตุผลแบบเลือก</b> — จัดคิวตรวจได้ง่ายกว่าให้พิมพ์อิสระอย่างเดียว</li>
+        <li><b>เหตุผลที่ตรงกับแอปนี้จริง ๆ</b> — "สถานที่ปิดแล้ว" คือรายงานที่จะเจอบ่อยที่สุด และเป็นข้อมูลที่มีค่าที่สุด</li>
+        <li><b>คำอธิบายเพิ่ม</b> — ไม่บังคับ</li>
+        <li><b>ซ่อนเองได้ทันที</b> — ผู้ใช้ไม่ต้องรอผลการตรวจ</li>
+        <li><b>ส่ง</b> — ตอบกลับว่าได้รับแล้วและจะแจ้งผล ไม่ปล่อยเงียบ</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ============ G ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">G</span><h3>บัญชีผู้ใช้</h3><span class="cnt">4 หน้า</span></div>
+  <p class="grp-note">ทั้งกลุ่มนี้ต้องรู้สึกเหมือน "ขั้นตอนเสริม" ไม่ใช่ประตูทางเข้า — ผู้ใช้ต้องมีของในมือก่อนถึงจะเจอหน้าพวกนี้</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">สมัครเพื่อแชร์ทริปนี้</span></div>
+          <div class="wb ghost" data-n="2" style="margin-top:6px;font-size:10px">ลิงก์แชร์ต้องผูกกับบัญชี ไม่งั้นลิงก์จะตายเมื่อล้างข้อมูลเบราว์เซอร์</div>
+          <div class="wb" data-n="3" style="margin-top:7px"><span class="t">สมัครแล้วได้เพิ่ม</span>· ใช้ข้ามเครื่อง<br>· ชวนเพื่อนร่วมแก้<br>· ทริปไม่หายเมื่อล้างแคช</div>
+          <div class="wb cta" data-n="4" style="margin-top:8px">สมัคร (30 วินาที)</div>
+          <div class="wb ghost" data-n="5" style="margin-top:7px;text-align:center">ไว้ก่อน · ใช้แบบไม่สมัครต่อ</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">G1</span>จุดชวนสมัคร</h4>
+      <div class="io"><span>เข้าจาก: <b>E1</b> / <b>ฉัน</b> / <b>บันทึกข้ามเครื่อง</b></span><span>ออกไป: <b>G2</b> / <b>กลับหน้าเดิม</b></span></div>
+      <p class="purpose">โผล่เฉพาะตอนผู้ใช้ชนกำแพงจริง ๆ เท่านั้น ห้ามเด้งเองตามเวลาหรือตามจำนวนครั้งที่เปิดแอป</p>
+      <ol class="ann">
+        <li><b>บอกเหตุผลเฉพาะหน้า</b> — ข้อความเปลี่ยนตามสิ่งที่ผู้ใช้เพิ่งพยายามทำ ไม่ใช่ข้อความกลาง ๆ</li>
+        <li><b>อธิบายว่าทำไมต้องสมัคร</b> — เหตุผลเชิงเทคนิคที่จริงและตรวจสอบได้</li>
+        <li><b>บอกสิ่งที่ได้</b> — 3 ข้อ ทั้งหมดเป็นเรื่องที่ guest ทำไม่ได้จริง ๆ</li>
+        <li><b>ปุ่มสมัคร</b> — บอกเวลาที่ใช้ ลดความรู้สึกว่าจะโดนถามยาว</li>
+        <li><b>ปฏิเสธได้แบบไม่เสียอะไร</b> — กดแล้วกลับไปทำสิ่งเดิมต่อได้ ยกเว้นสิ่งที่ต้องมีบัญชีจริง ๆ</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>← ปิด</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">สมัคร Tripster</span></div>
+        <div class="wb" data-n="2">ดำเนินการต่อด้วย Google</div>
+        <div class="wb">ดำเนินการต่อด้วย Apple</div>
+        <div class="wb ghost" data-n="3" style="text-align:center;font-size:9.5px">— หรือ —</div>
+        <div class="wb" data-n="4">อีเมล</div>
+        <div class="wb ghost" data-n="5" style="font-size:9.8px">ส่งลิงก์เข้าอีเมล ไม่ต้องตั้งรหัสผ่าน</div>
+        <div class="wb cta" data-n="6">ส่งลิงก์เข้าสู่ระบบ</div>
+        <div class="wb ghost" data-n="7" style="font-size:9px;text-align:center;border:0">การสมัครถือว่ายอมรับเงื่อนไขการใช้งานและนโยบายความเป็นส่วนตัว</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">G2</span>สมัคร / เข้าสู่ระบบ</h4>
+      <div class="io"><span>เข้าจาก: <b>G1</b> / <b>A2</b> / <b>E3</b> (คำเชิญ)</span><span>ออกไป: <b>G3</b></span></div>
+      <p class="purpose">หน้าเดียวทำทั้งสมัครและเข้าสู่ระบบ ระบบดูจากอีเมลเองว่ามีบัญชีอยู่แล้วหรือไม่ ไม่ต้องให้ผู้ใช้เลือก</p>
+      <ol class="ann">
+        <li><b>หัวข้อ</b> — ไม่แยกแท็บสมัคร/เข้าสู่ระบบ ลดการตัดสินใจที่ไม่จำเป็น</li>
+        <li><b>ปุ่ม OAuth ก่อน</b> — เร็วที่สุดและไม่ต้องจำรหัสผ่าน</li>
+        <li><b>ตัวคั่น</b> — ชัดเจนว่ามีทางเลือกอื่น</li>
+        <li><b>อีเมล</b> — ช่องเดียว</li>
+        <li><b>ไม่มีรหัสผ่าน</b> — magic link ตัดปัญหาลืมรหัสและหน้ารีเซ็ตทั้งชุด</li>
+        <li><b>ปุ่มส่ง</b> — หลังส่งต้องมีหน้ารอที่บอกว่าให้ไปเช็คอีเมลไหน และกดส่งซ้ำได้หลัง 60 วินาที</li>
+        <li><b>เงื่อนไข</b> — ลิงก์เปิดอ่านได้จริง ไม่ใช่ข้อความประดับ</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>เกือบเสร็จ</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><span class="t">ย้ายข้อมูลในเครื่องเข้าบัญชี</span>เจอ 2 ทริป · 6 ที่ปักหมุด</div>
+        <div class="wb" data-n="2"><div class="lst"><div class="chip on">✓</div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+          <div class="lst"><div class="chip on">✓</div><div class="col"><div class="ln w60"></div><div class="ln w45"></div></div></div>
+        </div>
+        <div class="wb" data-n="3" style="border-color:var(--gold)"><span class="t">⚠ ชื่อซ้ำกับทริปในบัญชี</span>"เที่ยวภูเก็ต พ.ย. 68"
+          <div class="chips"><span class="chip on">เก็บทั้งสองอัน</span><span class="chip">ใช้อันในเครื่อง</span><span class="chip">ใช้อันในบัญชี</span></div>
+        </div>
+        <div class="wb ghost" data-n="4" style="font-size:9.8px">รูปที่อัปเองจะถูกอัปขึ้นคลาวด์ · ใช้เน็ตราว 4 MB</div>
+        <div class="wb cta" data-n="5">ย้ายข้อมูล</div>
+        <div class="wb ghost" data-n="6" style="text-align:center;font-size:9.5px">ไม่ย้าย เริ่มบัญชีใหม่เปล่า ๆ</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">G3</span>ย้ายข้อมูล guest เข้าบัญชี</h4>
+      <div class="io"><span>เข้าจาก: <b>G2</b></span><span>ออกไป: <b>หน้าที่ค้างไว้ก่อนสมัคร</b></span></div>
+      <p class="purpose">หน้าที่พังง่ายที่สุดและคนทำมักข้าม — ถ้าทำพลาด ผู้ใช้จะเสียทริปที่นั่งจัดมาทั้งคืน</p>
+      <ol class="ann">
+        <li><b>บอกว่าเจออะไรบ้าง</b> — นับจำนวนจริงจาก localStorage ก่อนถาม</li>
+        <li><b>เลือกได้ทีละรายการ</b> — ไม่ใช่ปุ่มย้ายทั้งหมดปุ่มเดียว</li>
+        <li><b>จัดการชื่อซ้ำ</b> — ค่าเริ่มต้นคือเก็บทั้งสองอัน ปลอดภัยที่สุด ห้ามเขียนทับเงียบ ๆ เด็ดขาด</li>
+        <li><b>บอกผลข้างเคียง</b> — รูปที่เคยเก็บ base64 ต้องอัปขึ้นคลาวด์ บอกขนาดเน็ตที่จะใช้ก่อน</li>
+        <li><b>ย้าย</b> — ระหว่างย้ายห้ามลบของในเครื่องจนกว่าจะยืนยันว่าขึ้นครบ</li>
+        <li><b>ไม่ย้ายก็ได้</b> — ข้อมูลในเครื่องยังอยู่ กลับมาย้ายทีหลังได้จากหน้า G4</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><div class="lst"><div class="sq rnd" style="width:36px;height:36px"></div><div class="col"><span class="t">@ploy</span><div class="ln w45"></div></div></div></div>
+        <div class="wb" data-n="2"><span class="t">โปรไฟล์สาธารณะ</span>แก้ชื่อ รูป คำแนะนำตัว</div>
+        <div class="wb" data-n="3"><span class="t">การแจ้งเตือน</span>เตือนเข้าใกล้ · คนแก้ทริป · คำเชิญ</div>
+        <div class="wb" data-n="4"><span class="t">ออฟไลน์และพื้นที่</span>ดาวน์โหลดทริปไว้ใช้ตอนไม่มีเน็ต · ใช้ไป 12 MB</div>
+        <div class="wb" data-n="5"><span class="t">ธีม</span><div class="chips"><span class="chip">สว่าง</span><span class="chip">มืด</span><span class="chip on">ตามระบบ</span></div></div>
+        <div class="wb ghost" data-n="6" style="font-size:9.8px">ส่งออกข้อมูลทั้งหมด · ลบบัญชี</div>
+      </div>
+      <div class="tabs"><div>หน้าแรก</div><div>สำรวจ</div><div>ทริป</div><div>บันทึก</div><div class="on">ฉัน</div></div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">G4</span>ฉัน &amp; ตั้งค่า</h4>
+      <div class="io"><span>เข้าจาก: <b>แท็บฉัน</b></span><span>ออกไป: <b>F2</b> / <b>H2</b> / <b>G1</b> (ถ้ายัง guest)</span></div>
+      <p class="purpose">รวมทุกอย่างที่ v1 กระจายอยู่ตามมุมจอ (ปุ่มธีม พื้นที่ที่ใช้ไป) ไว้ที่เดียว</p>
+      <ol class="ann">
+        <li><b>หัวโปรไฟล์</b> — ถ้ายังเป็น guest ตรงนี้จะเป็นการ์ด "สมัครเพื่อไม่ให้ข้อมูลหาย" แทน</li>
+        <li><b>โปรไฟล์สาธารณะ</b> — สิ่งที่คนอื่นเห็นใน F2</li>
+        <li><b>การแจ้งเตือน</b> — ทางเข้า H2</li>
+        <li><b>ออฟไลน์และพื้นที่</b> — ต่อยอด <code>storageUsed()</code> เดิม เพิ่มการเลือกดาวน์โหลดทริปไว้ล่วงหน้า</li>
+        <li><b>ธีม</b> — 3 ตัวเลือกเหมือน v1 (มี data-theme override)</li>
+        <li><b>ข้อมูลของฉัน</b> — ส่งออกเป็น JSON และลบบัญชี ต้องมีเพราะเก็บข้อมูลผู้ใช้แล้ว</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ============ H ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">H</span><h3>แจ้งเตือน</h3><span class="cnt">3 หน้า</span></div>
+  <p class="grp-note">v1.02 ย้ายการเตือนไปเป็นแท็บของตัวเองแล้ว (commit <code>0d6c259</code>) เวอร์ชันนี้ย้ายเป็นกระดิ่งบนหัว เพื่อคืนช่องแท็บให้ "บันทึกไว้" และรวมการแจ้งเตือนเรื่องคนกับเรื่องสถานที่เข้าด้วยกัน</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>← แจ้งเตือน</span></div>
+      <div class="ph-scr">
+        <div class="wb flat" data-n="1"><div class="chips"><span class="chip on">ทั้งหมด</span><span class="chip">ทริป</span><span class="chip">ใกล้ฉัน</span></div></div>
+        <div class="wb" data-n="2"><span class="t">👥 ปอ แก้ Day 2 ของ "เที่ยวภูเก็ต"</span>เพิ่มหาดในหาน · 12 นาทีที่แล้ว</div>
+        <div class="wb" data-n="3"><span class="t">📍 คุณอยู่ใกล้ ติ่มซำ ก. โกปี๊</span>280 ม. · อยู่ใน Day 1 ของคุณ · 14:02</div>
+        <div class="wb" data-n="4"><span class="t">✉️ นุ่น เชิญคุณร่วมแก้ "เชียงใหม่ปีใหม่"</span><div class="chips"><span class="chip on">เข้าร่วม</span><span class="chip">ปฏิเสธ</span></div></div>
+        <div class="wb" data-n="5" style="opacity:.7"><span class="t">⏰ พรุ่งนี้ออกเดินทาง</span>เช็ครายการของที่ต้องเตรียม</div>
+        <div class="wb ghost" data-n="6" style="font-size:9.5px;text-align:center">ล้างประวัติการเตือนวันนี้</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">H1</span>รายการแจ้งเตือน</h4>
+      <div class="io"><span>เข้าจาก: <b>กระดิ่งบนหัว</b></span><span>ออกไป: <b>C5</b> / <b>D3</b> / <b>E4</b></span></div>
+      <p class="purpose">รวม 4 ชนิดที่ต่างกันมากไว้ในลิสต์เดียว ต้องแยกด้วยไอคอนและตัวกรอง ไม่ใช่ปนกันเป็นก้อน</p>
+      <ol class="ann">
+        <li><b>ตัวกรองชนิด</b> — เรื่องคน (ทริป) กับเรื่องสถานที่ (ใกล้ฉัน) คนละจังหวะการอ่าน</li>
+        <li><b>คนแก้ทริป</b> — บอกว่าใคร แก้อะไร ในทริปไหน กดแล้วไปที่จุดนั้นตรง ๆ</li>
+        <li><b>เตือนเข้าใกล้</b> — บอกระยะจริงและบอกว่าที่นั้นอยู่ในแผนวันไหน (ข้อมูลที่ v1 ยังไม่ได้แสดง)</li>
+        <li><b>คำเชิญ</b> — ตอบรับได้จากในลิสต์เลย ไม่ต้องเปิดหน้าอื่น</li>
+        <li><b>เตือนตามเวลา</b> — ก่อนออกเดินทาง 1 วัน · ต้องปิดได้</li>
+        <li><b>ล้างประวัติ</b> — ของเดิมมีอยู่แล้ว เก็บไว้ (<code>geo.notified</code>)</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>← ตั้งค่า</span></div>
+      <div class="ph-scr">
+        <div class="wb" data-n="1"><span class="t">เตือนเมื่อเข้าใกล้ที่ในแผน</span>เปิด ⬤—</div>
+        <div class="wb" data-n="2"><span class="t">รัศมี</span><div class="chips"><span class="chip on">300 ม.</span><span class="chip">500 ม.</span><span class="chip">1 กม.</span></div></div>
+        <div class="wb flat" data-n="3" style="font-size:9.8px">รัศมีเล็กกว่า = เตือนตอนใกล้จริง · ที่ 1 กม. จะถูกเตือนตั้งแต่ยังห่างเกือบกิโล</div>
+        <div class="wb" data-n="4"><span class="t">สถานะ</span>กำลังติดตามตำแหน่ง · แม่นยำ ±18 ม. · เตือนไปแล้ววันนี้ 3 ที่</div>
+        <div class="wb" data-n="5" style="border-color:var(--gold)"><span class="t">⚠ ทำงานเฉพาะตอนเปิดแอปค้างไว้</span>เว็บติดตามตำแหน่งตอนปิดแอปไม่ได้</div>
+        <div class="wb" data-n="6" style="border-color:var(--gold)"><span class="t">iPhone ต้องเพิ่มลงหน้าจอโฮมก่อน</span>ถึงจะเด้งแจ้งเตือนได้ (iOS 16.4+)</div>
+        <div class="wb ghost" data-n="7"><span class="t">เตือนอื่น ๆ</span>คนแก้ทริป · คำเชิญ · ก่อนออกเดินทาง</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">H2</span>ตั้งค่าการเตือน</h4>
+      <div class="io"><span>เข้าจาก: <b>G4</b> / <b>B3</b> / <b>H1</b></span><span>ออกไป: <b>I1</b> (ถ้ายังไม่ให้สิทธิ์)</span></div>
+      <p class="purpose">ยกมาจาก v1.02 เกือบทั้งหมดเพราะออกแบบไว้ตรงแล้ว จุดที่เพิ่มคือเพดานการเตือนต่อวัน</p>
+      <ol class="ann">
+        <li><b>สวิตช์หลัก</b> — ปิดเป็นค่าเริ่มต้นเสมอ</li>
+        <li><b>รัศมี</b> — 3 ค่าเหมือนเดิม (<code>GEO_RADII</code>)</li>
+        <li><b>อธิบายว่าทำไมรัศมีเล็กดีกว่า</b> — เป็นเรื่องที่คนเดาเองไม่ถูก เพราะการเตือนเกิดตอนข้ามขอบเข้ามาเสมอ</li>
+        <li><b>สถานะสด</b> — ของเดิมมีแล้ว เก็บไว้ทั้งบรรทัด</li>
+        <li><b>ข้อจำกัดเบราว์เซอร์</b> — พูดตรง ๆ ในหน้าตั้งค่า ไม่ซ่อนใน FAQ</li>
+        <li><b>เงื่อนไข iOS</b> — พร้อมปุ่มสอนวิธี Add to Home Screen</li>
+        <li><b>เตือนชนิดอื่น</b> — แยกสวิตช์ เพราะคนอาจอยากได้แค่เรื่องทริป</li>
+      </ol>
+      <div class="gate"><b>เพิ่มจาก v1</b> ยืนนิ่งในเมืองเก่าที่มี 17 ที่ในรัศมี 300 ม. จะถูกไล่เตือนทีละที่ทุก 5 นาทีจนครบราว 85 นาที — ต้องมีเพดาน เช่น ไม่เกิน 6 ครั้งต่อชั่วโมง และรวมที่ที่อยู่ใกล้กันเป็นการ์ดเดียว ("มี 4 ที่ในแผนอยู่รอบตัวคุณ")</div>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>14:02</span><span>Tripster</span></div>
+      <div class="ph-scr short">
+        <div class="wb flat" data-n="1" style="border-radius:12px"><span class="t">📍 ใกล้ ติ่มซำ ก. โกปี๊ · 280 ม.</span>อยู่ใน Day 1 เวลา 12:15 ของคุณ
+          <div class="chips"><span class="chip on">นำทาง</span><span class="chip">ดูรายละเอียด</span><span class="chip">ไม่เตือนที่นี่อีก</span></div>
+        </div>
+        <div class="wb grow ghost" data-n="2" style="border:0;display:grid;place-items:center;font-size:9.5px">หน้าจอเดิมยังอยู่ข้างหลัง<br>การ์ดหายเองใน 8 วินาที</div>
+        <div class="ovl">
+          <div class="ovl-cap">— แบบเป็น push นอกแอป —</div>
+          <div class="wb" data-n="3" style="border-radius:12px"><span class="t">Tripster · เดี๋ยวนี้</span>ใกล้ ติ่มซำ ก. โกปี๊ 280 ม. — อยู่ในแผน Day 1 ของคุณ</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">H3</span>การ์ดเตือนเข้าใกล้</h4>
+      <div class="io"><span>เข้าจาก: <b>ระบบตรวจพบเอง</b></span><span>ออกไป: <b>C5</b> / <b>Google Maps</b></span></div>
+      <p class="purpose">จุดที่ฟีเจอร์นี้พิสูจน์ตัวเองหรือกลายเป็นความรำคาญ อยู่ที่การ์ดใบเดียวนี้</p>
+      <ol class="ann">
+        <li><b>การ์ดในแอป</b> — บอกระยะจริง + บอกว่าที่นี่อยู่ในแผนวันไหนเวลาไหน · ปุ่ม "ไม่เตือนที่นี่อีก" สำคัญมาก เพราะบางที่เราผ่านทุกวัน</li>
+        <li><b>ไม่ขวางการใช้งาน</b> — เป็นการ์ดลอย ไม่ใช่ dialog ที่ต้องกดปิด หายเองได้</li>
+        <li><b>แบบ push</b> — ข้อความต้องอ่านจบได้ในบรรทัดเดียวบนหน้าจอล็อก กดแล้วเข้า C5 ของที่นั้นโดยตรง</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ============ I ============ -->
+<div class="grp">
+  <div class="grp-head"><span class="grp-badge">I</span><h3>สถานะระบบ</h3><span class="cnt">4 หน้า</span></div>
+  <p class="grp-note">หน้าที่มักถูกลืมตอนออกแบบแล้วไปโผล่ตอนทดสอบ · ทุกหน้าในกลุ่มนี้ใช้ซ้ำได้ทั่วทั้งแอป</p>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr short">
+        <div class="wb grow ghost" style="border:0"></div>
+        <div class="ovl-cap">— แผงเลื่อนขึ้นจากด้านล่าง —</div>
+        <div class="wb flat" style="border-radius:14px 14px 0 0;padding-top:6px">
+          <div class="sheet-lip"></div>
+          <div class="wb flat" data-n="1" style="border:0;padding:4px 0 4px 13px"><span class="t">ขอใช้ตำแหน่งของคุณ</span></div>
+          <div class="wb" data-n="2" style="margin-top:6px">เพื่อเตือนเมื่อคุณอยู่ใกล้ที่ที่อยู่ในแผน และคำนวณระยะจากจุดที่คุณอยู่</div>
+          <div class="wb ghost" data-n="3" style="margin-top:7px;font-size:9.8px">ตำแหน่งอยู่ในเครื่องคุณเท่านั้น ไม่ส่งขึ้นเซิร์ฟเวอร์</div>
+          <div class="wb cta" data-n="4" style="margin-top:8px">อนุญาต</div>
+          <div class="wb ghost" data-n="5" style="margin-top:7px;text-align:center">ไม่ใช่ตอนนี้</div>
+          <div class="wb ghost" data-n="6" style="margin-top:6px;font-size:9px;text-align:center;border:0">ถ้าเคยปฏิเสธไว้ ต้องเปิดจากตั้งค่าเบราว์เซอร์ · ดูวิธี</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">I1</span>ขอสิทธิ์</h4>
+      <div class="io"><span>เข้าจาก: <b>H2</b> / <b>C1</b> / <b>C6</b></span><span>ออกไป: <b>dialog ของระบบ</b></span></div>
+      <p class="purpose">อธิบายก่อนขอเสมอ เพราะเบราว์เซอร์ให้โอกาสถามครั้งเดียว ถ้าโดนปฏิเสธแล้วต้องไปแก้ในตั้งค่าซึ่งคนส่วนใหญ่ไม่ทำ</p>
+      <ol class="ann">
+        <li><b>หัวข้อบอกว่าจะขออะไร</b></li>
+        <li><b>บอกประโยชน์ที่จับต้องได้</b> — ผูกกับสิ่งที่ผู้ใช้เพิ่งพยายามทำ</li>
+        <li><b>บอกเรื่องความเป็นส่วนตัว</b> — สำหรับเตือนเข้าใกล้ พิกัดคำนวณในเครื่องได้จริง ต้องเขียนให้ตรงกับที่ทำจริงเท่านั้น</li>
+        <li><b>ปุ่มอนุญาต</b> — กดแล้วค่อยเรียก dialog ของระบบ</li>
+        <li><b>ปฏิเสธได้</b> — ฟีเจอร์อื่นต้องยังใช้ได้ปกติ</li>
+        <li><b>ทางแก้เมื่อเคยปฏิเสธ</b> — สอนวิธีเปิดในเบราว์เซอร์นั้น ๆ</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span>⚡ ออฟไลน์</span></div>
+      <div class="ph-scr">
+        <div class="wb" data-n="1" style="border-color:var(--gold)"><span class="t">ไม่มีอินเทอร์เน็ต</span>ยังใช้แผนที่ดาวน์โหลดไว้ได้</div>
+        <div class="wb" data-n="2"><span class="t">เที่ยวภูเก็ต พ.ย. 68 · Day 2</span>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>
+          <div class="lst"><div class="sq"></div><div class="col"><div class="ln w60"></div><div class="ln w45"></div></div></div>
+        </div>
+        <div class="wb ghost" data-n="3" style="font-size:9.8px">รูปบางส่วนยังไม่ได้ดาวน์โหลด</div>
+        <div class="wb" data-n="4" style="opacity:.55"><span class="t">ค้นหาที่ใหม่ · ใช้ไม่ได้ตอนออฟไลน์</span></div>
+        <div class="wb flat" data-n="5"><span class="t">แก้ไว้ 2 อย่าง</span>จะซิงก์ให้อัตโนมัติเมื่อกลับมาออนไลน์</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">I2</span>ออฟไลน์</h4>
+      <div class="io"><span>เข้าจาก: <b>เน็ตหลุด</b></span><span>ออกไป: <b>กลับสู่ปกติเมื่อออนไลน์</b></span></div>
+      <p class="purpose">สำคัญกว่าที่คิด เพราะเวลาใช้จริงคือตอนอยู่ต่างจังหวัด สัญญาณไม่ดี · v1 ทำงานออฟไลน์ได้อยู่แล้วเพราะเป็นไฟล์เดียว ต้องไม่ทำให้แย่ลงตอนย้ายไปคลาวด์</p>
+      <ol class="ann">
+        <li><b>แถบสถานะ</b> — บอกว่าออฟไลน์ แต่บอกด้วยว่าอะไรยังใช้ได้ ไม่ใช่หน้าจอผิดพลาด</li>
+        <li><b>แผนที่ดาวน์โหลดไว้ยังอ่านได้เต็มรูปแบบ</b> — ทริปที่กำลังจะถึงต้องถูกดึงมาเก็บล่วงหน้าอัตโนมัติ</li>
+        <li><b>บอกสิ่งที่ขาด</b> — รูปที่ยังไม่แคช แสดงเป็นพื้นสีหมวด + ไอคอนเหมือนที่ v1 ทำอยู่</li>
+        <li><b>ปิดสิ่งที่ทำไม่ได้</b> — จางลงพร้อมเหตุผล ไม่ใช่กดแล้วค้าง</li>
+        <li><b>คิวการแก้</b> — บอกว่ามีอะไรรอซิงก์ และซิงก์เองเมื่อกลับมา</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb" data-n="1" style="min-height:74px;background:var(--wire-fill);border-style:dashed"></div>
+        <div class="wb" data-n="2"><div class="ln w60"></div><div class="ln w80"></div></div>
+        <div class="wb"><div class="ln w45"></div><div class="ln w80"></div></div>
+        <div class="wb"><div class="ln w60"></div><div class="ln w30"></div></div>
+        <div class="wb ghost" data-n="3" style="text-align:center;font-size:9.5px">โครงหน้าเหมือนของจริง · ไม่มีตัวหมุนกลางจอ</div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">I3</span>กำลังโหลด</h4>
+      <div class="io"><span>เข้าจาก: <b>ทุกหน้าที่ดึงข้อมูล</b></span><span>ออกไป: <b>เนื้อหาจริง</b></span></div>
+      <p class="purpose">v1 ไม่ต้องมีเพราะข้อมูลอยู่ในไฟล์แล้ว พอย้ายขึ้นคลาวด์ทุกหน้าจะมีช่วงรอ ต้องออกแบบไว้ตั้งแต่ต้น</p>
+      <ol class="ann">
+        <li><b>โครงร่างตรงตำแหน่งจริง</b> — กล่องรูปอยู่ที่เดิม บรรทัดข้อความยาวใกล้เคียงของจริง เพื่อไม่ให้เนื้อหากระโดดตอนโหลดเสร็จ</li>
+        <li><b>ไล่ระดับความสว่างช้า ๆ</b> — ปิดทั้งหมดเมื่อผู้ใช้ตั้งค่า <code>prefers-reduced-motion</code></li>
+        <li><b>ไม่ใช้ตัวหมุนกลางจอ</b> — ยกเว้นการกระทำที่ผู้ใช้กดเอง เช่น กดบันทึก ซึ่งใช้ตัวหมุนในปุ่มนั้น</li>
+      </ol>
+      <div class="gate"><b>เกณฑ์</b> ถ้าข้อมูลมาถึงภายใน 300 มิลลิวินาที อย่าแสดง skeleton เลย เพราะการกะพริบแย่กว่าการรอสั้น ๆ</div>
+    </div>
+  </div>
+
+  <div class="scr">
+    <div><div class="ph">
+      <div class="ph-st"><span>9:41</span><span></span></div>
+      <div class="ph-scr">
+        <div class="wb" data-n="1" style="border-color:var(--danger)"><span class="t">โหลดทริปไม่สำเร็จ</span>เชื่อมต่อเซิร์ฟเวอร์ไม่ได้
+          <div class="chips"><span class="chip on">ลองใหม่</span><span class="chip">ใช้ข้อมูลในเครื่อง</span></div>
+        </div>
+        <div class="ovl">
+          <div class="ovl-cap">— สถานะว่าง —</div>
+          <div class="wb flat" data-n="2" style="text-align:center;padding:14px 10px"><span class="t">ยังไม่มีที่บันทึกไว้</span>กดรูปหัวใจที่สถานที่ไหนก็ได้ เพื่อเก็บไว้ดูทีหลัง
+            <div class="chips" style="justify-content:center"><span class="chip on">ไปดูที่เที่ยว</span></div>
+          </div>
+        </div>
+        <div class="ovl">
+          <div class="ovl-cap">— แจ้งผลสั้น ๆ —</div>
+          <div class="wb" data-n="3" style="border-radius:20px;text-align:center">เพิ่ม 3 ที่เข้า Day 1 แล้ว · เลิกทำ</div>
+        </div>
+      </div>
+    </div></div>
+    <div class="scr-info">
+      <h4><span class="sid-badge">I4</span>ข้อผิดพลาด · ว่างเปล่า · แจ้งผล</h4>
+      <div class="io"><span>เข้าจาก: <b>ทั่วแอป</b></span><span>ออกไป: <b>ตามปุ่มในแต่ละแบบ</b></span></div>
+      <p class="purpose">สามแบบที่ใช้ซ้ำทั้งแอป ต้องกำหนดรูปแบบเดียวแล้วใช้ทุกที่ ไม่ให้แต่ละหน้าเขียนเอง</p>
+      <ol class="ann">
+        <li><b>ข้อผิดพลาด</b> — บอกว่าเกิดอะไรและทำอะไรต่อได้ ห้ามขึ้นรหัสข้อผิดพลาดอย่างเดียว · ต้องมีทางถอยเสมอ เช่น ใช้ข้อมูลในเครื่องไปก่อน</li>
+        <li><b>สถานะว่าง</b> — บอกวิธีทำให้ไม่ว่าง พร้อมปุ่มพาไปทำ ไม่ใช่แค่บอกว่าไม่มีข้อมูล</li>
+        <li><b>แจ้งผล (toast)</b> — ต่อยอด <code>toast()</code> เดิม เพิ่ม "เลิกทำ" ในทุกการกระทำที่ทำลายของ (ลบจุด ลบวัน ลบทริป) แทนการถามยืนยันซ้ำ ๆ</li>
+      </ol>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="sec">
+  <div class="sec-head"><span class="sec-num">03</span><h2>สรุปลง UI</h2></div>
+  <p class="sec-sub">wireframe บอกว่าอะไรอยู่ตรงไหน ส่วนนี้บอกว่าหน้าตาจริงเป็นยังไง — ยึดระบบสี/ฟอนต์ที่ v1.01 วางไว้แล้วเพราะมาจากโลโก้จริงและผ่านการตรวจคอนทราสต์มาแล้ว เพิ่มเฉพาะสิ่งที่ของใหม่ต้องใช้</p>
+  <hr class="rule">
+
+  <h3 class="blk">3.1 สี</h3>
+  <p class="note">แกนหลักมาจากโลโก้ Tripster — navy เป็นตัวอักษร ส้มเป็นหมุด เทอร์ควอยซ์เป็นเส้นใต้ ทองเป็นแฉกอาทิตย์ · <b>ค่าในวงเล็บคือค่าโหมดมืด</b></p>
+  <div class="swatches">
+    <div class="sw"><div class="chipbox" style="background:#16305C"></div><div class="meta"><b>ink</b>#16305C (#E8EFFA)</div></div>
+    <div class="sw"><div class="chipbox" style="background:#D95A0F"></div><div class="meta"><b>accent-strong</b>#D95A0F (#E2701F)<br>พื้นปุ่ม · ขาวบนสีนี้ผ่าน AA</div></div>
+    <div class="sw"><div class="chipbox" style="background:#F5822C"></div><div class="meta"><b>accent</b>#F5822C (#FF9A4D)<br>ไอคอน · เส้นโฟกัส</div></div>
+    <div class="sw"><div class="chipbox" style="background:#1195AC"></div><div class="meta"><b>teal</b>#1195AC (#3BC2D8)<br>ลิงก์ · ข้อมูลรอง</div></div>
+    <div class="sw"><div class="chipbox" style="background:#E9950C"></div><div class="meta"><b>gold</b>#E9950C (#FBBF24)<br>ดาว · คำเตือน</div></div>
+    <div class="sw"><div class="chipbox" style="background:#C0392B"></div><div class="meta"><b>danger</b>#C0392B (#F0776A)<br>ลบ · ผิดพลาด</div></div>
+    <div class="sw"><div class="chipbox" style="background:#F7FAFD;border-bottom:1px solid #E2EAF3"></div><div class="meta"><b>app</b>#F7FAFD (#0B1220)</div></div>
+    <div class="sw"><div class="chipbox" style="background:#E2EAF3"></div><div class="meta"><b>line</b>#E2EAF3 (#233149)</div></div>
+  </div>
+
+  <h4 class="blk">สีหมวด — ใช้กับไอคอน หมุดบนแผนที่ และพื้นการ์ดตอนไม่มีรูป</h4>
+  <div class="swatches">
+    <div class="sw"><div class="chipbox" style="background:#D2571B"></div><div class="meta"><b>ติ่มซำ</b>#D2571B</div></div>
+    <div class="sw"><div class="chipbox" style="background:#B23F2C"></div><div class="meta"><b>ร้านอาหาร</b>#B23F2C</div></div>
+    <div class="sw"><div class="chipbox" style="background:#C4527C"></div><div class="meta"><b>ขนม</b>#C4527C</div></div>
+    <div class="sw"><div class="chipbox" style="background:#8F6230"></div><div class="meta"><b>คาเฟ่</b>#8F6230</div></div>
+    <div class="sw"><div class="chipbox" style="background:#2F6BA8"></div><div class="meta"><b>ที่เที่ยว</b>#2F6BA8</div></div>
+    <div class="sw"><div class="chipbox" style="background:#35A9C4"></div><div class="meta"><b>หาด</b>#35A9C4</div></div>
+    <div class="sw"><div class="chipbox" style="background:#0E7490"></div><div class="meta"><b>ทริปเกาะ</b>#0E7490</div></div>
+    <div class="sw"><div class="chipbox" style="background:#5B5FA8"></div><div class="meta"><b>ที่พัก</b>#5B5FA8</div></div>
+  </div>
+
+  <h4 class="blk">สีที่ต้องเพิ่มสำหรับของใหม่</h4>
+  <ul class="plain">
+    <li><b>สีประจำคนร่วมแก้</b> — 6 สีสำหรับ E3/E4 ต้องแยกจากสีหมวดและสีแนวให้ชัด เสนอเป็นชุดสีเย็นล้วน (คราม ม่วง เขียวมอส) เพราะสีหมวดจับโทนอุ่นไปเกือบหมดแล้ว</li>
+    <li><b>เขียวยืนยัน</b> — v1 ไม่มีสี success เลย ใช้ส้มแทนมาตลอด พอมีการซิงก์และการเผยแพร่ ต้องมีสีที่บอก "สำเร็จแล้ว" แยกจากสีแบรนด์</li>
+    <li><b>เทาสถานะปิดใช้งาน</b> — สำหรับ I2 ที่ต้องแสดงว่าปุ่มไหนใช้ไม่ได้ตอนออฟไลน์</li>
+  </ul>
+
+  <h3 class="blk">3.2 ตัวอักษร</h3>
+  <div class="typerow"><div class="lbl">Baloo 2<br>700 / 800</div><div><div style="font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:800;font-size:30px;line-height:1.25">เที่ยวภูเก็ต พ.ย. 68</div><div style="color:var(--ink-2);font-size:13.5px">หัวเรื่องและชื่อทริปเท่านั้น · หัวเรื่องไทยของ Baloo 2 กลมและหนา อ่านง่ายบนรูป · ห้ามใช้กับข้อความยาว</div></div></div>
+  <div class="typerow"><div class="lbl">IBM Plex Sans Thai<br>400 / 500 / 600 / 700</div><div><div style="font-size:16px;font-weight:600">ติ่มซำ ก. โกปี๊ · เมืองเก่า</div><div style="font-size:14.5px;color:var(--ink-2)">ร้านติ่มซำเช้าในตึกแถวชิโน-โปรตุกีส เปิดตั้งแต่หกโมง หมดก่อนเที่ยง — เนื้อหาทั้งหมดในแอปใช้ฟอนต์นี้ รองรับวรรณยุกต์ไทยซ้อนได้ดีในขนาดเล็ก</div></div></div>
+  <div class="typerow"><div class="lbl">IBM Plex Mono<br>400 / 500</div><div><div class="mono" style="font-size:15px">11:30 · 12:15 · 3.2 กม. · ฿฿</div><div style="color:var(--ink-2);font-size:13.5px">เวลา ระยะทาง ราคา และตัวเลขทุกชนิดในไทม์ไลน์ — ความกว้างเท่ากันทำให้เวลาในคอลัมน์เรียงตรงกัน ใช้คู่กับ <code>tabular-nums</code></div></div></div>
+
+  <h4 class="blk">ระดับขนาด (คงจาก v1)</h4>
+  <p class="note"><code class="mono">xs 11.5 · sm 13 · base 14.5 · md 16 · lg 19 · xl 24 · 2xl 30</code> — ฐาน 14.5px เพราะภาษาไทยมีวรรณยุกต์บนล่าง ต้องการที่มากกว่าอังกฤษที่ 14px · line-height 1.55 สำหรับเนื้อหา 1.3 สำหรับหัวเรื่อง</p>
+
+  <h3 class="blk">3.3 คอมโพเนนต์หลัก</h3>
+  <div class="comp">
+    <div class="comp-c"><h5>การ์ดสถานที่</h5><p>รูป 16:10 · ชื่อ · หมวด+ระยะ · ปุ่ม + มุมขวา · ไม่มีรูปให้ใช้พื้นสีหมวด + ไอคอน</p><span class="st">ปกติ · กดค้าง · เลือกแล้ว · ไม่มีรูป · กำลังโหลด</span></div>
+    <div class="comp-c"><h5>แถวไทม์ไลน์</h5><p>เวลา (mono) ซ้าย · ชื่อ+โน้ตกลาง · ที่จับลากขวา · เส้นระยะทางคั่นระหว่างแถว</p><span class="st">ปกติ · กำลังลาก · คนอื่นล็อกอยู่ · ผ่านมาแล้ว · ตอนนี้</span></div>
+    <div class="comp-c"><h5>ปุ่มหลัก</h5><p>สูง 46–54px พื้น accent-strong เงายก กดแล้วยุบ (มีใน v1.01 แล้ว)</p><span class="st">ปกติ · กด · ปิดใช้งาน · กำลังทำงาน · อันตราย (แดง)</span></div>
+    <div class="comp-c"><h5>ชิปตัวกรอง</h5><p>สูง 30px ขอบมน ติ๊กแล้วพื้นทึบ · เลื่อนแนวนอนได้ ไม่ตัดบรรทัด</p><span class="st">ปกติ · เลือก · มีตัวเลข · ปิดได้ (มี ✕)</span></div>
+    <div class="comp-c"><h5>แผงเลื่อนขึ้น</h5><p>ใช้กับทุกอย่างที่ไม่ควรพาผู้ใช้ออกจากหน้า — D2 D5 E1 E5 G1 I1</p><span class="st">ครึ่งจอ · เต็มจอ · ลากปรับได้</span></div>
+    <div class="comp-c"><h5>Hero</h5><p>สูงคงที่ 274px ทุกหน้า มีเกรเดียนต์ทับรูปเพื่อให้ตัวอักษรขาวอ่านได้เสมอ</p><span class="st">มีรูป · ไม่มีรูป (navy ล้วน) · โหมดระหว่างทริป</span></div>
+    <div class="comp-c"><h5>แถบแท็บล่าง</h5><p>5 ช่อง ไอคอน+ป้าย · จุดแดงเมื่อมีของใหม่ในแท็บนั้น</p><span class="st">ปกติ · เลือก · มีแจ้งเตือน</span></div>
+    <div class="comp-c"><h5>Toast</h5><p>ลอยเหนือแท็บบาร์ 3 วินาที มีปุ่มเลิกทำเมื่อเป็นการกระทำที่ทำลายของ</p><span class="st">แจ้งผล · ผิดพลาด · มีเลิกทำ</span></div>
+    <div class="comp-c"><h5>รูปคนร่วมแก้</h5><p>วงกลม 24px ซ้อนเหลื่อม สูงสุด 3 คน เกินนั้นเป็น +n</p><span class="st">ออนไลน์ · ออฟไลน์ · กำลังแก้อยู่</span></div>
+    <div class="comp-c"><h5>ป้ายระดับการแชร์</h5><p>🔒 ส่วนตัว · 🔗 ลิงก์ · 🌏 สาธารณะ — ใช้สัญลักษณ์เดียวกันทุกที่ในแอป</p><span class="st">3 ระดับ · อยู่บนการ์ดทริปและหัวทริป</span></div>
+    <div class="comp-c"><h5>สถานะว่าง</h5><p>ไอคอนหมวด + ประโยคบอกวิธี + ปุ่มพาไปทำ — รูปแบบเดียวใช้ทั้งแอป</p><span class="st">ไม่มีทริป · ไม่มีที่บันทึก · ค้นไม่พบ · ไม่มีแจ้งเตือน</span></div>
+    <div class="comp-c"><h5>การ์ดเตือน</h5><p>ลอยด้านบน หายเองใน 8 วินาที มีปุ่มปิดถาวรต่อสถานที่</p><span class="st">เข้าใกล้ · คนแก้ทริป · คำเชิญ</span></div>
+  </div>
+
+  <h3 class="blk">3.4 การวางบนจอขนาดต่าง ๆ</h3>
+  <p class="note">ออกแบบจากมือถือเป็นหลัก (390px) แล้วขยายขึ้นตามจุดตัดที่ v1 ใช้อยู่แล้ว — ไม่ต้องวาด wireframe ซ้ำ เพราะเนื้อหาเหมือนกัน เปลี่ยนแค่การจัดวาง</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:22%">ขนาดจอ</th><th style="width:78%">การเปลี่ยนแปลง</th></tr></thead>
+      <tbody>
+        <tr><td><b>มือถือ</b><br>&lt; 600px</td><td class="new">คอลัมน์เดียว กว้างสูงสุด 480px · แท็บบาร์อยู่ล่าง · แผงเป็นแบบเลื่อนขึ้น · การ์ดสถานที่ในแถวเลื่อนกว้าง 62% ของจอ (เห็นครึ่งใบถัดไป เป็นสัญญาณว่าเลื่อนได้)</td></tr>
+        <tr><td><b>แท็บเล็ต</b><br>600–1024px</td><td class="new">แถวเลื่อนกลายเป็นกริด 2–3 คอลัมน์ · แผงเลื่อนขึ้นกลายเป็นกล่องกลางจอ · D3 แสดง 2 วันเคียงกัน</td></tr>
+        <tr><td><b>เดสก์ท็อป</b><br>&gt; 1024px</td><td class="new">แท็บบาร์ย้ายเป็นแถบข้างซ้าย · เนื้อหากว้างสูงสุด 1440px · D3 เป็น 2 คอลัมน์ (ไทม์ไลน์ซ้าย แผนที่ขวาค้างไว้) · C4 เป็นรายการซ้าย+แผนที่ขวา</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">3.5 การเข้าถึงและรายละเอียดที่ต้องไม่พลาด</h3>
+  <ul class="plain">
+    <li><b>พื้นที่กดอย่างน้อย 44 × 44px</b> — ชิปตัวกรองสูง 30px ต้องมี padding ล่องหนรอบ ๆ ให้ครบ</li>
+    <li><b>คอนทราสต์ AA ทุกคู่สี</b> — ห้ามใช้ <code>--accent</code> (#F5822C) เป็นสีตัวอักษรบนพื้นขาว ใช้ <code>--accent-strong</code> เท่านั้น (กติกาที่ v1 เขียนคอมเมนต์เตือนไว้แล้ว)</li>
+    <li><b>ห้ามสื่อความหมายด้วยสีอย่างเดียว</b> — สถานะการแชร์ต้องมีสัญลักษณ์กำกับ หมวดบนแผนที่ต้องมีไอคอนในหมุด ไม่ใช่แค่สีหมุด</li>
+    <li><b>โฟกัสคีย์บอร์ดต้องเห็น</b> — เส้น 2px สี accent ระยะห่าง 2px (v1 ทำแล้ว)</li>
+    <li><b>เคารพ <code>prefers-reduced-motion</code></b> — ปิด skeleton shimmer แผงเลื่อน และการเปลี่ยนหน้าทั้งหมด</li>
+    <li><b>ตัดข้อความไทยให้ถูก</b> — ชื่อสถานที่ยาว ๆ ต้องตัดที่ขอบเซลล์ ไม่ใช่กลางคำวรรณยุกต์ ใช้ <code>word-break: break-word</code> ไม่ใช่ <code>break-all</code></li>
+    <li><b>ป้ายข้อความบนรูป</b> — ต้องมีเกรเดียนต์ทึบพอเสมอ เพราะรูปที่ผู้ใช้อัปเองสว่างไม่เท่ากัน</li>
+  </ul>
+
+  <h3 class="blk">3.6 สิ่งที่ต้องแก้ในโค้ดปัจจุบัน</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:34%">ของเดิม</th><th style="width:66%">ต้องทำอะไร</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">state ก้อนเดียว + save()</td><td class="new">แยกเป็นชั้นข้อมูล มี cache ในเครื่องและคิวซิงก์ ไม่เขียน localStorage ตรง ๆ จากทุกฟังก์ชัน</td></tr>
+        <tr><td class="mono">renderAll()</td><td class="new">v1 วาดใหม่ทั้ง 4 หน้าทุกครั้งที่มีอะไรเปลี่ยน พอข้อมูลมาจากเซิร์ฟเวอร์และมีหลายคนแก้ ต้องวาดเฉพาะส่วนที่เปลี่ยน</td></tr>
+        <tr><td class="mono">DESTS / SEED_PLACES</td><td class="new">ย้ายออกจากไฟล์ไปเป็น API รายจังหวัด โหลดตอนเข้าหน้าจังหวัด ไม่ใช่โหลดทั้งประเทศตอนเปิดแอป</td></tr>
+        <tr><td class="mono">LOCAL_PHOTOS (data URI)</td><td class="new">ย้ายไป CDN + <code>srcset</code> · ไฟล์จะลดจาก 3.3 MB เหลือหลักร้อย KB</td></tr>
+        <tr><td class="mono">parseMapsUrl()</td><td class="new">เก็บไว้ทั้งหมด และเพิ่มการตามลิงก์ย่อ <code>maps.app.goo.gl</code> ฝั่งเซิร์ฟเวอร์ ซึ่ง CSP ของ Artifact เคยบล็อกไว้</td></tr>
+        <tr><td class="mono">nearby / geo.notified</td><td class="new">เก็บกลไกเดิม เพิ่มเพดานการเตือนต่อชั่วโมงและการรวมที่ใกล้กันเป็นการ์ดเดียว</td></tr>
+        <tr><td class="mono">setView() 4 แท็บ</td><td class="new">เป็น 5 แท็บ + เส้นทาง URL จริง (<code>/t/&lt;id&gt;</code>, <code>/p/&lt;province&gt;</code>) เพื่อให้แชร์ลิงก์และกดปุ่มย้อนกลับได้</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">3.7 ลำดับการทำ</h3>
+  <div class="phase">
+    <div class="ph-card"><h5>เฟส 1 · ใช้ได้จริงคนเดียว</h5><div class="when">A · B · C · D · I</div><ul><li>onboarding A1–A6 พร้อมร่างแผนอัตโนมัติ</li><li>ขยายเป็นทั่วไทย ย้ายข้อมูลออกจากไฟล์</li><li>ยกเครื่อง C และ D จากของเดิม</li><li>โหมดระหว่างทริป B3</li><li>สถานะระบบ I1–I4</li></ul></div>
+    <div class="ph-card"><h5>เฟส 2 · มีบัญชีและแชร์ได้</h5><div class="when">G · E1 · E2 · E5 · H</div><ul><li>สมัคร + ย้ายข้อมูล guest (G1–G3)</li><li>ลิงก์อ่านอย่างเดียวและก๊อปทริป</li><li>รวมแจ้งเตือนทุกชนิด (H1–H3)</li><li>ออฟไลน์และการซิงก์จริงจัง</li></ul></div>
+    <div class="ph-card"><h5>เฟส 3 · หลายคนและชุมชน</h5><div class="when">E3 · E4 · F</div><ul><li>เชิญร่วมแก้และสิทธิ์ (E3–E4)</li><li>เผยแพร่ + ฟีด + โปรไฟล์ (F1–F3)</li><li>รายงานและคิวตรวจ (F4)</li><li>ต้องมีเงื่อนไขการใช้งานก่อนเปิดเฟสนี้</li></ul></div>
+  </div>
+
+  <p class="note" style="margin-top:22px">ที่ยังต้องตัดสินใจก่อนเริ่มเฟส 1: <b>แหล่งข้อมูลสถานที่</b> (Places API มีค่าใช้จ่ายต่อ request แต่เป็นแหล่งเดียวที่มีร้านเล็ก ตามผลทดสอบ 58 ที่ในภูเก็ตของเราเอง) และ <b>ลิขสิทธิ์รูปทั้ง 24 ใบที่ฝังอยู่ตอนนี้</b> ซึ่งต้องคัดใหม่ก่อนขึ้นสาธารณะ</p>
+</section>
+
+<p class="foot">Tripster · พิมพ์เขียวเวอร์ชันสาธารณะ · อ้างอิงจาก index.html v1.01 (2,801 บรรทัด) และ README ของโปรเจกต์ · wireframe วาดที่ขนาดมือถือ 390 × 844</p>
+
+</div>
+</body></html>
