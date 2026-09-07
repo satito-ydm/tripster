@@ -7,6 +7,7 @@ _meta.json
 *.py
 __pycache__/
 Phuket_Trip_Notes*.txt
+Tripster_*.txt
 
 # ไฟล์สำรอง
 *.bak.html
