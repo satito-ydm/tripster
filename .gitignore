@@ -1,0 +1,21 @@
+# รูปดิบ + แคช — ฝังเป็น data URI ใน index.html ไปแล้ว ไม่ต้องขึ้น repo
+img/
+photos/
+_meta.json
+
+# สคริปต์เติมข้อมูล + ลิสต์ต้นฉบับ (เก็บไว้ในเครื่อง)
+*.py
+__pycache__/
+Phuket_Trip_Notes*.txt
+
+# ไฟล์สำรอง
+*.bak.html
+index-v1.01.html
+
+# สินทรัพย์ที่ฝังในไฟล์แล้ว
+logo.png
+cover_home_app.png
+
+# ระบบ
+.DS_Store
+.omc/
