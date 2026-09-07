@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="th">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"></head>
+<body style="margin:0">
+<title>Tripster Flow Wireframes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#F1F3F6; --surface:#FFFFFF; --surface-2:#F7F9FB;
+  --ink:#1B2430; --ink-2:#5A6675; --ink-3:#8C97A5;
+  --line:#DEE3EA; --line-2:#C7CFDA;
+  --accent:#D95A0F; --accent-soft:#FBEEE4;
+  --wire:#E8EBF0; --wire-line:#C6CDD7; --wire-ink:#7C8797; --wire-solid:#AEB8C6; --wire-deep:#D3D9E1;
+  --shadow:0 1px 2px rgba(27,36,48,.06),0 14px 30px -22px rgba(27,36,48,.5);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0A0F16; --surface:#141B25; --surface-2:#1A222E;
+  --ink:#E9EEF5; --ink-2:#A6B2C0; --ink-3:#78848F;
+  --line:#242E3B; --line-2:#33404F;
+  --accent:#FF9A4D; --accent-soft:#33210F;
+  --wire:#1E2734; --wire-line:#384555; --wire-ink:#8593A3; --wire-solid:#465565; --wire-deep:#2A3543;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 30px -22px rgba(0,0,0,.9);
+}}
+:root[data-theme="dark"]{
+  --ground:#0A0F16; --surface:#141B25; --surface-2:#1A222E;
+  --ink:#E9EEF5; --ink-2:#A6B2C0; --ink-3:#78848F;
+  --line:#242E3B; --line-2:#33404F;
+  --accent:#FF9A4D; --accent-soft:#33210F;
+  --wire:#1E2734; --wire-line:#384555; --wire-ink:#8593A3; --wire-solid:#465565; --wire-deep:#2A3543;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 30px -22px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'IBM Plex Sans Thai','IBM Plex Sans',system-ui,sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;line-height:1.28;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:272px 1fr;gap:0;min-height:100vh;max-width:1560px;margin:0 auto}
+@media (max-width:900px){.shell{grid-template-columns:1fr}}
+
+.side{border-right:1px solid var(--line);background:var(--surface);padding:26px 0 40px}
+@media (max-width:900px){.side{border-right:0;border-bottom:1px solid var(--line);padding:16px 0 12px;position:sticky;top:0;z-index:20}}
+.brand{padding:0 22px 18px}
+.brand .kick{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.brand h1{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:800;font-size:22px;margin-top:5px}
+.brand p{font-size:12.5px;color:var(--ink-3);margin-top:3px}
+.nav-cap{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:0 22px 8px}
+.nav{display:flex;flex-direction:column;gap:2px;padding:0 12px}
+@media (max-width:900px){
+  .nav{flex-direction:row;overflow-x:auto;gap:7px;padding:0 16px 4px;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-cap{display:none}
+  .brand{padding:0 16px 12px}
+}
+.nav button{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--ink-2);flex:none;white-space:nowrap;transition:background .12s}
+.nav button:hover{background:var(--surface-2)}
+.nav button .no{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink-3);width:17px;flex:none}
+.nav button .tx{font-size:14px;font-weight:500;line-height:1.3}
+.nav button .ct{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);margin-left:auto}
+@media (max-width:900px){.nav button .ct{display:none}}
+.nav button[aria-current="true"]{background:var(--accent-soft);color:var(--ink)}
+.nav button[aria-current="true"] .no{color:var(--accent)}
+.nav button[aria-current="true"] .tx{font-weight:600}
+.side-foot{padding:22px 22px 0;margin-top:20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-3);line-height:1.7}
+@media (max-width:900px){.side-foot{display:none}}
+.side-foot i{display:inline-block;width:20px;height:11px;border-radius:3px;vertical-align:-1px;margin-right:5px;border:1px solid var(--wire-line);background:var(--wire)}
+.side-foot i.solid{background:var(--wire-solid);border-color:var(--wire-solid)}
+.side-foot i.dash{background:transparent;border-style:dashed}
+.side-foot i.deep{background:var(--wire-deep)}
+
+/* ---------- panel ---------- */
+.panel{padding:34px 30px 80px;min-width:0}
+@media (max-width:640px){.panel{padding:24px 16px 60px}}
+.p-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.p-id{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;color:#fff;background:var(--accent);border-radius:6px;padding:2px 8px}
+.p-head h2{font-family:'Baloo 2','IBM Plex Sans Thai',sans-serif;font-weight:700;font-size:clamp(24px,3.4vw,32px)}
+.p-goal{color:var(--ink-2);margin-top:8px;max-width:76ch}
+.p-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;align-items:center}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;border:1px solid var(--line-2);border-radius:6px;padding:2px 7px;color:var(--ink-2);background:var(--surface)}
+.pill.br{border-style:dashed;color:var(--ink-3)}
+.arrowtx{color:var(--ink-3);font-size:11px}
+
+.strip-cap{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:30px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.strip{display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px}
+.arrow{align-self:center;color:var(--line-2);font-size:18px;margin-top:-46px}
+@media (max-width:560px){.arrow{display:none}}
+.card{width:224px;flex:none}
+.card-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.step{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:#fff;background:var(--ink);width:19px;height:19px;border-radius:50%;display:grid;place-items:center;flex:none}
+.card-hd .sid{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--accent)}
+.card-hd .nm{font-size:13.5px;font-weight:600;line-height:1.25}
+.cap{margin-top:9px;font-size:12.5px;color:var(--ink-2);line-height:1.55}
+.cap .out{display:block;margin-top:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3)}
+.note{margin-top:26px;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:11px 14px;font-size:13.5px;color:var(--ink-2);max-width:80ch}
+.note b{color:var(--ink);font-weight:600}
+
+/* ---------- phone ---------- */
+.ph{border:1.5px solid var(--line-2);border-radius:18px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.ph-st{height:18px;background:var(--surface-2);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 9px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--ink-3)}
+.ph-scr{padding:9px;display:flex;flex-direction:column;gap:6px;min-height:356px}
+.wb{background:var(--wire);border:1px solid var(--wire-line);border-radius:7px;padding:7px 8px;font-size:10px;line-height:1.45;color:var(--wire-ink)}
+.wb .t{display:block;font-weight:600;color:var(--ink-2);font-size:10.5px}
+.wb.deep{background:var(--wire-deep);min-height:60px;display:flex;flex-direction:column;justify-content:flex-end}
+.wb.img{background:var(--wire-deep);display:grid;place-items:center;min-height:46px;font-size:9.5px;text-align:center}
+.wb.cta{background:var(--wire-solid);border-color:var(--wire-solid);color:var(--surface);text-align:center;font-weight:600;padding:8px}
+.wb.ghost{background:transparent;border-style:dashed}
+.wb.plain{background:var(--surface);border-color:var(--line)}
+.grow{flex:1}
+.ln{height:4.5px;border-radius:3px;background:var(--wire-line);margin-top:4px}
+.w80{width:80%}.w30{width:30%}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.chip{font-size:9px;border:1px solid var(--wire-line);border-radius:20px;padding:1.5px 7px;color:var(--wire-ink);background:var(--surface)}
+.chip.on{background:var(--wire-solid);border-color:var(--wire-solid);color:var(--surface)}
+.lst{display:flex;gap:6px;align-items:center;margin-top:6px}
+.sq{width:22px;height:22px;border-radius:5px;background:var(--wire-line);flex:none}
+.lst .col{flex:1}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tabs{display:flex;border-top:1px solid var(--line);background:var(--surface-2)}
+.tabs div{flex:1;text-align:center;font-size:7.6px;color:var(--ink-3);padding:6px 0;border-right:1px solid var(--line)}
+.tabs div:last-child{border-right:0}
+.tabs div.on{color:var(--accent);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.lip{height:3.5px;width:30px;border-radius:2px;background:var(--wire-line);margin:0 auto 3px}
+.scap{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--ink-3);text-align:center;letter-spacing:.06em}
+</style>
+
+<div class="shell">
+  <aside class="side">
+    <div class="brand">
+      <div class="kick">Tripster · v2 public</div>
+      <h1>Wireframe ตาม Flow</h1>
+      <p>low-fidelity · จอมือถือ 390 × 844</p>
+    </div>
+    <div class="nav-cap">เลือก flow</div>
+    <nav class="nav" id="nav" aria-label="รายการ flow"></nav>
+    <div class="side-foot">
+      <div><i></i>กล่องเนื้อหา</div>
+      <div><i class="solid"></i>ปุ่มหลัก</div>
+      <div><i class="dash"></i>ปุ่มรอง / คำอธิบาย</div>
+      <div><i class="deep"></i>รูปภาพ</div>
+    </div>
+  </aside>
+  <main class="panel" id="panel"></main>
+</div>
+
+<script>
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const chips = s => '<div class="chips">'+s.split(',').map(c=>{const on=c.endsWith('*');return '<span class="chip'+(on?' on':'')+'">'+esc(on?c.slice(0,-1):c)+'</span>';}).join('')+'</div>';
+const rows = n => Array.from({length:+n},()=>'<div class="lst"><div class="sq"></div><div class="col"><div class="ln w80"></div><div class="ln w30"></div></div></div>').join('');
+function block(spec){
+  const [k,...a]=spec.split('|');
+  const t=x=>x?'<span class="t">'+esc(x)+'</span>':'';
+  switch(k){
+    case 'H':  return '<div class="wb deep">'+t(a[0])+esc(a[1]||'')+'</div>';
+    case 'B':  return '<div class="wb">'+t(a[0])+esc(a[1]||'')+'</div>';
+    case 'BP': return '<div class="wb">'+t(a[0])+chips(a[1])+'</div>';
+    case 'BL': return '<div class="wb">'+t(a[0])+rows(a[1])+'</div>';
+    case 'C':  return '<div class="wb cta">'+esc(a[0])+'</div>';
+    case 'G':  return '<div class="wb ghost" style="text-align:center">'+esc(a[0])+'</div>';
+    case 'X':  return '<div class="wb ghost" style="font-size:9.4px">'+esc(a[0])+'</div>';
+    case 'I':  return '<div class="wb img">'+esc(a[0]||'')+'</div>';
+    case 'R':  return '<div class="r2"><div class="wb img">'+esc(a[0])+'</div><div class="wb img">'+esc(a[1])+'</div></div>';
+    case 'L':  return '<div class="wb">'+rows(a[0])+'</div>';
+    case 'W':  return '<div class="wb plain">'+t(a[0])+esc(a[1]||'')+'</div>';
+    case 'F':  return '<div class="grow"></div>';
+    case 'SC': return '<div class="scap">'+esc(a[0])+'</div>';
+    case 'LIP':return '<div class="wb plain" style="border-radius:12px 12px 0 0;padding-top:5px"><div class="lip"></div>'+t(a[0])+esc(a[1]||'')+'</div>';
+    default:   return '';
+  }
+}
+function phone(s){
+  const tab=s.blocks.find(b=>b.startsWith('T|'));
+  const tabs=tab?'<div class="tabs">'+tab.slice(2).split(',').map(x=>{const on=x.endsWith('*');return '<div class="'+(on?'on':'')+'">'+esc(on?x.slice(0,-1):x)+'</div>';}).join('')+'</div>':'';
+  return '<div class="ph"><div class="ph-st"><span>9:41</span><span>'+esc(s.bar||'')+'</span></div><div class="ph-scr">'+s.blocks.filter(b=>!b.startsWith('T|')).map(block).join('')+'</div>'+tabs+'</div>';
+}
+
+/* ---------- หน้าจอทั้งหมด ---------- */
+const S={
+A1:{n:'Splash',bar:'',blocks:['F','I|โลโก้ Tripster','G|Your Trip, Your Way','F','X|แตะที่ไหนก็ได้เพื่อข้าม']},
+A2:{n:'หน้าต้อนรับ',bar:'',blocks:['H|จัดทริปเที่ยวไทย ให้จบใน 5 นาที|','B|1 · บอกว่าอยากไปไหน แบบไหน','B|2 · แอปจัดร่างแผนรายวันให้','B|3 · แก้เวลา นำทาง แชร์ให้เพื่อน','C|เริ่มจัดทริป','G|ข้ามไปดูที่เที่ยวก่อน','X|เคยใช้แล้ว? เข้าสู่ระบบ']},
+A3:{n:'เลือกจุดหมาย',bar:'1 / 3',blocks:['W|อยากไปจังหวัดไหน?|','B|ค้นหาจังหวัด อำเภอ หรือสถานที่','G|ใกล้ฉัน · ใช้ตำแหน่งปัจจุบัน','R|ภูเก็ต · 66 ที่|เชียงใหม่','R|กระบี่|น่าน · ยังไม่ครบ','G|ดูทั้ง 77 จังหวัด','C|ถัดไป']},
+A4:{n:'เลือกแนวทริป',bar:'2 / 3',blocks:['W|ไปภูเก็ตแบบไหนดี?|เลือกได้หลายแบบ','BP|แนวทริป|ทะเล*,ภูเขา,เมือง,สายกิน*,วัฒนธรรม,ชิล ๆ','BP|ไปกับใคร|ครอบครัว*,คู่รัก,เพื่อน,คนเดียว','X|เลือกครอบครัว → ลดการเดินไกล เพิ่มเวลาพักระหว่างจุด','F','C|ถัดไป']},
+A5:{n:'วันเดินทาง + ชื่อทริป',bar:'3 / 3',blocks:['W|ไปวันไหน กี่วัน?|','I|ปฏิทิน — เลือกช่วงวัน','W|3 วัน 2 คืน|ศ 14 – อา 16 พ.ย.','G|ยังไม่รู้วัน จัดแบบไม่ระบุวันที่','B|ชื่อทริป|เที่ยวภูเก็ต พ.ย. 68','C|สร้างแผนให้เลย']},
+A6:{n:'ร่างแผนอัตโนมัติ',bar:'ร่างแผน',blocks:['W|จัดให้แล้ว 3 วัน 14 ที่|ปรับได้ทุกอย่าง','BL|Day 1 · ศ 14 พ.ย.|2','BL|Day 2 · ส 15 พ.ย.|1','G|สลับที่อื่นให้ · จัดใหม่','C|ใช้แผนนี้','X|เริ่มจากแผนเปล่าแทน']},
+B1:{n:'หน้าแรก — ยังไม่มีทริป',bar:'🔔',blocks:['H|สวัสดี · วันนี้อยากไปไหน|','W|ยังไม่มีทริป|ตอบ 3 คำถาม แล้วได้แผนเลย','C|เริ่มจัดทริปแรก','R|ภูเก็ต|เชียงใหม่','BL|ทริปที่คนอื่นจัดไว้|1','T|หน้าแรก*,สำรวจ,ทริป,บันทึก,ฉัน']},
+B2:{n:'หน้าแรก — มีทริป',bar:'🔔 2',blocks:['H|เที่ยวภูเก็ต พ.ย. 68|อีก 12 วัน · 3 วัน 14 ที่','BP|ยังไม่ครบ|เติม Day 3*,หาที่พัก','BL|แก้ล่าสุด|1','BL|แนะนำเพิ่ม — สายกิน ใกล้เมืองเก่า|1','G|ทริปอื่นของฉัน (2)','T|หน้าแรก*,สำรวจ,ทริป,บันทึก,ฉัน']},
+B3:{n:'โหมดระหว่างทริป',bar:'● กำลังเที่ยว',blocks:['H|Day 2 · วันนี้|เหลืออีก 4 ที่','BP|ตอนนี้ 14:30 · หาดกะตะ|นำทาง*,เช็คอินแล้ว,ข้าม','B|ถัดไป 16:00 · จุดชมวิวกะรน|ห่าง 3.2 กม. · ขับ 9 นาที','W|พระอาทิตย์ตก 18:12|ควรถึงแหลมพรหมเทพก่อน 17:40','G|ดูทั้งวัน · แผนที่เส้นทาง','X|เตือนเมื่อเข้าใกล้ · เปิดอยู่ (300 ม.)','T|หน้าแรก*,สำรวจ,ทริป,บันทึก,ฉัน']},
+C1:{n:'สำรวจทั่วไทย',bar:'',blocks:['B|ค้นหาที่เที่ยว ร้านอาหาร จังหวัด','BP|อยากไปแบบไหน|ทั้งหมด*,ทะเล,ภูเขา,เมือง,สายกิน','BL|ใกล้ฉัน · ชลบุรี 82 กม.|1','R|ภูเก็ต|เชียงใหม่','BP|เลือกตามภาค|เหนือ,อีสาน,กลาง,ตะวันออก,ใต้','T|หน้าแรก,สำรวจ*,ทริป,บันทึก,ฉัน']},
+C2:{n:'หน้าจังหวัด',bar:'←  ♡  ⋯',blocks:['H|ภูเก็ต|อันดามัน · ใต้ · 66 ที่','W||เมืองเก่าชิโน-โปรตุกีส ติ่มซำตั้งแต่เช้า คาเฟ่ทั้งย่าน','BP|หมวด|ที่เที่ยว 15,หาด 14,คาเฟ่ 8,ติ่มซำ 8','BL|หาด · เลื่อนดู|2','G|เลือกหลายที่พร้อมกัน','C|เริ่มจัดทริปภูเก็ต']},
+C3:{n:'ค้นหา + ตัวกรอง',bar:'ยกเลิก',blocks:['W|ติ่มซำ|','BP|ขอบเขต|ภูเก็ต*,ทุกจังหวัด','BP|ตัวกรอง|เปิดอยู่ตอนนี้,ไม่เกิน 5 กม.,มีรูป,ราคา ฿฿*','BP|ค้นล่าสุด|คาเฟ่เมืองเก่า,หาดกะตะ','G|ดูเป็นแผนที่','F']},
+C4:{n:'ผลการค้นหา',bar:'ผลลัพธ์ 8',blocks:['W|ติ่มซำ · ภูเก็ต|กรอง: ราคา ฿฿','BL|แต่ละแถวมีปุ่ม + เพิ่มเข้าทริป|3','X|— ไม่พบเพิ่มเติมในรัศมี 5 กม. —','BP|ไม่เจอที่ต้องการ?|เพิ่มสถานที่เอง*,ค้นทั้งประเทศ']},
+C5:{n:'รายละเอียดสถานที่',bar:'←  ♡  ↗',blocks:['I|รูป 1/6 · เครดิต','W|ติ่มซำ ก. โกปี๊|ติ่มซำ · เมืองเก่า · ★ 4.5 (312)','B|เปิด 06:00–11:00 · เปิดอยู่|ห่างจากที่พัก 2.1 กม.','W||ร้านติ่มซำเช้าในตึกแถวชิโน-โปรตุกีส… แก้ไข','C|+ เพิ่มเข้าทริป','G|นำทาง','BP|ใกล้เคียง|ถนนถลาง 400 ม.,คาเฟ่ 600 ม.']},
+C6:{n:'มุมมองแผนที่',bar:'รายการ',blocks:['BP|ค้นหาในบริเวณนี้|ติ่มซำ*,คาเฟ่,หาด','I|แผนที่ · หมุดตามหมวด · เส้นทางของวันซ้อนอยู่','BP|ติ่มซำ ก. โกปี๊ · 2.1 กม.|+ เพิ่มเข้าทริป*,รายละเอียด','X|◎ ตำแหน่งฉัน']},
+D1:{n:'ทริปทั้งหมด',bar:'+ ทริปใหม่',blocks:['BP|ทริปของฉัน|กำลังจะถึง*,ร่าง,ไปแล้ว,ที่ร่วมแก้','BP|เที่ยวภูเก็ต พ.ย. 68 · อีก 12 วัน|🔗 แชร์แล้ว,👥 3 คน','B|เชียงใหม่ปีใหม่|ร่าง · ยังไม่ระบุวัน · 5 ที่','B|กระบี่ ส.ค. 68|ไปแล้ว · เผยแพร่อยู่ · 42 คนบันทึก','G|⋯ ทำสำเนา · เปลี่ยนชื่อ · ลบ','T|หน้าแรก,สำรวจ,ทริป*,บันทึก,ฉัน']},
+D2:{n:'สร้างทริปใหม่',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|ทริปใหม่|','B|ชื่อทริป|เที่ยวเชียงใหม่ ธ.ค. 68','B|จังหวัด|เชียงใหม่','B|วันเริ่ม|28 ธ.ค. 68 (เว้นไว้ได้)','B|จำนวนวัน|− 3 +','C|สร้างทริป']},
+D3:{n:'แผนทริป — ไทม์ไลน์',bar:'↗ แชร์  ⋯',blocks:['H|เที่ยวภูเก็ต พ.ย. 68|👤👤👤 · อีก 12 วัน','BP|วัน|Day 1 ศ14*,Day 2 ส15,Day 3 อา16,+','B|11:30 · สนามบินภูเก็ต|ถึงภูเก็ต รับรถ','X|↓ 12 กม. · 22 นาที','BP|12:15 · ติ่มซำ ก. โกปี๊|นำทาง,แก้เวลา,⋮⋮ ลาก','G|+ เพิ่มสถานที่เข้าวันนี้','C|นำทางทั้งวัน (5 จุด)','T|หน้าแรก,สำรวจ,ทริป*,บันทึก,ฉัน']},
+D4:{n:'เลือกที่เข้าวัน',bar:'เลือกแล้ว 3',blocks:['W|เพิ่มเข้า Day 1 · ศ 14 พ.ย.|เปลี่ยนวัน','BP|กรอง|ทั้งหมด*,ติ่มซำ,คาเฟ่,หาด','BP|เรียง|ตามระยะ*,ตามลิสต์','BL|ติ๊กหลายอัน — เลขคือลำดับที่จะใส่|3','X|ห่างจากจุดล่าสุดที่ติ๊ก 1.4 กม.','C|เพิ่ม 3 ที่ · ไล่เวลาให้']},
+D5:{n:'แก้ไขจุดในวัน',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|ติ่มซำ ก. โกปี๊|Day 1','B|เวลา|12:15 (ล้อหมุน)','B|โน้ต|มื้อกลางวัน สั่งซาลาเปาไส้หมูแดง','B|ย้ายไปวันอื่น|Day 1 ▾','X|ลบออกจากแผน (สีแดง + ขั้นยืนยัน)','C|บันทึก']},
+D6:{n:'นำทางทั้งวัน',bar:'Day 1',blocks:['W|เส้นทาง Day 1 · 5 จุด|รวม 38 กม. · ขับ 1 ชม. 12 น.','I|แผนที่ + เส้นทางเรียงตามเวลา','BL|ลากสลับลำดับได้ที่นี่|2','X|⚠ เกิน 9 จุดกลาง — จุดที่ 11–14 จะไม่อยู่ในเส้นทางเดียว','C|เปิดใน Google Maps']},
+D7:{n:'เพิ่มสถานที่เอง',bar:'ขั้น 2/3',blocks:['W|เพิ่มสถานที่เอง|① ค้น → ② วางลิงก์ → ③ เลือกหมวด','B|ชื่อ|ร้านโกอ่าง ข้าวต้มปลา','G|🔎 ค้นบน Google Maps (เปิดแท็บใหม่)','B|วางลิงก์ที่ก๊อปมา…','W|✓ อ่านได้|ร้านโกอ่าง · 7.8834, 98.3912','BP|หมวด|ร้านอาหาร*,คาเฟ่,ที่เที่ยว,หาด','C|บันทึกและเพิ่มเข้าทริป']},
+E1:{n:'แผงแชร์',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|แชร์ · เที่ยวภูเก็ต พ.ย. 68|','B|🔒 ส่วนตัว|เห็นคนเดียว · ใช้อยู่','B|🔗 ใครมีลิงก์ก็ดูได้|ดูอย่างเดียว แก้ไม่ได้','B|🌏 เผยแพร่สาธารณะ|ขึ้นฟีดและค้นเจอ','G|👥 เชิญคนร่วมแก้ →','C|ก๊อปลิงก์']},
+E2:{n:'ทริปสาธารณะ (คนนอก)',bar:'tripster.app/t/…',blocks:['H|เที่ยวภูเก็ต 3 วัน 2 คืน|โดย @ploy · 14 ที่','BP|วัน|Day 1*,Day 2,Day 3','BL|ไทม์ไลน์อ่านอย่างเดียว|2','X|อ่านอย่างเดียว · แก้ไม่ได้','C|ก๊อปเป็นทริปฉัน','G|♡ บันทึก','X|รายงานเนื้อหาไม่เหมาะสม']},
+E3:{n:'เชิญ + จัดการสิทธิ์',bar:'← เสร็จ',blocks:['W|คนในทริปนี้ · 3|','BL|เจ้าของ · แก้ได้ · ดูอย่างเดียว|3','B|เชิญเพิ่ม|อีเมล หรือชื่อผู้ใช้','BP|สิทธิ์ที่จะให้|แก้ได้*,ดูอย่างเดียว','X|🔗 ลิงก์เชิญ · หมดอายุใน 7 วัน','C|ส่งคำเชิญ']},
+E4:{n:'ร่วมแก้พร้อมกัน',bar:'👤👤 ออนไลน์',blocks:['H|เที่ยวภูเก็ต พ.ย. 68|ปอ กำลังแก้ Day 2','BP|12:15 · ติ่มซำ ก. โกปี๊|ปอ เพิ่งเพิ่ม · 2 นาทีที่แล้ว*','X|14:00 · หาดกะตะ — ปอ กำลังแก้อยู่ แก้ไม่ได้ชั่วคราว','B|💬 3 ความเห็นในวันนี้|"เปลี่ยนเป็นเช้าได้ไหม รถติดแน่"','G|ดูประวัติการแก้ทั้งหมด','X|⚡ ออฟไลน์ — จะซิงก์ให้เมื่อกลับมาออนไลน์']},
+E5:{n:'ก๊อปเป็นทริปฉัน',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|ก๊อปทริปนี้เป็นของฉัน|14 ที่ · 3 วัน','B|ชื่อ|เที่ยวภูเก็ต 3 วัน 2 คืน (สำเนา)','B|วันเริ่มของฉัน|14 ธ.ค. 68','BP|ตัวเลือก|เอาโน้ตของเจ้าของมาด้วย*','X|แก้ได้อิสระ ไม่กระทบต้นฉบับ · ให้เครดิต @ploy','C|ก๊อปเลย']},
+F1:{n:'ฟีดทริปชุมชน',bar:'',blocks:['BP|กรอง|แนะนำ*,ภูเก็ต,3 วัน,ครอบครัว','I|รูปปกทริป','W|ภูเก็ต 3 วัน ฉบับพาพ่อแม่|@ploy · 14 ที่ · ♡ 128 · ก๊อป 42','B|เชียงใหม่ 4 วัน สายคาเฟ่|@nut · 18 ที่ · ♡ 96','X|เรียงจากยอดก๊อป ไม่ใช่ยอดวิว','T|หน้าแรก,สำรวจ*,ทริป,บันทึก,ฉัน']},
+F2:{n:'โปรไฟล์สาธารณะ',bar:'↗',blocks:['W|@ploy|ชอบทะเลกับของกิน · ภูเก็ต','BP|ตัวเลข|ทริป 6,ถูกก๊อป 84,ที่แนะนำ 31','BL|ทริปที่เผยแพร่|2','X|เห็นเฉพาะทริปสาธารณะ · ทริปลิงก์และส่วนตัวไม่โผล่','X|รายงานผู้ใช้นี้']},
+F3:{n:'เผยแพร่ทริป',bar:'← ก่อนเผยแพร่',blocks:['W|ตรวจก่อนเผยแพร่|3 อย่างที่ควรดู','BP|⚠ โน้ตส่วนตัว 4 บรรทัด|ซ่อนทั้งหมด*,ดูทีละอัน','B|รูปที่คุณอัปเอง 6 ใบ|ยืนยันว่าเป็นรูปที่คุณถ่ายเอง','B|รูปปก + คำอธิบาย|เขียนสั้น ๆ ว่าทริปนี้เหมาะกับใคร','BP|ป้ายกำกับ|ภูเก็ต*,3 วัน*,ครอบครัว*','C|เผยแพร่']},
+F4:{n:'รายงาน / ซ่อน',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|รายงานเนื้อหานี้|','B|ข้อมูลผิด / สถานที่ปิดแล้ว','B|สแปมหรือโฆษณา','B|รูปไม่ใช่ของผู้โพสต์ / ไม่เหมาะสม','X|ซ่อนทริปของ @ploy ทั้งหมดจากฟีดของฉัน','C|ส่งรายงาน']},
+G1:{n:'จุดชวนสมัคร',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|สมัครเพื่อแชร์ทริปนี้|','X|ลิงก์แชร์ต้องผูกกับบัญชี ไม่งั้นลิงก์ตายเมื่อล้างข้อมูลเบราว์เซอร์','B|สมัครแล้วได้เพิ่ม|· ใช้ข้ามเครื่อง · ชวนเพื่อนร่วมแก้ · ทริปไม่หาย','C|สมัคร (30 วินาที)','G|ไว้ก่อน · ใช้แบบไม่สมัครต่อ']},
+G2:{n:'สมัคร / เข้าสู่ระบบ',bar:'← ปิด',blocks:['W|สมัคร Tripster|หน้าเดียวใช้ทั้งสมัครและเข้าสู่ระบบ','B|ดำเนินการต่อด้วย Google','B|ดำเนินการต่อด้วย Apple','X|— หรือ —','B|อีเมล|you@example.com','X|ส่งลิงก์เข้าอีเมล ไม่ต้องตั้งรหัสผ่าน','C|ส่งลิงก์เข้าสู่ระบบ','X|การสมัครถือว่ายอมรับเงื่อนไขการใช้งาน']},
+G2b:{n:'รอลิงก์ในอีเมล',bar:'← ปิด',blocks:['F','I|ไอคอนซองจดหมาย','W|ส่งลิงก์ไปที่ you@example.com แล้ว|เปิดอีเมลแล้วกดลิงก์เพื่อเข้าสู่ระบบ','G|เปิดแอปอีเมล','X|ไม่ได้รับ? ส่งใหม่ได้ในอีก 47 วินาที','X|ใช้อีเมลอื่นแทน','F']},
+G3:{n:'ย้ายข้อมูล guest',bar:'เกือบเสร็จ',blocks:['W|ย้ายข้อมูลในเครื่องเข้าบัญชี|เจอ 2 ทริป · 6 ที่ปักหมุด','BL|ติ๊กเลือกทีละรายการ|2','B|⚠ ชื่อซ้ำกับทริปในบัญชี|เก็บทั้งสองอัน / ใช้อันในเครื่อง / ใช้อันในบัญชี','X|รูปที่อัปเองจะถูกอัปขึ้นคลาวด์ · ใช้เน็ตราว 4 MB','C|ย้ายข้อมูล','G|ไม่ย้าย เริ่มบัญชีใหม่เปล่า ๆ']},
+G4:{n:'ฉัน & ตั้งค่า',bar:'',blocks:['W|@ploy|บัญชีสมาชิก · ซิงก์ล่าสุด 2 นาทีที่แล้ว','B|โปรไฟล์สาธารณะ|แก้ชื่อ รูป คำแนะนำตัว','B|การแจ้งเตือน|เตือนเข้าใกล้ · คนแก้ทริป · คำเชิญ','B|ออฟไลน์และพื้นที่|ดาวน์โหลดทริปไว้ใช้ · ใช้ไป 12 MB','BP|ธีม|สว่าง,มืด,ตามระบบ*','X|ส่งออกข้อมูล · ออกจากระบบ · ลบบัญชี','T|หน้าแรก,สำรวจ,ทริป,บันทึก,ฉัน*']},
+G4g:{n:'ฉัน — ยังเป็น guest',bar:'',blocks:['W|ยังไม่ได้เข้าสู่ระบบ|ข้อมูลเก็บในเครื่องนี้เท่านั้น','C|เข้าสู่ระบบ / สมัคร','B|การแจ้งเตือน|เตือนเข้าใกล้','B|ออฟไลน์และพื้นที่|ใช้ไป 4.2 MB จาก ~5 MB','BP|ธีม|สว่าง,มืด,ตามระบบ*','X|⚠ ล้างข้อมูลเบราว์เซอร์แล้วทริปจะหาย','T|หน้าแรก,สำรวจ,ทริป,บันทึก,ฉัน*']},
+H1:{n:'รายการแจ้งเตือน',bar:'← แจ้งเตือน',blocks:['BP|กรอง|ทั้งหมด*,ทริป,ใกล้ฉัน','B|👥 ปอ แก้ Day 2 ของ "เที่ยวภูเก็ต"|เพิ่มหาดในหาน · 12 นาทีที่แล้ว','B|📍 คุณอยู่ใกล้ ติ่มซำ ก. โกปี๊|280 ม. · อยู่ใน Day 1 ของคุณ','BP|✉️ นุ่น เชิญคุณร่วมแก้ "เชียงใหม่ปีใหม่"|เข้าร่วม*,ปฏิเสธ','B|⏰ พรุ่งนี้ออกเดินทาง|เช็ครายการของที่ต้องเตรียม','X|ล้างประวัติการเตือนวันนี้']},
+H2:{n:'ตั้งค่าการเตือน',bar:'← ตั้งค่า',blocks:['B|เตือนเมื่อเข้าใกล้ที่ในแผน|เปิด ⬤—','BP|รัศมี|300 ม.*,500 ม.,1 กม.','X|รัศมีเล็กกว่า = เตือนตอนใกล้จริง','B|สถานะ|กำลังติดตามตำแหน่ง ±18 ม. · เตือนแล้ววันนี้ 3 ที่','B|⚠ ทำงานเฉพาะตอนเปิดแอปค้างไว้|เว็บติดตามตำแหน่งตอนปิดแอปไม่ได้','B|iPhone ต้องเพิ่มลงหน้าจอโฮมก่อน|(iOS 16.4+)']},
+H3:{n:'การ์ดเตือนเข้าใกล้',bar:'14:02',blocks:['BP|📍 ใกล้ ติ่มซำ ก. โกปี๊ · 280 ม.|นำทาง*,ดูรายละเอียด,ไม่เตือนที่นี่อีก','X|อยู่ใน Day 1 เวลา 12:15 ของคุณ · การ์ดหายเองใน 8 วินาที','F','SC|— แบบเป็น push นอกแอป —','B|Tripster · เดี๋ยวนี้|ใกล้ ติ่มซำ ก. โกปี๊ 280 ม. — อยู่ในแผน Day 1']},
+I1:{n:'ขอสิทธิ์ตำแหน่ง',bar:'',blocks:['F','SC|— แผงเลื่อนขึ้นจากด้านล่าง —','LIP|ขอใช้ตำแหน่งของคุณ|','B||เพื่อเตือนเมื่อคุณอยู่ใกล้ที่ที่อยู่ในแผน และคำนวณระยะจากจุดที่คุณอยู่','X|ตำแหน่งอยู่ในเครื่องคุณเท่านั้น ไม่ส่งขึ้นเซิร์ฟเวอร์','C|อนุญาต','G|ไม่ใช่ตอนนี้','X|ถ้าเคยปฏิเสธไว้ ต้องเปิดจากตั้งค่าเบราว์เซอร์']},
+I2:{n:'ออฟไลน์',bar:'⚡ ออฟไลน์',blocks:['B|ไม่มีอินเทอร์เน็ต|ยังใช้แผนที่ดาวน์โหลดไว้ได้','BL|เที่ยวภูเก็ต พ.ย. 68 · Day 2|2','X|รูปบางส่วนยังไม่ได้ดาวน์โหลด','X|ค้นหาที่ใหม่ · ใช้ไม่ได้ตอนออฟไลน์','W|แก้ไว้ 2 อย่าง|จะซิงก์ให้อัตโนมัติเมื่อกลับมาออนไลน์']}
+};
+
+/* ---------- flow ทั้งหมด ---------- */
+const FLOWS=[
+{id:'onboard',name:'เปิดแอปครั้งแรก',goal:'คนที่เพิ่งกดลิงก์เข้ามา ไม่รู้จักแอป ไม่อยากสมัคร ต้องได้แผนเที่ยวที่ใช้จริงได้ภายใน 4 ก้าว ไม่เกิน 90 วินาที และไม่เจอหน้า login เลยสักหน้า',
+ steps:[
+  {s:'A1',do:'โลโก้ค้าง 1.2 วินาที แตะที่ไหนก็ข้ามได้',out:'ครั้งแรก → A2'},
+  {s:'A2',do:'บอกว่าแอปทำอะไรใน 3 บรรทัด ห้ามยาวเกินหนึ่งจอ',out:'กดเริ่ม → A3'},
+  {s:'A3',do:'เลือกจังหวัด · จังหวัดที่ข้อมูลยังบางติดป้ายบอกตรง ๆ แต่กดเข้าได้',out:'เลือกแล้ว → A4'},
+  {s:'A4',do:'เลือกแนวได้หลายอัน + บอกว่าไปกับใคร ซึ่งมีผลกับจังหวะแผน',out:'ข้ามได้ → A5'},
+  {s:'A5',do:'เลือกช่วงวันจากปฏิทิน ระบบนับจำนวนวันและตั้งชื่อให้เอง',out:'กดสร้าง → A6'},
+  {s:'A6',do:'ได้แผนจริงกลับมาเลย ไม่ใช่หน้าเปล่า · สลับที่ใหม่ได้โดยไม่ต้องตอบใหม่',out:'ใช้แผนนี้ → D3'},
+  {s:'D3',do:'เข้าไทม์ไลน์จริง แก้เวลา ลากสลับ นำทางได้ทันที',out:'จบ flow'}],
+ extra:[{cap:'ทางแยก — คนที่ยังไม่อยากตอบคำถาม',steps:[{s:'C1',do:'จาก A2 กด "ข้ามไปดูที่เที่ยวก่อน" มาที่นี่ กลับไปสร้างทริปทีหลังได้',out:'→ C2 / B1'}]}],
+ note:'<b>กฎการจัดร่างใน A6</b> วันละ 4–6 จุด · เว้นมื้อเที่ยง 12:00 และเย็น 18:00 เสมอ · เรียงตามระยะจริงด้วย Haversine ที่มีอยู่แล้วในโค้ด · เลือก "ครอบครัว" ลดเหลือวันละ 4 จุด'},
+
+{id:'signup',name:'สมัครสมาชิก',goal:'สมัครเป็นขั้นตอนเสริม ไม่ใช่ประตูทางเข้า — โผล่เฉพาะตอนผู้ใช้ชนกำแพงจริง เช่น จะแชร์ทริป หรือจะใช้ข้ามเครื่อง ห้ามเด้งเองตามเวลาหรือจำนวนครั้งที่เปิดแอป',
+ steps:[
+  {s:'G1',do:'อธิบายเหตุผลเฉพาะหน้า ข้อความเปลี่ยนตามสิ่งที่ผู้ใช้เพิ่งพยายามทำ',out:'กดสมัคร → G2'},
+  {s:'G2',do:'หน้าเดียวใช้ทั้งสมัครและเข้าสู่ระบบ ระบบดูจากอีเมลเองว่ามีบัญชีอยู่แล้วไหม',out:'ส่งลิงก์ → G2b'},
+  {s:'G2b',do:'หน้ารอ บอกว่าส่งไปอีเมลไหน กดส่งซ้ำได้หลัง 60 วินาที',out:'กดลิงก์ในอีเมล → G3'},
+  {s:'G3',do:'ย้ายข้อมูลในเครื่องเข้าบัญชี เลือกได้ทีละรายการ ชื่อซ้ำต้องถามก่อน ห้ามเขียนทับเงียบ ๆ',out:'เสร็จ → กลับหน้าที่ค้างไว้'}],
+ extra:[{cap:'จุดที่เรียก flow นี้',steps:[
+  {s:'E1',do:'กดแชร์ทริปแล้วยังเป็น guest — ลิงก์ต้องผูกบัญชี',out:'→ G1'},
+  {s:'G4g',do:'หน้าฉันตอนยังเป็น guest มีคำเตือนว่าล้างเบราว์เซอร์แล้วทริปหาย',out:'→ G2'}]}],
+ note:'<b>ห้ามพลาดที่ G3</b> ถ้าบัญชีนั้นมีข้อมูลอยู่แล้ว ต้องให้เลือกทีละทริป · ระหว่างย้ายห้ามลบของในเครื่องจนกว่าจะยืนยันว่าขึ้นครบ · เสร็จแล้วต้องพากลับไปหน้าที่กดสมัคร ไม่ใช่โยนไปหน้าแรก'},
+
+{id:'login',name:'เข้าสู่ระบบ',goal:'คนที่มีบัญชีอยู่แล้วกลับมาใช้ ไม่ว่าจะเครื่องเดิมหรือเครื่องใหม่ — ต้องได้ทริปของตัวเองกลับมาครบโดยไม่ต้องจำรหัสผ่าน',
+ steps:[
+  {s:'G4g',do:'ทางเข้าหลักคือหน้าฉัน · อีกทางคือบรรทัดเล็ก ๆ ใต้ปุ่มใน A2',out:'กดเข้าสู่ระบบ → G2'},
+  {s:'G2',do:'ปุ่ม Google / Apple ก่อน หรือกรอกอีเมล · ไม่มีรหัสผ่านให้ลืม',out:'→ G2b'},
+  {s:'G2b',do:'รอลิงก์ในอีเมล · ถ้าเปิดลิงก์คนละเครื่องกับที่ขอ ต้องยืนยันอีกครั้ง',out:'ยืนยันแล้ว → D1'},
+  {s:'D1',do:'เห็นทริปทั้งหมดในบัญชี รวมทริปที่คนอื่นเชิญให้ร่วมแก้',out:'จบ flow'}],
+ extra:[{cap:'ทางแยก — เครื่องนี้มีข้อมูล guest ค้างอยู่',steps:[
+  {s:'G3',do:'ถ้าเจอทริปในเครื่องที่ยังไม่เคยย้าย ให้ถามก่อนเข้า D1 ห้ามทิ้งเงียบ ๆ',out:'→ D1'}]}],
+ note:'<b>ออกจากระบบ</b> อยู่ในหน้า G4 ต้องเตือนว่าข้อมูลที่ยังไม่ซิงก์จะค้างอยู่ในเครื่องนี้ และถามว่าจะลบออกจากเครื่องด้วยไหม'},
+
+{id:'find',name:'ค้นหาที่เที่ยว → เพิ่มเข้าแผน',goal:'งานที่คนทำบ่อยที่สุดในแอป — เจอที่น่าไปแล้วต้องใส่เข้าแผนได้โดยไม่หลุดออกจากสิ่งที่กำลังดูอยู่',
+ steps:[
+  {s:'C1',do:'จุดตั้งต้นสำหรับคนที่ยังไม่รู้ว่าจะไปไหน เรียงจากใกล้ตัวไปไกลตัว',out:'→ C2 / C3'},
+  {s:'C3',do:'ต้องบอกชัดว่ากำลังค้นในขอบเขตไหน จังหวัดเดียวหรือทั้งประเทศ',out:'→ C4'},
+  {s:'C4',do:'แต่ละแถวมีปุ่ม + เพิ่มเข้าทริปเลย ไม่ต้องเข้าไปดูรายละเอียดก่อน',out:'→ C5 / D4'},
+  {s:'C5',do:'รูป เรตติ้ง เวลาเปิด ระยะจากที่พัก และที่ใกล้เคียง',out:'กดเพิ่ม → D4'},
+  {s:'D4',do:'เลือกทริปและวันปลายทาง ติ๊กเพิ่มทีเดียวหลายที่ได้ ระบบไล่เวลาให้',out:'→ D3'},
+  {s:'D3',do:'กลับมาเห็นแผนที่อัปเดตแล้ว',out:'จบ flow'}],
+ extra:[
+  {cap:'ทางเข้าอื่น — เข้าจากหน้าจังหวัดโดยตรง',steps:[{s:'C2',do:'ไทล์หมวด + แถวเลื่อนรายหมวด · มีปุ่ม "เลือกหลายที่พร้อมกัน" เข้า D4 ได้เลย',out:'→ C5 / D4'}]},
+  {cap:'ทางแยก — ยังไม่มีทริป / หาไม่เจอ / อยากดูเป็นแผนที่',steps:[
+    {s:'D2',do:'สร้างทริปในแผงเดียว แล้วเพิ่มที่นั้นเข้าทริปใหม่ทันที ไม่ต้องกดซ้ำ',out:'→ D3'},
+    {s:'D7',do:'ไม่เจอในคลัง → พิมพ์ชื่อ ค้นบน Google Maps ก๊อปลิงก์กลับมาวาง แอปแกะพิกัดให้',out:'→ D3'},
+    {s:'C6',do:'ดูเป็นแผนที่ เห็นว่าที่ไหนอยู่ใกล้กัน แตะหมุดแล้วเพิ่มเข้าทริปได้เลย',out:'→ C5 / D4'}]}],
+ note:'<b>ตัวกรอง "เปิดอยู่ตอนนี้"</b> ต้องมีข้อมูลเวลาเปิดจริงก่อน ถ้าจังหวัดไหนยังไม่มีให้ซ่อนตัวกรองนี้ไปเลย ไม่ใช่แสดงแล้วกรองได้ 0 อัน'},
+
+{id:'plan',name:'จัดแผนทริป',goal:'ส่วนที่เวอร์ชันส่วนตัวทำได้ดีอยู่แล้ว เก็บกลไกเดิมไว้ทั้งหมด เปลี่ยนแค่ให้รองรับหลายทริปและหลายคน',
+ steps:[
+  {s:'D1',do:'ทริปทั้งหมดแยกตามสถานะ กำลังจะถึง / ร่าง / ไปแล้ว / ที่ร่วมแก้',out:'เลือกทริป → D3'},
+  {s:'D3',do:'ไทม์ไลน์รายวัน เรียงตามเวลาอัตโนมัติ มีระยะทางจริงคั่นระหว่างจุด',out:'→ D4 / D5 / D6'},
+  {s:'D4',do:'เพิ่มที่เข้าวัน ติ๊กหลายอันพร้อมกัน จุดอ้างอิงระยะขยับตามที่ติ๊กล่าสุด',out:'→ D3'},
+  {s:'D5',do:'แก้เวลา โน้ต ย้ายวัน หรือลบ รวมไว้ที่เดียวต่อหนึ่งจุด',out:'→ D3'},
+  {s:'D6',do:'ยืนยันเส้นทางก่อนออกไป Google Maps และเตือนเมื่อเกิน 9 จุดกลาง',out:'→ Google Maps'}],
+ extra:[{cap:'ทางแยก — ที่ที่ยังไม่มีในคลัง',steps:[{s:'D7',do:'เพิ่มเองด้วยลิงก์ Google Maps 3 ขั้น เก็บเป็นของส่วนตัว เสนอเข้าคลังกลางแยกต่างหาก',out:'→ D3'}]}],
+ note:'<b>ข้อจำกัดที่ต้องบอก</b> Google Maps รับจุดกลางได้ 9 จุด แผนวันที่ยาวกว่านั้นจะถูกตัด — ต้องบอกว่าจุดไหนหลุดและเสนอแยกเป็น 2 เส้นทาง แทนที่จะตัดเงียบ ๆ'},
+
+{id:'share',name:'แชร์ทริป',goal:'ไล่ระดับทีละขั้น ไม่ใช่สวิตช์เดียว และลดระดับกลับได้เสมอ — เป็นจุดเดียวในแอปที่ข้อมูลส่วนตัวกลายเป็นสาธารณะ',
+ steps:[
+  {s:'D3',do:'ปุ่มแชร์อยู่บนหัวทริป',out:'→ E1'},
+  {s:'E1',do:'3 ระดับ: ส่วนตัว → ใครมีลิงก์ก็ดูได้ → เผยแพร่สาธารณะ · ทุกทริปเกิดมาเป็นส่วนตัว',out:'guest → G1 · สมาชิก → ได้ลิงก์'},
+  {s:'G1',do:'ถ้ายังเป็น guest ต้องสมัครก่อน เพราะลิงก์ต้องผูกเจ้าของ',out:'สมัครเสร็จ → กลับ E1'},
+  {s:'E2',do:'สิ่งที่คนรับลิงก์เห็น — อ่านได้โดยไม่ต้องสมัคร โน้ตส่วนตัวต้องไม่โผล่',out:'→ E5 ก๊อปไปใช้'}],
+ extra:[{cap:'ระดับที่ 3 — เผยแพร่เข้าฟีดสาธารณะ',steps:[
+  {s:'F3',do:'ขั้นกันพลาด ระบบไฮไลต์โน้ตที่มีเลขจอง เบอร์โทร อีเมล ให้เลือกซ่อนก่อน',out:'→ F1 ฟีด'},
+  {s:'F1',do:'ทริปขึ้นฟีด เรียงจากยอดก๊อป ไม่ใช่ยอดวิว',out:'จบ flow'}]}],
+ note:'<b>ต้องมี</b> ลดระดับกลับได้ตลอด และเมื่อลดระดับ ลิงก์เดิมต้องตายทันที · ก่อนเผยแพร่ต้องบอกว่ามีโน้ตส่วนตัวกี่บรรทัดที่คนอื่นจะเห็นด้วย'},
+
+{id:'collab',name:'ร่วมแก้กับเพื่อน',goal:'ไม่ต้องทำ realtime แบบ Google Docs เพราะทริปเปลี่ยนไม่บ่อยพอ — แค่ "เห็นว่าใครทำอะไรเมื่อไร" และกันไม่ให้เขียนทับกันก็พอ',
+ steps:[
+  {s:'E1',do:'เชิญร่วมแก้แยกจากระดับการมองเห็น เพราะเป็นคนละคำถาม',out:'→ E3'},
+  {s:'E3',do:'สิทธิ์มี 2 ระดับ แก้ได้ / ดูอย่างเดียว · ลิงก์เชิญหมดอายุได้ ยกเลิกได้',out:'ส่งคำเชิญ'},
+  {s:'H1',do:'ฝั่งผู้รับได้ทั้งอีเมลและแจ้งเตือนในแอป ตอบรับได้จากในลิสต์เลย',out:'เข้าร่วม → E4'},
+  {s:'E4',do:'เห็นว่าใครออนไลน์ ใครเพิ่งแก้อะไร · จุดที่คนอื่นเปิดแก้อยู่จะล็อกไว้ชั่วคราว',out:'→ D5'},
+  {s:'D5',do:'แก้แล้ว toast บอกว่าใครจะเห็นการเปลี่ยนแปลงนี้บ้าง',out:'จบ flow'}],
+ extra:[],
+ note:'<b>ล็อกระดับรายการ</b> ขณะที่คนหนึ่งเปิด D5 แก้จุดนั้นอยู่ อีกคนแก้ไม่ได้ — ป้องกันการเขียนทับโดยไม่ต้องทำ merge ที่ซับซ้อน · ประวัติการแก้ต้องย้อนกลับได้อย่างน้อย 30 รายการ'},
+
+{id:'fork',name:'ก๊อปทริปคนอื่นมาใช้',goal:'ทางที่ทำให้ฟีดชุมชนมีประโยชน์จริง ไม่ใช่แค่ดูเพลิน ๆ — ทำได้ตั้งแต่ยังเป็น guest',
+ steps:[
+  {s:'F1',do:'ฟีดเรียงจากยอดก๊อป เพราะวัดว่าทริปนั้นเอาไปใช้ได้จริง',out:'→ E2'},
+  {s:'E2',do:'อ่านทั้งทริปได้โดยไม่ต้องสมัคร · กดชื่อเจ้าของไปดูโปรไฟล์ได้',out:'→ E5'},
+  {s:'E5',do:'เลื่อนวันทั้งชุดมาตรงกับวันของเรา · เลือกได้ว่าจะเอาโน้ตเจ้าของมาด้วยไหม',out:'→ D3'},
+  {s:'D3',do:'แก้ต่อได้อิสระ ขาดจากต้นฉบับแล้ว แต่ยังให้เครดิตบนหัวทริป',out:'จบ flow'}],
+ extra:[{cap:'หน้าประกอบ',steps:[
+  {s:'F2',do:'โปรไฟล์เจ้าของ เห็นเฉพาะทริปสาธารณะ ทริปลิงก์และส่วนตัวต้องไม่โผล่',out:'→ E2'},
+  {s:'F4',do:'รายงานเนื้อหา ต้องมีในทุกหน้าที่แสดงของจากผู้ใช้คนอื่น',out:'ส่งแล้วกลับหน้าเดิม'}]}],
+ note:'<b>กติกาการก๊อป</b> ก๊อปแล้วขาดจากต้นฉบับทันที ต้นฉบับแก้ทีหลังไม่กระทบ · เก็บ forkedFrom ไว้ให้เครดิต และนับ stats.forks ให้เจ้าของเดิม'},
+
+{id:'ontrip',name:'วันเดินทางจริง',goal:'วันที่ไปจริงคนไม่ได้อยากเห็นทั้งแผน อยากรู้แค่ "ตอนนี้ควรอยู่ไหน ไปต่อยังไง เหลืออีกกี่ที่" — แอปสลับโหมดเองตามวันที่ ไม่ต้องให้กดสลับ',
+ steps:[
+  {s:'B3',do:'เข้าโหมดอัตโนมัติเมื่อวันนี้อยู่ในช่วงของทริป · เช็คอิน/ข้ามได้ให้แผนขยับตามจริง',out:'→ H2 / D6'},
+  {s:'H2',do:'เปิดเตือนเข้าใกล้ · บอกข้อจำกัดของเบราว์เซอร์ตรง ๆ ในหน้านี้',out:'ยังไม่ให้สิทธิ์ → I1'},
+  {s:'I1',do:'อธิบายก่อนขอเสมอ เพราะเบราว์เซอร์ให้โอกาสถามครั้งเดียว',out:'อนุญาต → กลับ H2'},
+  {s:'H3',do:'การ์ดลอย ไม่ขวางการใช้งาน · ต้องมีปุ่ม "ไม่เตือนที่นี่อีก"',out:'กด → C5'},
+  {s:'C5',do:'ดูรายละเอียดแล้วกดนำทางออกไป Google Maps',out:'จบ flow'}],
+ extra:[{cap:'สถานะที่เจอบ่อยตอนอยู่ต่างจังหวัด',steps:[
+  {s:'I2',do:'ออฟไลน์ — ทริปที่กำลังจะถึงต้องถูกดึงมาเก็บล่วงหน้าอัตโนมัติ แก้ต่อได้แล้วซิงก์ทีหลัง',out:'ออนไลน์ → ซิงก์เอง'}]}],
+ note:'<b>เพดานการเตือน</b> ยืนนิ่งในเมืองเก่าที่มี 17 ที่ในรัศมี 300 ม. จะถูกไล่เตือนทีละที่ทุก 5 นาทีจนครบราว 85 นาที — ต้องจำกัดไม่เกิน 6 ครั้งต่อชั่วโมง และรวมที่ใกล้กันเป็นการ์ดเดียว'}
+];
+
+/* ---------- render ---------- */
+function card(step,i){
+  const s=S[step.s];
+  if(!s) return '';
+  return '<div class="card"><div class="card-hd">'+(i?'<span class="step">'+i+'</span>':'')+
+    '<span class="sid">'+esc(step.s)+'</span><span class="nm">'+esc(s.n)+'</span></div>'+
+    phone(s)+'<p class="cap">'+esc(step.do)+'<span class="out">'+esc(step.out||'')+'</span></p></div>';
+}
+const strip = steps => '<div class="strip">'+steps.map((st,i)=>card(st,i+1)).join('<span class="arrow" aria-hidden="true">→</span>')+'</div>';
+
+function render(f){
+  const ids=f.steps.map(s=>'<span class="pill">'+esc(s.s)+'</span>').join('<span class="arrowtx">→</span>');
+  const br=f.extra.flatMap(e=>e.steps).map(s=>'<span class="pill br">'+esc(s.s)+'</span>').join('');
+  let h='<div class="p-head"><span class="p-id">'+esc(f.no)+'</span><h2>'+esc(f.name)+'</h2></div>'+
+    '<p class="p-goal">'+esc(f.goal)+'</p>'+
+    '<div class="p-meta">'+ids+(br?'<span class="arrowtx">·  ทางแยก</span>'+br:'')+'</div>'+
+    '<div class="strip-cap">เส้นทางหลัก · '+f.steps.length+' หน้า</div>'+strip(f.steps);
+  f.extra.forEach(e=>{ h+='<div class="strip-cap">'+esc(e.cap)+'</div>'+strip(e.steps); });
+  if(f.note) h+='<div class="note">'+f.note+'</div>';
+  document.getElementById('panel').innerHTML=h;
+  document.title='Tripster Flow Wireframes';
+}
+function select(id,push){
+  const f=FLOWS.find(x=>x.id===id)||FLOWS[0];
+  render(f);
+  [...document.querySelectorAll('#nav button')].forEach(b=>b.setAttribute('aria-current',String(b.dataset.id===f.id)));
+  if(push && location.hash!=='#'+f.id) history.replaceState(null,'','#'+f.id);
+  window.scrollTo({top:0,behavior:'auto'});
+}
+FLOWS.forEach((f,i)=>f.no=String(i+1).padStart(2,'0'));
+document.getElementById('nav').innerHTML=FLOWS.map(f=>
+  '<button type="button" data-id="'+f.id+'" aria-current="false"><span class="no">'+f.no+'</span>'+
+  '<span class="tx">'+esc(f.name)+'</span><span class="ct">'+(f.steps.length+f.extra.flatMap(e=>e.steps).length)+'</span></button>').join('');
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-id]');
+  if(b) select(b.dataset.id,true);
+});
+window.addEventListener('hashchange',()=>select(location.hash.slice(1),false));
+select(location.hash.slice(1)||FLOWS[0].id,false);
+</script>
+</body></html>
