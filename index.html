@@ -157,6 +157,28 @@ a{color:inherit;text-decoration:none}
 .daychip.add{min-width:0;justify-content:center;align-items:center;border-style:dashed;color:var(--ink-2);font-size:var(--fs-sm);font-weight:600}
 .ctl-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
+/* ---------- เตือนเมื่อเข้าใกล้สถานที่ ---------- */
+.nearby{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;box-shadow:var(--shadow-sm)}
+.nearby-top{display:flex;align-items:flex-start;gap:12px}
+.nearby-top .txt{flex:1;min-width:0}
+.nearby-top h3{font-size:var(--fs-base);font-weight:700;line-height:1.35}
+.nearby-top p{font-size:var(--fs-xs);color:var(--ink-3);margin-top:4px;line-height:1.5}
+.sw{flex:0 0 auto;width:52px;height:31px;border-radius:999px;background:var(--line-2);position:relative;transition:background .18s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:25px;height:25px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.28);transition:transform .18s}
+.sw[aria-pressed="true"]{background:var(--accent-strong)}
+.sw[aria-pressed="true"]::after{transform:translateX(21px)}
+.nearby-body{margin-top:13px;padding-top:13px;border-top:1px solid var(--line)}
+.nearby-lbl{font-size:var(--fs-xs);color:var(--ink-3);font-weight:600}
+.nearby-radius{display:flex;gap:7px;margin-top:8px}
+.rchip{flex:1;border:1px solid var(--line-2);border-radius:var(--r-md);padding:9px 4px;
+  font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
+.rchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--app)}
+.nearby-live{display:flex;align-items:center;gap:8px;font-size:var(--fs-xs);color:var(--ink-2);margin-top:12px;line-height:1.45}
+.nearby-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-strong);flex:0 0 auto;animation:geopulse 1.9s ease-in-out infinite}
+@keyframes geopulse{50%{opacity:.22}}
+.nearby-warn{font-size:var(--fs-xs);color:var(--cat-restaurant);margin-top:9px;line-height:1.5}
+
 .btn{
   border-radius:999px;padding:14px 20px;min-height:50px;
   font-size:var(--fs-base);font-weight:700;letter-spacing:.01em;
@@ -947,10 +969,13 @@ const SEED_PLACES = [
   {id:'h1', cat:'stay', name:'Supalai Scenic Bay Resort & Spa', note:'ที่พัก', q:'Supalai Scenic Bay Resort & Spa Phuket', lat:8.08401, lng:98.4333663}
 ];
 
+const GEO_RADII = [300, 500, 1000];
+
 const SEED = {
   places: SEED_PLACES.map(p => ({...p, dest: p.dest || DEFAULT_DEST})),   // จังหวัดอื่นพก dest มาเอง
   saved: [],
   dests: [],
+  geo: {on:false, radius:300, notified:{}},
   activeTrip: 't1',
   trips: [{
     id:'t1', name:'พาแม่ ๆ ลุยภูเก็ต', dest:DEFAULT_DEST, startDate:'',
@@ -996,6 +1021,13 @@ function load(){
         if(d && Array.isArray(d.trips) && Array.isArray(d.places)){
           if(!Array.isArray(d.saved)) d.saved = [];
           if(!Array.isArray(d.dests)) d.dests = [];
+          if(!d.geo || typeof d.geo !== 'object') d.geo = {on:false, radius:300, notified:{}};
+          if(!d.geo.notified || typeof d.geo.notified !== 'object') d.geo.notified = {};
+          if(!GEO_RADII.includes(d.geo.radius)) d.geo.radius = 300;
+          {  // ลบประวัติการเตือนของวันก่อน ๆ ทิ้ง เพื่อให้พรุ่งนี้เตือนที่เดิมได้อีก
+            const today = new Date().toISOString().slice(0,10);
+            for(const k of Object.keys(d.geo.notified)) if(d.geo.notified[k] !== today) delete d.geo.notified[k];
+          }
           d.places.forEach(x => { if(!x.dest) x.dest = DEFAULT_DEST; });
           d.trips.forEach(x => { if(!x.dest) x.dest = DEFAULT_DEST; });
           return d;
@@ -1115,6 +1147,128 @@ function legKm(aId, bId){
   const h = Math.sin(dLat/2)**2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng/2)**2;
   return 2 * R * Math.asin(Math.sqrt(h));
 }
+
+/* ระยะจากพิกัดสด ๆ ไปยังสถานที่ — legKm ด้านบนรับแต่ id เลยใช้ซ้ำไม่ได้ */
+function kmTo(la, ln, p){
+  const R = 6371, rad = x => x * Math.PI / 180;
+  const dLat = rad(p.lat - la), dLng = rad(p.lng - ln);
+  const h = Math.sin(dLat/2)**2 + Math.cos(rad(la)) * Math.cos(rad(p.lat)) * Math.sin(dLng/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/* ---------- เตือนเมื่อเข้าใกล้สถานที่ ----------
+   ทำงานเฉพาะตอนเปิดแอปค้างไว้ เว็บติดตามตำแหน่งตอนปิดแอปไม่ได้
+   กติกา: เข้ารัศมี -> หยิบที่ใกล้สุด -> เตือนที่ละครั้งต่อวัน -> เว้นอย่างน้อย 5 นาที */
+const NEARBY_GAP_MS = 5 * 60 * 1000;
+const NEARBY_HIDE_MS = 5 * 60 * 1000;
+
+const nearby = {
+  watchId: null,
+  inside: new Set(),
+  lastAt: 0,
+  status: '',
+  hideTimer: null,
+
+  today(){ return new Date().toISOString().slice(0,10); },
+
+  async start(){
+    if(!('geolocation' in navigator)){ toast('เครื่องนี้ไม่รองรับการหาตำแหน่ง'); return false; }
+    if('Notification' in window && Notification.permission === 'default'){
+      try{ await Notification.requestPermission(); }catch(e){}
+    }
+    this.inside.clear();
+    this.status = 'กำลังหาตำแหน่ง…';
+    this.paint();
+    this.watchId = navigator.geolocation.watchPosition(
+      pos => this.onPos(pos),
+      err => this.onErr(err),
+      { enableHighAccuracy:false, maximumAge:15000, timeout:20000 }
+    );
+    return true;
+  },
+
+  stop(){
+    if(this.watchId != null) navigator.geolocation.clearWatch(this.watchId);
+    this.watchId = null;
+    this.inside.clear();
+    this.status = '';
+  },
+
+  onErr(err){
+    if(err.code === 1){                       // ผู้ใช้ปฏิเสธสิทธิ์
+      state.geo.on = false; this.stop(); save();
+      toast('ไม่ได้รับสิทธิ์เข้าถึงตำแหน่ง');
+      renderHome();
+      return;
+    }
+    this.status = err.code === 3 ? 'หาตำแหน่งไม่ทันเวลา กำลังลองใหม่' : 'หาตำแหน่งไม่สำเร็จ';
+    this.paint();
+  },
+
+  onPos(pos){
+    const la = pos.coords.latitude, ln = pos.coords.longitude;
+    const r = state.geo.radius / 1000;
+    const near = state.places
+      .filter(p => p.lat != null && p.lng != null)
+      .map(p => ({ p, km: kmTo(la, ln, p) }))
+      .filter(x => x.km <= r)
+      .sort((a, b) => a.km - b.km);
+
+    const day = this.today();
+    const nowIn = new Set(near.map(x => x.p.id));
+    const queue = near.filter(x => !this.inside.has(x.p.id) && state.geo.notified[x.p.id] !== day);
+
+    if(queue.length){
+      const ready = Date.now() - this.lastAt > NEARBY_GAP_MS;
+      if(ready){
+        const hit = queue[0];                 // ใกล้สุดก่อน
+        state.geo.notified[hit.p.id] = day;
+        this.lastAt = Date.now();
+        this.fire(hit.p, hit.km);
+        save();
+      }
+      // ที่ยังไม่ได้เตือนต้องไม่ถูกนับว่า "เข้ามาแล้ว" ไม่งั้นจะหายไปทั้งวัน
+      // ทั้งที่ยังยืนอยู่ในรัศมี — ปล่อยค้างคิวไว้ให้รอบถัดไปหยิบไปเตือน
+      queue.slice(ready ? 1 : 0).forEach(x => nowIn.delete(x.p.id));
+    }
+
+    this.inside = nowIn;
+    this.status = near.length
+      ? `ใกล้คุณ ${near.length} ที่ · ใกล้สุดคือ ${near[0].p.name} ${fmtKm(near[0].km)}`
+      : 'ยังไม่มีที่ในลิสต์อยู่ในรัศมี';
+    this.paint();
+  },
+
+  fire(p, km){
+    const title = `ใกล้ ${p.name}`;
+    const body = `ห่างจากคุณ ${fmtKm(km)}${p.note ? ' · ' + p.note : ''}`;
+    if('Notification' in window && Notification.permission === 'granted'){
+      try{
+        const n = new Notification(title, { body, tag: 'nearby-' + p.id });
+        n.onclick = () => { window.focus(); openDetail(p.id); n.close(); };
+        return;
+      }catch(e){}
+    }
+    toast(title + ' — ' + body);           // เบราว์เซอร์บล็อกแจ้งเตือน ใช้แถบในแอปแทน
+  },
+
+  /* อัปเดตเฉพาะบรรทัดสถานะ ไม่ re-render ทั้งหน้า จะได้ไม่เด้งสกรอลล์ */
+  paint(){
+    const el = document.getElementById('geoStatus');
+    if(el) el.textContent = this.status;
+  }
+};
+
+document.addEventListener('visibilitychange', () => {
+  if(!state.geo.on) return;
+  if(document.hidden){
+    clearTimeout(nearby.hideTimer);
+    nearby.hideTimer = setTimeout(() => nearby.stop(), NEARBY_HIDE_MS);   // ประหยัดแบตเมื่อสลับแท็บนาน
+  }else{
+    clearTimeout(nearby.hideTimer);
+    if(nearby.watchId == null) nearby.start();
+  }
+});
 
 const IC = {
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9Z"/></svg>',
@@ -1382,6 +1536,30 @@ function destGridHtml(attr, list){
 }
 
 /* ---------- หน้าแรก ---------- */
+function nearbyHtml(){
+  const g = state.geo;
+  const blocked = 'Notification' in window && Notification.permission === 'denied';
+  const label = m => m >= 1000 ? (m / 1000) + ' กม.' : m + ' ม.';
+  return `<div class="sechead"><h2>เตือนเมื่อเข้าใกล้</h2></div>
+    <div class="nearby">
+      <div class="nearby-top">
+        <span class="txt">
+          <h3>เตือนเมื่อเข้าใกล้ที่ในลิสต์</h3>
+          <p>ทำงานตอนเปิดแอปค้างไว้เท่านั้น ถ้าปิดแอปหรือล็อกจอไว้จะไม่เตือน</p>
+        </span>
+        <button class="sw" data-geo-toggle aria-pressed="${g.on}" aria-label="เปิดปิดการเตือนเมื่อเข้าใกล้"></button>
+      </div>
+      ${g.on ? `<div class="nearby-body">
+        <span class="nearby-lbl">รัศมี</span>
+        <div class="nearby-radius">
+          ${GEO_RADII.map(m => `<button class="rchip" data-geo-radius="${m}" aria-pressed="${g.radius === m}">${label(m)}</button>`).join('')}
+        </div>
+        <div class="nearby-live"><span class="nearby-dot"></span><span id="geoStatus">${esc(nearby.status || 'กำลังหาตำแหน่ง…')}</span></div>
+        ${blocked ? `<p class="nearby-warn">เบราว์เซอร์บล็อกการแจ้งเตือนไว้ จะขึ้นเป็นแถบในแอปแทน</p>` : ''}
+      </div>` : ''}
+    </div>`;
+}
+
 function renderHome(){
   const t = currentTrip();
   const dests = allDests();
@@ -1436,6 +1614,7 @@ function renderHome(){
         <button class="more" data-dest="${esc(currentDest())}">ดูทั้งหมด</button></div>
       <div class="rail scrollx">${top.map(pcardHtml).join('')}</div>` : ''}
 
+    ${nearbyHtml()}
     <div class="sechead"><h2>ทริปของคุณ</h2><span class="cnt">${state.trips.length}</span></div>
     ${state.trips.map(x => {
       const stops = x.days.reduce((n,d) => n + d.items.length, 0);
@@ -2193,6 +2372,22 @@ document.addEventListener('click', e => {
   if(t.closest('[data-closephotos]')){ closePhotos(); return; }
   if(t.closest('[data-openphotos]')){ openPhotos(); return; }
 
+  if(t.closest('[data-geo-toggle]')){
+    state.geo.on = !state.geo.on;
+    save();
+    if(state.geo.on) nearby.start(); else nearby.stop();
+    renderHome();
+    return;
+  }
+  const gRad = t.closest('[data-geo-radius]');
+  if(gRad){
+    state.geo.radius = +gRad.dataset.geoRadius;
+    nearby.inside.clear();          // เริ่มนับขอบใหม่ ไม่งั้นรัศมีใหม่จะเงียบ
+    save();
+    renderHome();
+    return;
+  }
+
   const cover = t.closest('[data-cover]');
   if(cover){
     const p = place(cover.dataset.cover);
@@ -2566,6 +2761,7 @@ document.addEventListener('keydown', e => {
 
 renderAll();
 setView('home');
+if(state.geo.on) nearby.start();
 </script>
 </body>
 </html>
