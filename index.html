@@ -354,7 +354,7 @@ a{color:inherit;text-decoration:none}
 /* ---------- tab bar ---------- */
 .tabbar{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(480px,100%);z-index:30;display:grid;grid-template-columns:repeat(3,1fr);
+  width:min(480px,100%);z-index:30;display:grid;grid-template-columns:repeat(4,1fr);
   background:var(--surface);border-top:1px solid var(--line);
   padding:7px 8px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px -14px rgba(22,48,92,.4);
 }
@@ -783,6 +783,7 @@ a.fact:hover{border-color:var(--accent)}
     <section class="view" id="viewHome"></section>
     <section class="view is-hidden" id="viewPlan"></section>
     <section class="view is-hidden" id="viewPlaces"></section>
+    <section class="view is-hidden" id="viewAlerts"></section>
   </main>
 
   <nav class="tabbar" role="tablist">
@@ -797,6 +798,10 @@ a.fact:hover{border-color:var(--accent)}
     <button role="tab" data-view="places" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
       ค้นหา
+    </button>
+    <button role="tab" data-view="alerts" aria-selected="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16s-2-1.5-2-6.5Z"/><path d="M13.7 19a2 2 0 0 1-3.4 0"/></svg>
+      แจ้งเตือน
     </button>
   </nav>
 </div>
@@ -1198,7 +1203,7 @@ const nearby = {
     if(err.code === 1){                       // ผู้ใช้ปฏิเสธสิทธิ์
       state.geo.on = false; this.stop(); save();
       toast('ไม่ได้รับสิทธิ์เข้าถึงตำแหน่ง');
-      renderHome();
+      renderAlerts(); renderHero();
       return;
     }
     this.status = err.code === 3 ? 'หาตำแหน่งไม่ทันเวลา กำลังลองใหม่' : 'หาตำแหน่งไม่สำเร็จ';
@@ -1328,7 +1333,7 @@ function renderHero(){
   const d = currentDay();
   const items = d ? sortedItems(d) : [];
   const lead = items.map(i => place(i.pid)).find(p => p && photoOf(p));
-  const bg = view === 'home'
+  const bg = (view === 'home' || view === 'alerts')
     ? `background-image:url('${HOME_COVER}')`
     : (view === 'plan' && lead)
       ? `background-image:url('${photoOf(lead)}')`
@@ -1355,6 +1360,12 @@ function renderHero(){
       : {eyebrow:'ค้นหา', title:'เลือกจังหวัดก่อน',
          meta:`<span><b>${allDests().filter(d => !isSoon(d)).length}</b> จุดหมายพร้อมใช้</span>
                <span><b>${state.places.length}</b> ที่ทั้งหมด</span>`};
+  }else if(view === 'alerts'){
+    const day = new Date().toISOString().slice(0,10);
+    const n = Object.values(state.geo.notified).filter(x => x === day).length;
+    const r = state.geo.radius >= 1000 ? (state.geo.radius/1000) + ' กม.' : state.geo.radius + ' ม.';
+    H = {eyebrow:'เมื่อเข้าใกล้ที่ในลิสต์', title:'การแจ้งเตือน',
+         meta:`<span>${state.geo.on ? 'เปิดอยู่' : 'ปิดอยู่'}</span><span>รัศมี <b>${r}</b></span><span>วันนี้ <b>${n}</b> ครั้ง</span>`};
   }else{
     H = {eyebrow: t ? 'ทริปที่กำลังจัด' : 'เริ่มต้นที่นี่', title: t ? t.name : 'ยังไม่มีทริป',
          meta: t ? `<span>${esc(destOf(t.dest)?.name || '')}</span><span><b>${t.days.length}</b> วัน</span><span><b>${stops}</b> จุด</span>` : ''};
@@ -1363,7 +1374,7 @@ function renderHero(){
   const hero = $('#hero');
   hero.setAttribute('style', bg);
   hero.classList.toggle('flat', view !== 'plan');
-  hero.classList.toggle('on-photo', view === 'home');
+  hero.classList.toggle('on-photo', view === 'home' || view === 'alerts');
   hero.innerHTML = `
     <div class="hero-top">
       <div class="hero-icons">
@@ -1540,8 +1551,7 @@ function nearbyHtml(){
   const g = state.geo;
   const blocked = 'Notification' in window && Notification.permission === 'denied';
   const label = m => m >= 1000 ? (m / 1000) + ' กม.' : m + ' ม.';
-  return `<div class="sechead"><h2>เตือนเมื่อเข้าใกล้</h2></div>
-    <div class="nearby">
+  return `<div class="nearby">
       <div class="nearby-top">
         <span class="txt">
           <h3>เตือนเมื่อเข้าใกล้ที่ในลิสต์</h3>
@@ -1558,6 +1568,22 @@ function nearbyHtml(){
         ${blocked ? `<p class="nearby-warn">เบราว์เซอร์บล็อกการแจ้งเตือนไว้ จะขึ้นเป็นแถบในแอปแทน</p>` : ''}
       </div>` : ''}
     </div>`;
+}
+
+function renderAlerts(){
+  const day = new Date().toISOString().slice(0,10);
+  const done = Object.keys(state.geo.notified)
+    .filter(id => state.geo.notified[id] === day && place(id))
+    .map(id => place(id));
+  $('#viewAlerts').innerHTML = `
+    ${nearbyHtml()}
+    <div class="sechead"><h2>เตือนไปแล้ววันนี้</h2><span class="cnt">${done.length}</span></div>
+    ${done.length
+      ? `<div class="grid">${done.map(pcardHtml).join('')}</div>
+         <div class="linkrow"><button class="btn btn-quiet" data-geo-clear>${IC.trash} ล้างประวัติวันนี้</button></div>`
+      : `<div class="empty"><strong>ยังไม่มีการเตือนวันนี้</strong>${state.geo.on
+          ? 'เปิดอยู่แล้ว รอจนกว่าจะเข้าใกล้ที่ในลิสต์'
+          : 'เปิดสวิตช์ด้านบนเพื่อเริ่ม'}</div>`}`;
 }
 
 function renderHome(){
@@ -1614,7 +1640,6 @@ function renderHome(){
         <button class="more" data-dest="${esc(currentDest())}">ดูทั้งหมด</button></div>
       <div class="rail scrollx">${top.map(pcardHtml).join('')}</div>` : ''}
 
-    ${nearbyHtml()}
     <div class="sechead"><h2>ทริปของคุณ</h2><span class="cnt">${state.trips.length}</span></div>
     ${state.trips.map(x => {
       const stops = x.days.reduce((n,d) => n + d.items.length, 0);
@@ -1904,7 +1929,7 @@ function footHtml(){
   </div>`;
 }
 
-function renderAll(){ renderHome(); renderPlan(); renderPlaces(); renderHero(); refreshDrag(); }
+function renderAll(){ renderHome(); renderPlan(); renderPlaces(); renderAlerts(); renderHero(); refreshDrag(); }
 
 /* ---------- detail screen ---------- */
 const isSaved = id => (state.saved || []).includes(id);
@@ -2344,6 +2369,7 @@ function setView(v){
   $('#viewHome').classList.toggle('is-hidden', v !== 'home');
   $('#viewPlan').classList.toggle('is-hidden', v !== 'plan');
   $('#viewPlaces').classList.toggle('is-hidden', v !== 'places');
+  $('#viewAlerts').classList.toggle('is-hidden', v !== 'alerts');
   renderHero();
   if(window.scrollY > 0) window.scrollTo(0, 0);   // ทันที ไม่ smooth จะได้ไม่กระตุกซ้อนกับ hero
 }
@@ -2376,7 +2402,7 @@ document.addEventListener('click', e => {
     state.geo.on = !state.geo.on;
     save();
     if(state.geo.on) nearby.start(); else nearby.stop();
-    renderHome();
+    renderAlerts(); renderHero();
     return;
   }
   const gRad = t.closest('[data-geo-radius]');
@@ -2384,7 +2410,15 @@ document.addEventListener('click', e => {
     state.geo.radius = +gRad.dataset.geoRadius;
     nearby.inside.clear();          // เริ่มนับขอบใหม่ ไม่งั้นรัศมีใหม่จะเงียบ
     save();
-    renderHome();
+    renderAlerts(); renderHero();
+    return;
+  }
+  if(t.closest('[data-geo-clear]')){
+    state.geo.notified = {};
+    nearby.inside.clear();
+    save();
+    renderAlerts(); renderHero();
+    toast('ล้างประวัติการเตือนวันนี้แล้ว');
     return;
   }
 
