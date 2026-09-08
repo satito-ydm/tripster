@@ -459,11 +459,11 @@ a{color:inherit;text-decoration:none}
 }
 .resume .cta svg{width:15px;height:15px}
 
-.destgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.destgrid{display:grid;grid-template-columns:1fr;gap:11px}
 .destcard{
   position:relative;text-align:left;border-radius:var(--r-lg);overflow:hidden;
   background:var(--surface);border:0;box-shadow:var(--shadow-md);
-  display:block;aspect-ratio:3 / 4;
+  display:block;aspect-ratio:16 / 9;
 }
 .destcard:hover{box-shadow:var(--shadow-lg)}
 .destcard .ph{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#1E3A5F}
@@ -479,13 +479,14 @@ a{color:inherit;text-decoration:none}
 }
 .destcard.is-soon{opacity:.7}
 .destcard.newdest{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  padding:14px 12px;text-align:center;
+  display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:15px;
+  padding:14px 18px;text-align:left;
   background:color-mix(in srgb,var(--sea) 11%,var(--surface));
   border:1px dashed color-mix(in srgb,var(--sea) 48%,transparent);box-shadow:none;
 }
 .destcard.newdest:hover{border-color:var(--sea);background:color-mix(in srgb,var(--sea) 16%,var(--surface));box-shadow:none}
-.destcard.newdest img{width:min(62%,124px);height:auto;margin-bottom:6px}
+.destcard.newdest img{width:min(28%,96px);height:auto;flex:0 0 auto}
+.destcard.newdest .nd-tx{display:flex;flex-direction:column;gap:3px;min-width:0}
 .destcard.newdest b{font-size:var(--fs-md);font-weight:700;color:var(--ink);line-height:1.3}
 .destcard.newdest span{font-size:var(--fs-xs);color:var(--ink-2);line-height:1.5}
 .destcard.newdest svg{width:18px;height:18px}
@@ -875,6 +876,10 @@ a.fact:hover{border-color:var(--accent)}
   .control{margin-top:22px;padding:18px}
   .sechead{margin:26px 0 13px}   /* จอกว้างมีที่ให้หายใจมากกว่า เพิ่มระยะระหว่างเซกชัน 20% */
   .destgrid{grid-template-columns:repeat(4,1fr)}
+  .destcard{aspect-ratio:3 / 4}
+  .destcard.newdest{flex-direction:column;justify-content:center;gap:3px;padding:14px 12px;text-align:center}
+  .destcard.newdest img{width:min(62%,124px);margin-bottom:6px}
+  .destcard.newdest .nd-tx{align-items:center}
   .pcard{flex-basis:212px}
   .pcard-photo{height:132px}
   .rail .pcard{flex-basis:320px}
@@ -2302,8 +2307,8 @@ function renderHome(){
       }).join('')}
       <button class="destcard newdest" id="newDestBtn">
         <img src="${ART_ADD}" alt="">
-        <b>เพิ่มที่ที่อยากไป</b>
-        <span>มีที่ไหนในใจอีกไหม?<br>เพิ่มเองได้เลย</span>
+        <span class="nd-tx"><b>เพิ่มที่ที่อยากไป</b>
+          <span>มีที่ไหนในใจอีกไหม? เพิ่มเองได้เลย</span></span>
       </button>
     </div>
     ${shown.length ? '' : `<div class="empty" style="margin-top:11px">
