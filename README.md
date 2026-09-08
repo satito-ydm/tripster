@@ -148,7 +148,7 @@ Google ไม่รับ `file://` เป็น authorized origin ถ้าเ�
 3. APIs & Services → OAuth consent screen → External → ใส่ชื่อแอปกับอีเมล → เพิ่มตัวเองใน Test users
 4. Credentials → Create credentials → OAuth client ID → **Web application**
    - Authorized JavaScript origins: `https://satito-ydm.github.io`
-5. คัดลอก Client ID มาวางในแอป: หน้าแรก → เลื่อนล่างสุด → **ซิงก์ Drive**
+5. คัดลอก Client ID มาวางในแอป: ปุ่มเฟืองมุมขวาบน → **ซิงก์กับ Google Drive**
 
 Client ID เปิดเผยได้ตามปกติของ OAuth ฝั่งเบราว์เซอร์ ตัวที่เป็นความลับคือ client secret ซึ่ง flow นี้ไม่ใช้
 
@@ -158,6 +158,7 @@ Client ID เปิดเผยได้ตามปกติของ OAuth ฝ
 - เทียบด้วย `state.updatedAt` ฝั่งไหนใหม่กว่าชนะ
 - ถ้าทั้งสองฝั่งแก้หลังซิงก์ล่าสุด จะถามก่อนว่าจะเอาของ Drive หรือของเครื่องนี้ ไม่ทับให้เอง
 - access token อยู่ได้ราว 1 ชั่วโมง หมดแล้วรอบอัตโนมัติจะหยุดเงียบ ๆ ไม่เด้งหน้าต่างขอสิทธิ์ขึ้นมาเอง ต้องกดซิงก์เอง
+- ไฟล์อยู่ใน **appDataFolder** ซึ่งเป็นโฟลเดอร์ซ่อน มองไม่เห็นใน Drive ตามปกติ ถ้าจะจัดการต้องไปที่ drive.google.com → ตั้งค่า → จัดการแอป
 
 ## ไฟล์ในโปรเจกต์
 
