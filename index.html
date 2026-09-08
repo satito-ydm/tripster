@@ -1207,6 +1207,7 @@ const KEY = 'tripster-v1';
 const OLD_KEY = 'phuket-trip-v2';
 
 let state = load();
+if(mergeNewSeed(state)) save();   // ที่ที่เติมทีหลังต้องไปถึงคนที่เคยเปิดแอปไว้แล้วด้วย
 let activeDayId = null;
 let activeDest = null;
 let placesDest = null;   // จังหวัดที่กำลังดูในแท็บค้นหา แยกจากจังหวัดของทริป
@@ -1243,6 +1244,17 @@ function load(){
   return structuredClone(SEED);
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); return true; }catch(e){ return false; } }
+
+/* state ที่เซฟไว้เก็บลิสต์สถานที่ทั้งก้อน พอเติมจังหวัดหรือที่ใหม่เข้า SEED
+   คนที่เคยเปิดแอปแล้วจะค้างอยู่กับลิสต์ชุดเก่าตลอด เลยต้องเติมเฉพาะที่ยังไม่มีให้
+   เทียบด้วย id และเติมอย่างเดียว ของที่ผู้ใช้แก้เอง (รูป คำบรรยาย) จึงไม่ถูกทับ
+   และแอปไม่มีทางลบสถานที่ ก็เลยไม่มีเคสที่การเติมจะไปปลุกของที่ตั้งใจลบทิ้ง */
+function mergeNewSeed(d){
+  const have = new Set(d.places.map(p => p.id));
+  const add = SEED.places.filter(p => !have.has(p.id));
+  if(add.length) d.places = d.places.concat(structuredClone(add));
+  return add.length;
+}
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
