@@ -1566,13 +1566,15 @@ function dayDate(trip, idx){
 }
 
 /* ---------- ซิงก์กับ Google Drive ----------
-   ใช้ scope drive.appdata แอปจึงเห็นแค่โฟลเดอร์ซ่อนของตัวเอง มองไฟล์อื่นใน Drive ไม่ได้เลย
+   ใช้ scope drive.file แอปเห็นเฉพาะไฟล์ที่ตัวเองสร้าง ไฟล์อื่นใน Drive มองไม่เห็นเลย
+   ต่างจาก drive.appdata ตรงที่ไฟล์อยู่ในโฟลเดอร์จริง เจ้าของเปิดดูและก๊อปเก็บเองได้
    ใช้ได้เฉพาะตอนเปิดผ่าน https เพราะ Google ไม่รับ file:// เป็น authorized origin */
 const GD = {
-  scope:'https://www.googleapis.com/auth/drive.appdata',
+  scope:'https://www.googleapis.com/auth/drive.file',
   fileName:'tripster-state.json',
+  folderName:'Tripster',
   cidKey:'tripster-gdrive-client',
-  metaKey:'tripster-gdrive-meta',
+  metaKey:'tripster-gdrive-v2',   // คนละคีย์กับของเดิม เพราะ fileId ชุดเก่าเป็นของโฟลเดอร์ซ่อน ใช้ต่อไม่ได้
   token:null, tokenExp:0, syncing:false, timer:null,
 };
 const gdUsable = () => location.protocol === 'https:' || location.hostname === 'localhost';
@@ -1623,11 +1625,27 @@ async function gdFetch(url, opt = {}, interactive = false){
   return r;
 }
 
+/* drive.file เห็นเฉพาะของที่แอปสร้าง การค้นหาจึงไม่ไปโดนไฟล์อื่นของเจ้าของอยู่แล้ว */
 async function gdFindFile(interactive){
   const q = encodeURIComponent(`name='${GD.fileName}' and trashed=false`);
-  const r = await gdFetch(`https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,modifiedTime)`, {}, interactive);
+  const r = await gdFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc`, {}, interactive);
   const d = await r.json();
   return d.files?.[0] || null;
+}
+
+async function gdFolderId(interactive){
+  const cached = gdMeta().folderId;
+  if(cached) return cached;
+  const q = encodeURIComponent(`name='${GD.folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+  const r = await gdFetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)`, {}, interactive);
+  const found = (await r.json()).files?.[0];
+  if(found){ gdSetMeta({folderId:found.id}); return found.id; }
+  const c = await gdFetch('https://www.googleapis.com/drive/v3/files?fields=id',
+    {method:'POST', headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({name:GD.folderName, mimeType:'application/vnd.google-apps.folder'})}, interactive);
+  const id = (await c.json()).id;
+  gdSetMeta({folderId:id});
+  return id;
 }
 
 async function gdPull(interactive){
@@ -1639,23 +1657,34 @@ async function gdPull(interactive){
   return body?.state ? body : null;
 }
 
+async function gdCreateFile(body, interactive){
+  const parent = await gdFolderId(interactive);
+  const boundary = 'tripster' + Date.now();
+  const multipart = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`
+    + JSON.stringify({name:GD.fileName, parents:[parent]})
+    + `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${boundary}--`;
+  const r = await gdFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',
+    {method:'POST', headers:{'Content-Type':'multipart/related; boundary=' + boundary}, body:multipart}, interactive);
+  return (await r.json()).id;
+}
+
 async function gdPush(interactive){
   const body = JSON.stringify({app:'tripster', v:1, state});
-  const meta = gdMeta();
-  let r;
-  if(meta.fileId){
-    r = await gdFetch(`https://www.googleapis.com/upload/drive/v3/files/${meta.fileId}?uploadType=media`,
-      {method:'PATCH', headers:{'Content-Type':'application/json'}, body}, interactive);
+  let id = gdMeta().fileId;
+  if(id){
+    try{
+      await gdFetch(`https://www.googleapis.com/upload/drive/v3/files/${id}?uploadType=media`,
+        {method:'PATCH', headers:{'Content-Type':'application/json'}, body}, interactive);
+    }catch(e){
+      // เจ้าของลบหรือย้ายไฟล์ทิ้งได้ เพราะไฟล์อยู่ในโฟลเดอร์จริง เจอแบบนั้นก็สร้างใหม่
+      if(!/40[34]/.test(e.message)) throw e;
+      gdSetMeta({fileId:null, folderId:null});
+      id = await gdCreateFile(body, interactive);
+    }
   }else{
-    const boundary = 'tripster' + Date.now();
-    const multipart = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n`
-      + JSON.stringify({name:GD.fileName, parents:['appDataFolder']})
-      + `\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${boundary}--`;
-    r = await gdFetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',
-      {method:'POST', headers:{'Content-Type':'multipart/related; boundary=' + boundary}, body:multipart}, interactive);
+    id = await gdCreateFile(body, interactive);
   }
-  const d = await r.json();
-  gdSetMeta({fileId:d.id || meta.fileId, pushedAt:state.updatedAt || Date.now(), syncedAt:Date.now()});
+  gdSetMeta({fileId:id, pushedAt:state.updatedAt || Date.now(), syncedAt:Date.now()});
 }
 
 function gdAdopt(remote){
@@ -1746,15 +1775,16 @@ function gdPanel(msg){
   }
   openSheet(`<div class="sheet-pad">
       <h2>ซิงก์กับ Google Drive</h2>
-      <div class="sheet-sub">เก็บทริปกับลิสต์ไว้ในโฟลเดอร์ซ่อนของแอปใน Drive คุณ เปิดเครื่องไหนก็ได้ข้อมูลชุดเดียวกัน แอปมองไฟล์อื่นใน Drive ไม่ได้</div>
+      <div class="sheet-sub">เก็บทริปกับลิสต์ไว้ที่ <b>Tripster/tripster-state.json</b> ใน Drive คุณ เปิดดูหรือก๊อปเก็บเองได้ เปิดเครื่องไหนก็ได้ข้อมูลชุดเดียวกัน แอปมองไฟล์อื่นใน Drive ไม่ได้</div>
       ${note}
       <label class="field"><span>OAuth Client ID</span>
         <input type="text" id="gdCid" value="${esc(cid)}" placeholder="xxxxx.apps.googleusercontent.com"></label>
       <div style="font-size:var(--fs-xs);color:var(--ink-3);line-height:1.7">
-        สร้างที่ Google Cloud Console → APIs &amp; Services → Credentials → Create OAuth client ID → Web application<br>
+        สร้างที่ Google Cloud Console → Clients → Create client → Web application<br>
         ใส่ <b>https://satito-ydm.github.io</b> ใน Authorized JavaScript origins แล้วเปิดใช้ Google Drive API
       </div>
       <div class="linkrow"><span style="font-size:var(--fs-xs);color:var(--ink-3)">สถานะ: ${m.on ? 'เชื่อมแล้ว' : 'ยังไม่ได้เชื่อม'} · ซิงก์ล่าสุด ${esc(when)}</span></div>
+      ${m.fileId ? `<div class="linkrow"><a class="btn btn-quiet" href="https://drive.google.com/file/d/${esc(m.fileId)}/view" target="_blank" rel="noopener">เปิดไฟล์ใน Google Drive</a></div>` : ''}
     </div>
     <div class="sheet-actions">
       ${m.on ? '<button class="btn" data-gd-off>ตัดการเชื่อมต่อ</button>'
