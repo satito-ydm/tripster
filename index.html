@@ -2281,7 +2281,7 @@ function renderHome(){
          icon:v.i, on:activeVibe === v.id})).join('')}
     </div>
 
-    <div class="sechead"><h2>เลือกจุดหมาย</h2>
+    <div class="sechead"><h2>อยากไปที่ไหน?</h2>
       <span class="cnt">${shown.length} จาก ${dests.length}</span></div>
     <div class="destgrid">
       ${shown.map(d => {
@@ -2293,11 +2293,11 @@ function renderHome(){
             <span>${soon ? esc(d.region) : n + ' ที่ · ' + esc(d.region)}</span></span>
         </button>`;
       }).join('')}
-      <button class="destcard newdest" id="newDestBtn">${IC.plus} สร้างจุดหมายเอง</button>
+      <button class="destcard newdest" id="newDestBtn">${IC.plus} เพิ่มที่ที่อยากไป</button>
     </div>
     ${shown.length ? '' : `<div class="empty" style="margin-top:11px">
       <strong>ยังไม่มีจุดหมายแนว${esc(VIBES.find(v => v.id === activeVibe)?.label || '')}</strong>
-      กด “สร้างจุดหมายเอง” เพื่อเริ่มลิสต์ของคุณ หรือเลือกแนวอื่นดูก่อน</div>`}
+      กด “เพิ่มที่ที่อยากไป” เพื่อเริ่มลิสต์ของคุณ หรือเลือกแนวอื่นดูก่อน</div>`}
 
     ${top.length ? `<div class="foryou">
         <div class="sechead"><h2>แนะนำสำหรับคุณ</h2>
@@ -2516,7 +2516,7 @@ function renderPlaces(){
       <div class="sechead"><h2>ดูสถานที่ของจังหวัดไหน?</h2>
         <span class="cnt">${ready.length} พร้อมใช้</span></div>
       ${destGridHtml('data-pdest', dests)}
-      <button class="btn" style="width:100%;margin-top:14px" id="newDestBtn">${IC.plus} สร้างจุดหมายเอง</button>
+      <button class="btn" style="width:100%;margin-top:14px" id="newDestBtn">${IC.plus} เพิ่มที่ที่อยากไป</button>
       ${footHtml()}`;
     refreshDrag();
     return;
@@ -2894,7 +2894,7 @@ function openDescSheet(pid){
 function openNewDestSheet(){
   openSheet(`
     <div class="sheet-pad">
-      <h2 id="sheetTitle">สร้างจุดหมายเอง</h2>
+      <h2 id="sheetTitle">เพิ่มที่ที่อยากไป</h2>
       <div class="sheet-sub">ตั้งชื่อจังหวัดหรือเมือง แล้วค่อยเพิ่มร้านและที่เที่ยวเข้าลิสต์เอง</div>
       <label class="field"><span>ชื่อจุดหมาย</span><input type="text" id="dName" placeholder="เช่น น่าน, ปาย, ฮอกไกโด"></label>
       <label class="field"><span>ภาค / ประเทศ</span><input type="text" id="dRegion" placeholder="เช่น ภาคเหนือ"></label>
