@@ -1864,7 +1864,9 @@ function renderPlan(){
   const t = currentTrip();
   if(!t){
     box.innerHTML = `<div class="control"><div class="empty"><strong>ยังไม่มีทริป</strong>
-      กดปุ่ม + มุมขวาบน ตั้งชื่อกับจำนวนวัน แล้วเลือกที่กินที่เที่ยวลงแต่ละวันได้เลย</div></div>` + footHtml();
+      ตั้งชื่อกับจำนวนวัน แล้วเลือกที่กินที่เที่ยวลงแต่ละวันได้เลย</div>
+      <div class="linkrow"><button class="btn btn-solid" data-newtrip>${IC.plus} สร้างทริปใหม่</button></div>
+      </div>` + footHtml();
     return;
   }
   if(!t.days.some(d => d.id === activeDayId)) activeDayId = t.days[0]?.id;
@@ -2877,6 +2879,8 @@ function setView(v){
   $('#viewAlerts').classList.toggle('is-hidden', v !== 'alerts');
   renderHero();
   if(window.scrollY > 0) window.scrollTo(0, 0);   // ทันที ไม่ smooth จะได้ไม่กระตุกซ้อนกับ hero
+  // แท็บแผนทริปที่ยังไม่มีทริปทำอะไรไม่ได้เลย เปิดฟอร์มสร้างให้เลยดีกว่าให้ไปหาปุ่ม + เอง
+  if(v === 'plan' && !state.trips.length && !$('#sheet').innerHTML) openTripSheet();
 }
 
 /* ---------- events ---------- */
@@ -2968,7 +2972,7 @@ document.addEventListener('click', e => {
     save(); renderAll(); setView('plan'); return;
   }
 
-  if(t.closest('#newTripBtn') || t.closest('#heroNewTrip')){ openTripSheet(); return; }
+  if(t.closest('#newTripBtn') || t.closest('#heroNewTrip') || t.closest('[data-newtrip]')){ openTripSheet(); return; }
 
   if(t.closest('[data-goplan]')){ setView('plan'); return; }
   if(t.closest('[data-closedest]')){ closeDest(); return; }
