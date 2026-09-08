@@ -1,6 +1,7 @@
 # รูปดิบ + แคช — ฝังเป็น data URI ใน index.html ไปแล้ว ไม่ต้องขึ้น repo
 img/
 photos/
+pic/
 _meta.json
 
 # สคริปต์เติมข้อมูล + ลิสต์ต้นฉบับ (เก็บไว้ในเครื่อง)
@@ -8,6 +9,7 @@ _meta.json
 __pycache__/
 Phuket_Trip_Notes*.txt
 Tripster_*.txt
+chiangmai_places.json
 
 # ไฟล์สำรอง
 *.bak.html
@@ -15,6 +17,7 @@ index-v1.01.html
 
 # สินทรัพย์ที่ฝังในไฟล์แล้ว
 logo.png
+logo new.png
 cover_home_app.png
 
 # ระบบ
