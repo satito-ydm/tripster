@@ -461,25 +461,29 @@ a{color:inherit;text-decoration:none}
 
 .destgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .destcard{
-  position:relative;text-align:left;border-radius:var(--r-md);overflow:hidden;
-  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-sm);
-  display:flex;flex-direction:column;align-items:stretch;min-height:134px;
+  position:relative;text-align:left;border-radius:var(--r-lg);overflow:hidden;
+  background:var(--surface);border:0;box-shadow:var(--shadow-md);
+  display:block;aspect-ratio:3 / 4;
 }
-.destcard:hover{border-color:var(--line-2);box-shadow:var(--shadow-md)}
-.destcard .ph{height:84px;background-size:cover;background-position:center;position:relative;background-color:#1E3A5F}
-.destcard .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(0,0,0,.35))}
-.destcard .tx{padding:9px 11px 11px;flex:1;display:flex;flex-direction:column;gap:2px}
-.destcard h3{font-size:var(--fs-base);font-weight:700;color:var(--ink)}
-.destcard span{font-size:var(--fs-xs);color:var(--ink-3)}
+.destcard:hover{box-shadow:var(--shadow-lg)}
+.destcard .ph{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#1E3A5F}
+/* ม่านไล่เฉดเฉพาะครึ่งล่าง ให้ชื่อบนรูปอ่านออกโดยไม่ต้องกดรูปให้มืดทั้งใบ */
+.destcard .ph::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(9,22,45,0) 38%,rgba(9,22,45,.30) 62%,rgba(9,22,45,.86) 100%)}
+.destcard .tx{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:12px 13px 13px;display:flex;flex-direction:column;gap:2px}
+.destcard h3{font-size:var(--fs-md);font-weight:700;color:#fff;line-height:1.25}
+.destcard span{font-size:var(--fs-xs);color:rgba(255,255,255,.82)}
 .destcard .soon{
   position:absolute;z-index:2;top:7px;left:7px;background:rgba(255,255,255,.94);color:#1E3A5F;
   font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;letter-spacing:.04em;white-space:nowrap;
 }
 .destcard.is-soon{opacity:.7}
 .destcard.newdest{
-  border-style:dashed;align-items:center;justify-content:center;color:var(--accent-text);
-  font-size:var(--fs-sm);font-weight:700;gap:7px;min-height:134px;flex-direction:row;
+  display:flex;align-items:center;justify-content:center;gap:7px;flex-direction:row;
+  background:var(--surface);border:1px dashed var(--line-2);box-shadow:none;
+  color:var(--accent-text);font-size:var(--fs-sm);font-weight:700;text-align:center;
 }
+.destcard.newdest:hover{border-color:var(--accent);box-shadow:none}
 .destcard.newdest svg{width:18px;height:18px}
 
 /* ---------- tile picker: ใช้ร่วมกันทุกที่ที่เลือกหมวด/แนว ---------- */
@@ -867,8 +871,6 @@ a.fact:hover{border-color:var(--accent)}
   .control{margin-top:22px;padding:18px}
   .sechead{margin:26px 0 13px}   /* จอกว้างมีที่ให้หายใจมากกว่า เพิ่มระยะระหว่างเซกชัน 20% */
   .destgrid{grid-template-columns:repeat(4,1fr)}
-  .destcard .ph{height:118px}
-  .destcard{min-height:158px}
   .pcard{flex-basis:212px}
   .pcard-photo{height:132px}
   .rail .pcard{flex-basis:320px}
@@ -2712,8 +2714,9 @@ function closeSheet(){ $('#scrim').hidden = true; $('#sheet').innerHTML = ''; pi
 
 /* ถามก่อนลบ เพราะทุกอย่างในแอปนี้กู้คืนไม่ได้ */
 let pendingConfirm = null;
-function askConfirm({title, body, yes, fn}){
+function askConfirm({title, body, yes, fn, tone}){
   pendingConfirm = fn;
+  const go = tone === 'go';   // กล่องที่ไม่ได้จะลบอะไร ใช้ปุ่มหลักสีปกติ ไม่ใช่ปุ่มแดงถังขยะ
   openSheet(`
     <div class="sheet-pad">
       <h2 id="sheetTitle">${title}</h2>
@@ -2721,8 +2724,45 @@ function askConfirm({title, body, yes, fn}){
     </div>
     <div class="sheet-actions">
       <button class="btn" data-close>ยกเลิก</button>
-      <button class="btn btn-danger solid" data-confirm-yes>${IC.trash} ${yes}</button>
+      <button class="btn ${go ? 'btn-solid' : 'btn-danger solid'}" data-confirm-yes>${go ? IC.plus : IC.trash} ${yes}</button>
     </div>`);
+}
+
+/* ที่ในแถวแนะนำมาจากทุกจังหวัด กดบวกแล้วจึงมีสามทางที่ต้องรองรับ ไม่ใช่ทางเดียว
+   1) จังหวัดเดียวกับทริปที่กำลังจัด — เปิดหน้าเลือกวัน/เวลาได้เลย
+   2) มีทริปของจังหวัดนั้นอยู่แล้ว — ถามก่อนว่าจะสลับไปทริปนั้นไหม
+   3) ยังไม่มีทริปของจังหวัดนั้น (รวมถึงยังไม่มีทริปเลย) — ชวนสร้างทริป แล้วต่อด้วยการใส่ที่นี่ลงวันแรก
+   เดิมเคสที่ 3 คือ openAddSheet เจอ !currentTrip() แล้ว return เงียบ ๆ กดปุ่มไปก็ไม่มีอะไรเกิดขึ้น */
+function addToTrip(pid){
+  const p = place(pid);
+  if(!p) return;
+  const t = currentTrip();
+  if(t && t.dest === p.dest) return openAddSheet(pid);
+
+  const dn = destOf(p.dest)?.name || '';
+  const same = state.trips.find(x => x.dest === p.dest);
+  if(same){
+    askConfirm({
+      title:`สลับไปทริป “${esc(same.name)}”?`,
+      body:`“${esc(p.name)}” อยู่${esc(dn)} แต่ทริปที่กำลังจัดอยู่คนละจังหวัด สลับไปทริปนั้นแล้วเพิ่มที่นี่ลงไปเลยไหม`,
+      yes:'สลับแล้วเพิ่ม', tone:'go',
+      fn(){
+        state.activeTrip = same.id;
+        activeDayId = same.days[0].id;
+        planDay = null;
+        save(); renderAll();
+        openAddSheet(pid);
+      }
+    });
+    return;
+  }
+
+  askConfirm({
+    title:`เริ่มทริป${esc(dn)}เลยไหม?`,
+    body:`ยังไม่มีทริปที่${esc(dn)} สร้างทริปก่อน แล้วเดี๋ยวใส่ “${esc(p.name)}” ลงให้เลย`,
+    yes:'สร้างทริป', tone:'go',
+    fn(){ openTripSheet(p.dest, pid); }
+  });
 }
 
 function openAddSheet(pid){
@@ -2747,7 +2787,7 @@ function openAddSheet(pid){
 }
 
 /* ใช้ร่วมกันระหว่างฟอร์มในชีทกับฟอร์มบนหน้าแรก */
-function createTrip({dest, name, days, start}){
+function createTrip({dest, name, days, start, addAfter}){
   const nm = (name || '').trim() || ((destOf(dest)?.name || 'ทริป') + 'ใหม่');
   const n = Math.min(14, Math.max(1, parseInt(days, 10) || 1));
   const id = 't' + Date.now();
@@ -2756,6 +2796,7 @@ function createTrip({dest, name, days, start}){
   state.activeTrip = id; activeDayId = dayList[0].id; activeDest = dest; placesDest = null; activeFilter = 'all';
   save(); closeSheet(); if(destOpen()) closeDest();
   renderAll(); setView('plan');
+  if(addAfter && place(addAfter)) return openAddSheet(addAfter);   // มาจากปุ่มบวก ต่อด้วยการใส่ที่นั้นเลย
   toast('สร้าง “' + nm + '” แล้ว — เลือกที่ลงวันได้เลย');
 }
 
@@ -2774,7 +2815,7 @@ function tripFormCardHtml(){
   </div>`;
 }
 
-function openTripSheet(destId){
+function openTripSheet(destId, addPid){
   const chosen = destId || currentDest();
   const opts = allDests().filter(d => !isSoon(d) || d.id === chosen)
     .map(d => `<option value="${d.id}" ${d.id===chosen?'selected':''}>${esc(d.name)}</option>`).join('');
@@ -2791,7 +2832,7 @@ function openTripSheet(destId){
     </div>
     <div class="sheet-actions">
       <button class="btn" data-close>ยกเลิก</button>
-      <button class="btn btn-solid" id="tSave">ไปกันเลย</button>
+      <button class="btn btn-solid" id="tSave" ${addPid ? `data-add-after="${esc(addPid)}"` : ''}>ไปกันเลย</button>
     </div>`);
 }
 
@@ -3085,7 +3126,7 @@ document.addEventListener('click', e => {
   }
 
   const add = t.closest('[data-add]');
-  if(add){ e.preventDefault(); e.stopPropagation(); openAddSheet(add.dataset.add); return; }
+  if(add){ e.preventDefault(); e.stopPropagation(); addToTrip(add.dataset.add); return; }
 
   const pickImg = t.closest('[data-pick-img]');
   if(pickImg){ pendingCoverId = pickImg.dataset.pickImg; $('#imgInput').click(); return; }
@@ -3242,8 +3283,10 @@ document.addEventListener('click', e => {
     toast('สร้างจุดหมาย “' + name + '” แล้ว');
     return;
   }
-  if(t.closest('#tSave')){
-    createTrip({dest:$('#tDest').value, name:$('#tName').value, days:$('#tDays').value, start:$('#tStart').value});
+  const tSave = t.closest('#tSave');
+  if(tSave){
+    createTrip({dest:$('#tDest').value, name:$('#tName').value, days:$('#tDays').value,
+                start:$('#tStart').value, addAfter:tSave.dataset.addAfter || ''});
     return;
   }
   if(t.closest('[data-hcreate]')){
