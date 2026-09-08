@@ -60,7 +60,7 @@
   --on-cat:#FFFFFF;
   --splash-bg:#FFFFFF;
   --danger:#B3402F;
-  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:26px;
+  --r-sm:8px; --r-md:14px; --r-lg:16px; --r-xl:16px;
   --fs-xs:11.5px; --fs-sm:13px; --fs-base:14.5px; --fs-md:16px;
   --fs-lg:19px; --fs-xl:24px; --fs-2xl:30px;
 }
@@ -153,6 +153,11 @@ a{color:inherit;text-decoration:none}
 }
 .roundbtn:hover{background:rgba(255,255,255,.32)}
 .roundbtn svg{width:17px;height:17px}
+.roundbtn.has-dot{position:relative}
+.roundbtn.has-dot::after{
+  content:"";position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 2px rgba(9,22,45,.45);
+}
 .hero-eyebrow{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;opacity:.95;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.55)}
 .hero h1{font-size:var(--fs-2xl);font-weight:700;margin:5px 0 8px;letter-spacing:-.015em;text-shadow:0 2px 12px rgba(0,0,0,.35)}
 .hero-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:var(--fs-sm);font-weight:500;opacity:1;text-shadow:0 1px 6px rgba(0,0,0,.6)}
@@ -388,7 +393,7 @@ a{color:inherit;text-decoration:none}
 .brand{display:none}
 .tabbar{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(480px,100%);z-index:30;display:grid;grid-template-columns:repeat(4,1fr);
+  width:min(480px,100%);z-index:30;display:grid;grid-template-columns:repeat(3,1fr);
   background:var(--surface);border-top:1px solid var(--line);
   padding:7px 8px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -6px 22px -14px rgba(30,58,95,.4);
 }
@@ -398,6 +403,16 @@ a{color:inherit;text-decoration:none}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;color:var(--ink-3);font-size:var(--fs-xs);font-weight:600}
 .tabbar button svg{width:20px;height:20px}
 .tabbar button[aria-selected="true"]{color:var(--accent-text)}
+/* แท็บกลางเป็นปุ่มวงกลมลอยขึ้นมา กดง่ายด้วยนิ้วโป้ง ป้ายชื่อยังอยู่ใต้ปุ่ม */
+.tabbar button[data-view="plan"] svg{
+  box-sizing:content-box;width:22px;height:22px;padding:14px;margin-top:-30px;
+  border-radius:50%;background:var(--ink);color:var(--app);
+  box-shadow:0 10px 22px -8px rgba(30,58,95,.65);
+  transition:transform .12s ease,filter .16s;
+}
+.tabbar button[data-view="plan"]:active svg{transform:scale(.94)}
+.tabbar button[data-view="plan"][aria-selected="true"] svg{background:var(--ink);color:var(--app);filter:brightness(1.15)}
+.tabbar button[data-view="plan"][aria-selected="true"]{color:var(--ink)}
 
 .view.is-hidden{display:none}
 
@@ -463,7 +478,7 @@ a{color:inherit;text-decoration:none}
   width:var(--w,78px);text-align:center;
 }
 .tilebtn .tile{
-  width:var(--sz,52px);height:var(--sz,52px);border-radius:calc(var(--sz,52px) * .31);
+  width:var(--sz,52px);height:var(--sz,52px);border-radius:min(16px,calc(var(--sz,52px) * .31));
   display:grid;place-items:center;border:1.5px solid transparent;
   color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);
 }
@@ -800,7 +815,7 @@ a.fact:hover{border-color:var(--accent)}
     flex:1;z-index:auto;
     position:static;top:auto;left:auto;right:auto;bottom:auto;transform:none;
     width:auto;height:auto;border:0;border-radius:0;background:none;box-shadow:none;
-    display:flex;justify-content:flex-start;gap:6px;padding:0;
+    display:flex;justify-content:flex-end;gap:6px;padding:0;
   }
   .tabbar::after{display:none}
   .tabbar button{
@@ -808,6 +823,9 @@ a.fact:hover{border-color:var(--accent)}
     font-size:var(--fs-base);font-weight:600;
   }
   .tabbar button svg{width:19px;height:19px}
+  /* วงกลมลอยเป็นของแถบล่างบนมือถือเท่านั้น ข้างบนนี้เป็นแถวเมนูปกติ */
+  .tabbar button[data-view="plan"] svg{padding:0;margin-top:0;background:none;color:inherit;box-shadow:none;border-radius:0}
+  .tabbar button[data-view="plan"][aria-selected="true"]{color:var(--accent-text)}
   .tabbar button[aria-selected="true"]{background:var(--accent-soft)}
 
   /* hero กินเต็มความกว้าง แต่ตัวหนังสือเกาะคอลัมน์เดียวกับเนื้อหาข้างล่าง */
@@ -896,10 +914,6 @@ a.fact:hover{border-color:var(--accent)}
     <button role="tab" data-view="places" aria-selected="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
       ค้นหา
-    </button>
-    <button role="tab" data-view="alerts" aria-selected="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16s-2-1.5-2-6.5Z"/><path d="M13.7 19a2 2 0 0 1-3.4 0"/></svg>
-      แจ้งเตือน
     </button>
   </nav>
   </div>
@@ -1573,6 +1587,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 const IC = {
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8.5a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16s-2-1.5-2-6.5Z"/><path d="M13.7 19a2 2 0 0 1-3.4 0"/></svg>',
   gmap:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 2.2a7.1 7.1 0 0 0-7.1 7.1c0 5.32 7.1 12.5 7.1 12.5s7.1-7.18 7.1-12.5A7.1 7.1 0 0 0 12 2.2Z"/><circle cx="12" cy="9.3" r="2.65" fill="#fff"/></svg>',
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .32 1.77l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.6 1.6 0 0 0-1.77-.32 1.6 1.6 0 0 0-.97 1.47V21a2 2 0 1 1-4 0v-.11a1.6 1.6 0 0 0-1.05-1.47 1.6 1.6 0 0 0-1.77.32l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.6 1.6 0 0 0 .32-1.77 1.6 1.6 0 0 0-1.47-.97H3a2 2 0 1 1 0-4h.11a1.6 1.6 0 0 0 1.47-1.05 1.6 1.6 0 0 0-.32-1.77l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.6 1.6 0 0 0 1.77.32H9a1.6 1.6 0 0 0 .97-1.47V3a2 2 0 1 1 4 0v.11a1.6 1.6 0 0 0 .97 1.47 1.6 1.6 0 0 0 1.77-.32l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.6 1.6 0 0 0-.32 1.77V9a1.6 1.6 0 0 0 1.47.97H21a2 2 0 1 1 0 4h-.11a1.6 1.6 0 0 0-1.47.97Z"/></svg>',
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9Z"/></svg>',
@@ -1898,6 +1913,9 @@ function renderHero(){
          meta: t ? `<span>${esc(destOf(t.dest)?.name || '')}</span><span><b>${t.days.length}</b> วัน</span><span><b>${stops}</b> จุด</span>` : ''};
   }
 
+  const today0 = new Date().toISOString().slice(0,10);
+  const alertsToday = Object.values(state.geo.notified).filter(x => x === today0).length;
+
   const hero = $('#hero');
   hero.setAttribute('style', bg);
   hero.classList.toggle('flat', view !== 'plan');
@@ -1905,6 +1923,8 @@ function renderHero(){
   hero.innerHTML = `
     <div class="hero-top">
       <div class="hero-icons">
+        <button class="roundbtn ${alertsToday ? 'has-dot' : ''}" data-alerts title="การแจ้งเตือน"
+                aria-label="การแจ้งเตือน${alertsToday ? ' — วันนี้เตือนไปแล้ว ' + alertsToday + ' ครั้ง' : ''}">${IC.bell}</button>
         <button class="roundbtn" data-settings title="ตั้งค่า" aria-label="ตั้งค่า">${IC.gear}</button>
         <button class="roundbtn" id="themeBtn" title="สลับโหมดสว่าง/มืด" aria-label="สลับโหมดสว่างมืด">◐</button>
         <button class="roundbtn" id="heroNewTrip" title="สร้างทริปใหม่" aria-label="สร้างทริปใหม่">${IC.plus}</button>
@@ -3236,6 +3256,7 @@ document.addEventListener('click', e => {
 
   if(t.closest('[data-shuffle]')){ forYouIds = null; renderHome(); return; }
 
+  if(t.closest('[data-alerts]')){ setView('alerts'); return; }
   if(t.closest('[data-settings]')){ openSettings(); return; }
   if(t.closest('[data-gd-panel]')){ gdPanel(); return; }
   if(t.closest('[data-gd-off]')){
