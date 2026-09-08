@@ -35,8 +35,9 @@
   --line-2:#CFD6DE;
   --accent:#F59E1F;
   --accent-strong:#F59E1F;   /* พื้นปุ่ม CTA — ใช้ตัวอักษร navy ทับ ผ่าน AA 5.4:1 */
-  --accent-ink:#1E3A5F;
+  --accent-ink:#FFFFFF;
   --accent-soft:#F8E4BE;
+  --sun-grad:linear-gradient(135deg,#F9B93F 0%,#F59E1F 52%,#EE7C13 100%);
   --accent-text:#0E9AA6;     /* สีเน้นเวลาเป็นตัวอักษรบนพื้นสว่าง */
   --teal:#0E9AA6;
   --gold:#F59E1F;
@@ -71,7 +72,7 @@
     --ground:#070D15; --app:#0D1622; --surface:#152233; --surface-2:#1D2E43;
     --ink:#E9EEF5; --ink-2:#A4B5C8; --ink-3:#78899E;
     --line:#24344A; --line-2:#32455E;
-    --accent:#F5A93A; --accent-strong:#F59E1F; --accent-ink:#132437; --accent-soft:#33260F;
+    --accent:#F5A93A; --accent-strong:#F59E1F; --accent-ink:#FFFFFF; --accent-soft:#33260F; --sun-grad:linear-gradient(135deg,#F8B34A 0%,#F59E1F 52%,#E8760F 100%);
     --accent-text:#3ED2DC;
     --teal:#3ED2DC; --gold:#F5B840;
     --shadow-sm:0 1px 2px rgba(0,0,0,.45);
@@ -92,7 +93,7 @@
   --ground:#070D15; --app:#0D1622; --surface:#152233; --surface-2:#1D2E43;
   --ink:#E9EEF5; --ink-2:#A4B5C8; --ink-3:#78899E;
   --line:#24344A; --line-2:#32455E;
-  --accent:#F5A93A; --accent-strong:#F59E1F; --accent-ink:#132437; --accent-soft:#33260F;
+  --accent:#F5A93A; --accent-strong:#F59E1F; --accent-ink:#FFFFFF; --accent-soft:#33260F; --sun-grad:linear-gradient(135deg,#F8B34A 0%,#F59E1F 52%,#E8760F 100%);
   --accent-text:#3ED2DC;
   --teal:#3ED2DC; --gold:#F5B840;
   --shadow-sm:0 1px 2px rgba(0,0,0,.45);
@@ -141,9 +142,9 @@ a{color:inherit;text-decoration:none}
 .hero .hero-top{margin-bottom:0}
 .hero::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(168deg,rgba(30,58,95,.58) 0%,rgba(30,58,95,.44) 40%,rgba(9,22,45,.90) 100%);
+  background:linear-gradient(168deg,rgba(245,158,31,.26) 0%,rgba(233,124,19,.42) 40%,rgba(122,52,6,.90) 100%);
 }
-.hero.flat::after{background:linear-gradient(172deg,rgba(9,22,45,.62) 0%,rgba(15,35,70,.50) 46%,rgba(9,22,45,.86) 100%)}
+.hero.flat::after{background:linear-gradient(172deg,rgba(233,124,19,.34) 0%,rgba(216,96,12,.44) 46%,rgba(122,52,6,.86) 100%)}
 .hero > *{position:relative;z-index:1}
 .hero-top{display:flex;justify-content:flex-end;align-items:center;margin-bottom:20px}
 /* โลโก้ลอยทับรูป สูงเท่าปุ่มกลมฝั่งขวาและอยู่แนวเดียวกัน — margin-right:auto ทำให้ปุ่มขวายังชิดขวา
@@ -411,18 +412,18 @@ a{color:inherit;text-decoration:none}
 }
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;color:var(--ink-3);font-size:var(--fs-xs);font-weight:600}
 .tabbar button svg{width:20px;height:20px}
-.tabbar button[aria-selected="true"]{color:var(--accent-text)}
+.tabbar button[aria-selected="true"]{color:var(--accent-strong)}
 /* แท็บกลางเป็นปุ่มวงกลมลอยขึ้นมา กดง่ายด้วยนิ้วโป้ง ป้ายชื่อยังอยู่ใต้ปุ่ม — เฉพาะแถบล่างบนมือถือ */
 @media (max-width:1023.98px){
   .tabbar button[data-view="plan"] svg{
     box-sizing:content-box;width:22px;height:22px;padding:14px;margin-top:-30px;
-    border-radius:50%;background:var(--ink);color:var(--app);
-    box-shadow:0 10px 22px -8px rgba(30,58,95,.65);
+    border-radius:50%;background:var(--accent-strong);background-image:var(--sun-grad);color:#fff;
+    box-shadow:0 10px 22px -8px rgba(233,124,19,.65);
     transition:transform .12s ease,filter .16s;
   }
   .tabbar button[data-view="plan"]:active svg{transform:scale(.94)}
   .tabbar button[data-view="plan"][aria-selected="true"] svg{filter:brightness(1.15)}
-  .tabbar button[data-view="plan"][aria-selected="true"]{color:var(--ink)}
+  .tabbar button[data-view="plan"][aria-selected="true"]{color:var(--accent-strong)}
 }
 
 .view.is-hidden{display:none}
@@ -843,7 +844,7 @@ a.fact:hover{border-color:var(--accent)}
     font-size:var(--fs-base);font-weight:600;
   }
   .tabbar button svg{width:19px;height:19px}
-  .tabbar button[aria-selected="true"]{background:var(--accent-soft)}
+  .tabbar button[aria-selected="true"]{background:var(--accent-strong);background-image:var(--sun-grad);color:#fff}
 
   /* hero กินเต็มความกว้าง แต่ตัวหนังสือเกาะคอลัมน์เดียวกับเนื้อหาข้างล่าง */
   .hero{grid-row:2;padding:26px 0 34px}
@@ -897,6 +898,13 @@ a.fact:hover{border-color:var(--accent)}
   .facts{max-width:540px}
 }
 @media (min-width:1280px){ .app{--wrap:1280px} }
+
+/* ทุกพื้นที่เป็นสีเหลืองใช้ไล่เฉดเหลือง→ส้มชุดเดียวกัน วางท้ายสุดเพราะกฎเดิมเซ็ต
+   background แบบย่อซึ่งล้าง background-image ทิ้ง ต้องมาทับทีหลัง */
+.btn-solid,.plus,.mini-go,.lcard-add,.resume .cta,.foryou,
+.chiplink:hover,.pickrow[aria-pressed="true"] .pickbox,
+.sortkm[aria-pressed="true"],.pinbtn[aria-pressed="true"],
+.sw[aria-pressed="true"]{background-image:var(--sun-grad)}
 </style>
 </head>
 <body>
