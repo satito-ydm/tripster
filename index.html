@@ -704,11 +704,13 @@ a.fact:hover{border-color:var(--accent)}
 .field{display:block;margin-bottom:13px}
 .field span{display:block;font-size:var(--fs-xs);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
 .field input,.field select{
-  width:100%;font:inherit;font-size:var(--fs-base);color:var(--ink);background:var(--surface-2);
-  border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;
+  width:100%;max-width:100%;min-width:0;font:inherit;font-size:var(--fs-base);color:var(--ink);
+  background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;
 }
+/* Safari บน iOS ให้ช่องวันที่/เวลามีความกว้างขั้นต่ำของตัวเองจนดันคอลัมน์ล้นจอ ปลด appearance ทิ้ง */
+.field input[type="date"],.field input[type="time"]{-webkit-appearance:none;appearance:none}
 .field input[type="time"],.field input[type="date"],.field input[type="number"]{font-family:'IBM Plex Mono',monospace}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px}
 .sheet-actions{display:flex;gap:9px;padding:0 18px 20px;flex:0 0 auto}
 .sheet-actions .btn{flex:1;padding:15px 18px;min-height:54px}
 .daycard{
@@ -737,7 +739,7 @@ a.fact:hover{border-color:var(--accent)}
 .daycard .dc-go{flex:0 0 auto;color:var(--ink-3)}
 .daycard .dc-go svg{width:16px;height:16px}
 .tripform{margin-top:-26px}   /* คร่อม hero น้อยกว่าการ์ดของหน้าแผนทริป ไม่งั้นบังบรรทัดสรุปใต้หัวข้อ */
-.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:end}
+.tf-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px;align-items:end}
 .tf-row .field{margin-bottom:0;min-width:0}
 .tf-row .f-dest{grid-column:1 / -1}
 .tf-row .btn{grid-column:1 / -1;width:100%;margin-top:2px}
