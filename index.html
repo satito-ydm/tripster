@@ -780,15 +780,17 @@ a.fact:hover{border-color:var(--accent)}
 @media (min-width:1024px){
   body{background:var(--app)}
   .app{
+    --wrap:1180px;
     max-width:none;width:100%;margin:0;min-height:100vh;overflow:visible;border-radius:0;box-shadow:none;
     display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto 1fr;
   }
 
+  /* โลโก้กับเมนูเกาะคอนเทนเนอร์เดียวกับ hero และเนื้อหาข้างล่าง แต่พื้นแถบยังเต็มความกว้างจอ */
   .topbar{
-    display:flex;align-items:center;gap:18px;
+    display:flex;align-items:center;gap:22px;
     grid-row:1;z-index:40;position:sticky;top:0;
     background:var(--surface);border-bottom:1px solid var(--line);
-    padding:9px clamp(24px,5vw,64px);
+    padding:9px calc((100% - min(var(--wrap),100%)) / 2 + clamp(24px,5vw,64px));
   }
   .brand{display:flex;align-items:center;gap:9px;flex:0 0 auto}
   .brand img{height:30px;width:auto;display:block}
@@ -798,7 +800,7 @@ a.fact:hover{border-color:var(--accent)}
     flex:1;z-index:auto;
     position:static;top:auto;left:auto;right:auto;bottom:auto;transform:none;
     width:auto;height:auto;border:0;border-radius:0;background:none;box-shadow:none;
-    display:flex;justify-content:center;gap:6px;padding:0;
+    display:flex;justify-content:flex-start;gap:6px;padding:0;
   }
   .tabbar::after{display:none}
   .tabbar button{
@@ -810,9 +812,9 @@ a.fact:hover{border-color:var(--accent)}
 
   /* hero กินเต็มความกว้าง แต่ตัวหนังสือเกาะคอลัมน์เดียวกับเนื้อหาข้างล่าง */
   .hero{grid-row:2;padding:26px 0 34px}
-  .hero > *{width:100%;max-width:1180px;margin-left:auto;margin-right:auto;
+  .hero > *{width:100%;max-width:var(--wrap);margin-left:auto;margin-right:auto;
     padding-left:clamp(24px,5vw,64px);padding-right:clamp(24px,5vw,64px)}
-  .screen{grid-row:3;padding:0 clamp(24px,5vw,64px) 72px;max-width:1180px;margin:0 auto;width:100%}
+  .screen{grid-row:3;padding:0 clamp(24px,5vw,64px) 72px;max-width:var(--wrap);margin:0 auto;width:100%}
   .plan-side{top:96px}   /* พ้นแถบเมนูที่ sticky อยู่ด้านบน */
 
   .hero{min-height:452px}
@@ -858,7 +860,7 @@ a.fact:hover{border-color:var(--accent)}
   .d-bar{padding:16px 30px;border-radius:0 0 var(--r-xl) var(--r-xl)}
   .facts{max-width:540px}
 }
-@media (min-width:1280px){ .screen,.hero > *{max-width:1280px} }
+@media (min-width:1280px){ .app{--wrap:1280px} }
 </style>
 </head>
 <body>
