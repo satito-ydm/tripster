@@ -158,7 +158,7 @@ a{color:inherit;text-decoration:none}
 .hero-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:var(--fs-sm);font-weight:500;opacity:1;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .hero-meta b{font-family:'IBM Plex Mono',monospace;font-weight:500;font-variant-numeric:tabular-nums}
 .hero.flat{padding-bottom:26px}
-.hero.on-photo{padding-bottom:104px}
+.hero.on-photo{padding-bottom:49px}
 .hero.on-photo::after{
   background:linear-gradient(180deg,rgba(9,22,45,.70) 0%,rgba(9,22,45,.22) 30%,rgba(9,22,45,.52) 62%,rgba(6,16,34,.94) 100%);
 }
@@ -777,35 +777,38 @@ a.fact:hover{border-color:var(--accent)}
   .destgrid{grid-template-columns:repeat(3,1fr)}
 }
 
-/* เดสก์ท็อป: sidebar ซ้าย + คอนเทนต์ขวา กว้างสุด 1440 */
+/* เดสก์ท็อป: เมนูเป็นแถบบนแบบเว็บทั่วไป hero เต็มความกว้างจอ เนื้อหาข้างล่างจัดกลาง */
 @media (min-width:1024px){
   body{background:var(--app)}
   .app{
-    max-width:1440px;margin:0 auto;min-height:100vh;overflow:visible;border-radius:0;box-shadow:none;
-    display:grid;grid-template-columns:248px minmax(0,1fr);grid-template-rows:auto 1fr;
+    max-width:none;width:100%;margin:0;min-height:100vh;overflow:visible;border-radius:0;box-shadow:none;
+    display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto 1fr;
   }
-  .hero{grid-column:2;grid-row:1;padding:22px 44px 34px}
-  .screen{grid-column:2;grid-row:2;padding:0 44px 72px;max-width:1180px}
 
   .tabbar{
-    grid-column:1;grid-row:1 / 3;
-    position:sticky;top:0;left:auto;bottom:auto;transform:none;
-    width:auto;height:100vh;align-content:start;
-    display:flex;flex-direction:column;gap:6px;
-    padding:32px 18px;background:var(--surface);
-    border-top:0;border-left:0;border-radius:0;
-    border-right:1px solid var(--line);box-shadow:none;
+    grid-row:1;z-index:40;
+    position:sticky;top:0;left:0;right:0;bottom:auto;transform:none;
+    width:100%;height:auto;border:0;border-bottom:1px solid var(--line);border-radius:0;
+    background:var(--surface);box-shadow:none;
+    display:flex;justify-content:center;gap:6px;padding:9px 24px;
   }
   .tabbar::after{display:none}
   .tabbar button{
-    flex-direction:row;justify-content:flex-start;gap:13px;
-    padding:14px 16px;border-radius:var(--r-md);font-size:var(--fs-base);font-weight:600;
+    flex-direction:row;gap:9px;padding:11px 20px;border-radius:999px;
+    font-size:var(--fs-base);font-weight:600;
   }
-  .tabbar button svg{width:22px;height:22px}
+  .tabbar button svg{width:19px;height:19px}
   .tabbar button[aria-selected="true"]{background:var(--accent-soft)}
 
-  .hero{min-height:340px}
-  .hero.on-photo{padding-bottom:114px}
+  /* hero กินเต็มความกว้าง แต่ตัวหนังสือเกาะคอลัมน์เดียวกับเนื้อหาข้างล่าง */
+  .hero{grid-row:2;padding:26px 0 34px}
+  .hero > *{width:100%;max-width:1180px;margin-left:auto;margin-right:auto;
+    padding-left:clamp(24px,5vw,64px);padding-right:clamp(24px,5vw,64px)}
+  .screen{grid-row:3;padding:0 clamp(24px,5vw,64px) 72px;max-width:1180px;margin:0 auto;width:100%}
+  .plan-side{top:96px}   /* พ้นแถบเมนูที่ sticky อยู่ด้านบน */
+
+  .hero{min-height:400px}
+  .hero.on-photo{padding-bottom:59px}
   .hero h1{font-size:38px}
   .control{margin-top:22px;padding:18px}
   .destgrid{grid-template-columns:repeat(4,1fr)}
@@ -839,7 +842,7 @@ a.fact:hover{border-color:var(--accent)}
   .d-bar{padding:16px 30px;border-radius:0 0 var(--r-xl) var(--r-xl)}
   .facts{max-width:540px}
 }
-@media (min-width:1280px){ .screen{max-width:1280px} }
+@media (min-width:1280px){ .screen,.hero > *{max-width:1280px} }
 </style>
 </head>
 <body>
