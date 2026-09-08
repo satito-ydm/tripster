@@ -1514,6 +1514,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 const IC = {
+  gmap:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M12 2.2a7.1 7.1 0 0 0-7.1 7.1c0 5.32 7.1 12.5 7.1 12.5s7.1-7.18 7.1-12.5A7.1 7.1 0 0 0 12 2.2Z"/><circle cx="12" cy="9.3" r="2.65" fill="#fff"/></svg>',
   gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .32 1.77l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.6 1.6 0 0 0-1.77-.32 1.6 1.6 0 0 0-.97 1.47V21a2 2 0 1 1-4 0v-.11a1.6 1.6 0 0 0-1.05-1.47 1.6 1.6 0 0 0-1.77.32l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.6 1.6 0 0 0 .32-1.77 1.6 1.6 0 0 0-1.47-.97H3a2 2 0 1 1 0-4h.11a1.6 1.6 0 0 0 1.47-1.05 1.6 1.6 0 0 0-.32-1.77l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.6 1.6 0 0 0 1.77.32H9a1.6 1.6 0 0 0 .97-1.47V3a2 2 0 1 1 4 0v.11a1.6 1.6 0 0 0 .97 1.47 1.6 1.6 0 0 0 1.77-.32l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.6 1.6 0 0 0-.32 1.77V9a1.6 1.6 0 0 0 1.47.97H21a2 2 0 1 1 0 4h-.11a1.6 1.6 0 0 0-1.47.97Z"/></svg>',
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9Z"/></svg>',
   pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>',
@@ -1885,7 +1886,7 @@ function renderPlan(){
       <div class="daybar scrollx">${days}</div>
       <div class="ctl-actions">
         <button class="btn btn-solid" id="pickBtn">${IC.plus} เลือกที่</button>
-        <a class="btn btn-navy" href="${rUrl || '#'}" ${rUrl ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}>${IC.route} นำทางทั้งวัน</a>
+        <a class="btn btn-navy" href="${rUrl || '#'}" ${rUrl ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}>${IC.gmap} นำทางทั้งวัน</a>
       </div>
     </div></div>
 
@@ -1895,7 +1896,10 @@ function renderPlan(){
       <span class="cnt">${items.length ? items[0].time + ' – ' + items[items.length-1].time : 'ยังว่าง'}</span>
     </div>
     ${items.length
-      ? `<div class="timeline">${items.map((it,i) => stopHtml(it, items[i+1])).join('')}</div>`
+      ? `<div class="timeline">${items.map((it,i) => stopHtml(it, items[i+1])).join('')}</div>
+         <div class="linkrow"><a class="btn btn-navy" href="${rUrl || '#'}"
+           ${rUrl ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}
+           >${IC.gmap} นำทางทั้งวัน · ${items.length} จุด</a></div>`
       : `<div class="empty"><strong>${esc(d ? d.label : '')} ยังไม่มีแผน</strong>กด “เลือกที่” เพื่อติ๊กร้านและที่เที่ยวลงวันนี้</div>`}
     <div class="linkrow ${t.days.length > 1 ? 'two' : ''}">
       <button class="btn btn-quiet" id="renameTripBtn">${IC.edit} แก้ชื่อ / วันที่ทริป</button>
