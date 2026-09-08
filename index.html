@@ -681,14 +681,11 @@ a.fact:hover{border-color:var(--accent)}
 .daycard .dc-go{flex:0 0 auto;color:var(--ink-3)}
 .daycard .dc-go svg{width:16px;height:16px}
 .tripform{margin-top:-26px}   /* คร่อม hero น้อยกว่าการ์ดของหน้าแผนทริป ไม่งั้นบังบรรทัดสรุปใต้หัวข้อ */
-.tripform{background:var(--ink);color:var(--app)}
-.tripform h2{font-size:var(--fs-md);font-weight:700;margin-bottom:12px;color:var(--app)}
-.tripform .field span{color:color-mix(in srgb,var(--app) 68%,transparent)}
-.tripform .field input,.tripform .field select{
-  background:var(--surface);border-color:color-mix(in srgb,var(--app) 22%,transparent);color:var(--ink);
-}
+.tf-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-items:end}
+.tf-row .field{margin-bottom:0;min-width:0}
+.tf-row .f-dest{grid-column:1 / -1}
+.tf-row .btn{grid-column:1 / -1;width:100%;margin-top:2px}
 .tripform .field input:focus,.tripform .field select:focus{border-color:var(--accent);outline:none}
-.tripform .field:last-of-type{margin-bottom:14px}
 .setrow{
   display:flex;align-items:center;gap:13px;width:100%;text-align:left;
   padding:14px;border:1px solid var(--line);border-radius:var(--r-md);
@@ -807,8 +804,16 @@ a.fact:hover{border-color:var(--accent)}
   .screen{grid-row:3;padding:0 clamp(24px,5vw,64px) 72px;max-width:1180px;margin:0 auto;width:100%}
   .plan-side{top:96px}   /* พ้นแถบเมนูที่ sticky อยู่ด้านบน */
 
-  .hero{min-height:400px}
-  .hero.on-photo{padding-bottom:59px}
+  .hero{min-height:452px}
+
+  /* การ์ดฟอร์มวางอยู่ในรูป hero ไม่ใช่ใต้รูป และช่องทั้งหมดอยู่บรรทัดเดียวกับปุ่ม */
+  .control.tripform{margin:-160px 0 74px;padding:16px 18px 18px}   /* เว้นล่างเยอะหน่อย เพราะ margin ติดลบดึงเนื้อหาข้างล่างขึ้นมาด้วย */
+  .tf-row{display:flex;align-items:flex-end;gap:12px}
+  .tf-row .f-dest{flex:2 1 240px}
+  .tf-row .f-days{flex:0 1 132px}
+  .tf-row .f-start{flex:1 1 186px}
+  .tf-row .btn{flex:0 0 auto;width:auto;margin-top:0;min-height:46px;padding:12px 26px;white-space:nowrap}
+  .hero.on-photo{padding-bottom:186px}
   .hero h1{font-size:38px}
   .control{margin-top:22px;padding:18px}
   .destgrid{grid-template-columns:repeat(4,1fr)}
@@ -2694,15 +2699,12 @@ function tripFormCardHtml(){
   const opts = allDests().filter(d => !isSoon(d) || d.id === chosen)
     .map(d => `<option value="${d.id}" ${d.id===chosen?'selected':''}>${esc(d.name)}</option>`).join('');
   return `<div class="control tripform">
-    <h2>จะไปเที่ยวไหนดี?</h2>
-    <label class="field"><span>จุดหมาย</span><select id="hDest">${opts}</select></label>
-    <label class="field"><span>ชื่อทริป</span>
-      <input type="text" id="hName" placeholder="เช่น ${esc(destOf(chosen)?.name || 'ภูเก็ต')} 3 วัน 2 คืน"></label>
-    <div class="field-row">
-      <label class="field"><span>จำนวนวัน</span><input type="number" id="hDays" value="3" min="1" max="14"></label>
-      <label class="field"><span>วันเริ่ม</span><input type="date" id="hStart"></label>
+    <div class="tf-row">
+      <label class="field f-dest"><span>ไปเที่ยวไหนดี</span><select id="hDest">${opts}</select></label>
+      <label class="field f-days"><span>จำนวนวัน</span><input type="number" id="hDays" value="3" min="1" max="14"></label>
+      <label class="field f-start"><span>วันเริ่ม</span><input type="date" id="hStart"></label>
+      <button class="btn btn-solid" data-hcreate>${IC.plus} สร้างทริป</button>
     </div>
-    <button class="btn btn-solid" style="width:100%" data-hcreate>${IC.plus} สร้างทริป</button>
   </div>`;
 }
 
@@ -3179,7 +3181,7 @@ document.addEventListener('click', e => {
     return;
   }
   if(t.closest('[data-hcreate]')){
-    createTrip({dest:$('#hDest').value, name:$('#hName').value, days:$('#hDays').value, start:$('#hStart').value});
+    createTrip({dest:$('#hDest').value, name:'', days:$('#hDays').value, start:$('#hStart').value});
     return;
   }
 
