@@ -707,8 +707,11 @@ a.fact:hover{border-color:var(--accent)}
   width:100%;max-width:100%;min-width:0;font:inherit;font-size:var(--fs-base);color:var(--ink);
   background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;
 }
-/* Safari บน iOS ให้ช่องวันที่/เวลามีความกว้างขั้นต่ำของตัวเองจนดันคอลัมน์ล้นจอ ปลด appearance ทิ้ง */
-.field input[type="date"],.field input[type="time"]{-webkit-appearance:none;appearance:none}
+/* Safari บน iOS ให้ช่องวันที่/เวลามีความกว้างขั้นต่ำของตัวเองจนดันคอลัมน์ล้นจอ
+   ปลด appearance ทิ้ง และบังคับจัดชิดซ้ายเพราะ iOS จัดกลางให้เอง */
+.field input[type="date"],.field input[type="time"]{-webkit-appearance:none;appearance:none;text-align:left}
+/* จอแคบมากก็ให้สองช่องลงมาเรียงกันแทนที่จะเบียดจนล้น */
+@media (max-width:359.98px){ .field-row{grid-template-columns:minmax(0,1fr)} }
 .field input[type="time"],.field input[type="date"],.field input[type="number"]{font-family:'IBM Plex Mono',monospace}
 .field-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px}
 .sheet-actions{display:flex;gap:9px;padding:0 18px 20px;flex:0 0 auto}
