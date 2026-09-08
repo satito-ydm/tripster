@@ -133,6 +133,32 @@ Splash (โลโก้ พื้นขาว, ครั้งเดียวต
 
 สีหมวดกับสีแนวทริปเป็นเฉดที่ไล่มาจากห้าสีนี้ (กลุ่มกิน = โทน Sun/Sand, กลุ่มเที่ยว/ทะเล = โทน Deep/Sea, ที่พัก = Navy)
 
+## ซิงก์กับ Google Drive
+
+เก็บ state (ทริป ลิสต์ หมุด รูปที่ใส่เอง) เป็นไฟล์ `tripster-state.json` ในโฟลเดอร์ซ่อนของแอปใน Drive
+ใช้ scope `drive.appdata` อย่างเดียว แอปจึงมองไฟล์อื่นใน Drive ไม่ได้เลย
+
+**ใช้ได้เฉพาะตอนเปิดผ่าน https** — https://satito-ydm.github.io/tripster/ (GitHub Pages)
+Google ไม่รับ `file://` เป็น authorized origin ถ้าเปิดไฟล์จากเครื่องตรง ๆ แผงซิงก์จะบอกให้ไปเปิดที่ลิงก์นั้นแทน
+
+### ตั้งค่าครั้งเดียว
+
+1. [Google Cloud Console](https://console.cloud.google.com/) → สร้างโปรเจกต์
+2. APIs & Services → Library → เปิดใช้ **Google Drive API**
+3. APIs & Services → OAuth consent screen → External → ใส่ชื่อแอปกับอีเมล → เพิ่มตัวเองใน Test users
+4. Credentials → Create credentials → OAuth client ID → **Web application**
+   - Authorized JavaScript origins: `https://satito-ydm.github.io`
+5. คัดลอก Client ID มาวางในแอป: หน้าแรก → เลื่อนล่างสุด → **ซิงก์ Drive**
+
+Client ID เปิดเผยได้ตามปกติของ OAuth ฝั่งเบราว์เซอร์ ตัวที่เป็นความลับคือ client secret ซึ่ง flow นี้ไม่ใช้
+
+### พฤติกรรม
+
+- เชื่อมแล้วจะดันข้อมูลขึ้น Drive อัตโนมัติหลังแก้อะไร 4 วินาที และดึงลงมาตอนเปิดแอป
+- เทียบด้วย `state.updatedAt` ฝั่งไหนใหม่กว่าชนะ
+- ถ้าทั้งสองฝั่งแก้หลังซิงก์ล่าสุด จะถามก่อนว่าจะเอาของ Drive หรือของเครื่องนี้ ไม่ทับให้เอง
+- access token อยู่ได้ราว 1 ชั่วโมง หมดแล้วรอบอัตโนมัติจะหยุดเงียบ ๆ ไม่เด้งหน้าต่างขอสิทธิ์ขึ้นมาเอง ต้องกดซิงก์เอง
+
 ## ไฟล์ในโปรเจกต์
 
 | ไฟล์ | หน้าที่ |
