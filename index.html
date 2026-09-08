@@ -341,7 +341,7 @@ a{color:inherit;text-decoration:none}
 .mich svg{width:11px;height:11px;color:var(--sun-ink)}
 .plus{
   position:absolute;z-index:2;top:7px;right:7px;width:36px;height:36px;border-radius:50%;
-  background:var(--accent-strong);color:var(--accent-ink);display:grid;place-items:center;
+  background:var(--accent-strong);color:#fff;display:grid;place-items:center;
   box-shadow:0 3px 12px -2px rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.9);
   transition:transform .1s ease,filter .16s;
 }
@@ -788,9 +788,11 @@ a.fact:hover{border-color:var(--accent)}
   font-size:var(--fs-sm);font-weight:600;box-shadow:var(--shadow-md);max-width:88vw;text-align:center;
 }
 .foryou{
-  background:var(--accent-soft);border-radius:var(--r-lg);
+  background:var(--accent);border-radius:var(--r-lg);
   margin:22px -4px 0;padding:2px 12px 12px;
 }
+/* พื้น Sun ต้องใช้ตัวอักษร navy ลิงก์สี Sea เดิมจะจมหายไปกับพื้น (1.6:1) */
+.foryou .sechead h2,.foryou .sechead .more{color:var(--accent-ink)}
 .foryou .sechead{margin-top:14px}
 .foryou .rail{padding-bottom:2px}
 .foot{padding:28px 2px 6px;font-size:var(--fs-xs);color:var(--ink-3);display:grid;gap:8px}
@@ -853,7 +855,7 @@ a.fact:hover{border-color:var(--accent)}
   .hero{min-height:452px}
 
   /* การ์ดฟอร์มวางอยู่ในรูป hero ไม่ใช่ใต้รูป และช่องทั้งหมดอยู่บรรทัดเดียวกับปุ่ม */
-  .control.tripform{margin:-160px 0 74px;padding:16px 18px 18px}   /* เว้นล่างเยอะหน่อย เพราะ margin ติดลบดึงเนื้อหาข้างล่างขึ้นมาด้วย */
+  .control.tripform{margin:-160px 0 110px;padding:16px 18px 18px}   /* เว้นล่างเยอะหน่อย เพราะ margin ติดลบดึงเนื้อหาข้างล่างขึ้นมาด้วย */
   .tf-row{display:flex;align-items:flex-end;gap:12px}
   .tf-row .f-dest{flex:2 1 240px}
   .tf-row .f-days{flex:0 1 132px}
@@ -1165,20 +1167,20 @@ const CM_PLACES = [
   {id:"cmr14", cat:"restaurant", name:"สามเสนวิลล่า ต้นตำรับเบียร์วุ้นแก้วแช่เจ้าแรกของไทย ริมปิง", note:"", q:"สามเสนวิลล่า ต้นตำรับเบียร์วุ้นแก้วแช่เจ้าแรกของไทย ริมปิง เชียงใหม่", lat:18.794256, lng:99.000781, dest:"chiangmai"},
   {id:"cmr15", cat:"restaurant", name:"เฮือนใจ๋ยอง เชียงใหม่", note:"", q:"เฮือนใจ๋ยอง เชียงใหม่ เชียงใหม่", lat:18.725337, lng:99.102821, dest:"chiangmai"},
   {id:"cmr16", cat:"restaurant", name:"ข้าวซอยนิมมาน", note:"", q:"ข้าวซอยนิมมาน เชียงใหม่", lat:18.79802403102832, lng:98.9692661749931, dest:"chiangmai"},
-  {id:"cmr17", cat:"restaurant", name:"ครัวอาจารย์สายหยุด &amp; หมอทราย", note:"", q:"ครัวอาจารย์สายหยุด &amp; หมอทราย เชียงใหม่", lat:18.822169, lng:98.987269, dest:"chiangmai"},
+  {id:"cmr17", cat:"restaurant", name:"ครัวอาจารย์สายหยุด & หมอทราย", note:"", q:"ครัวอาจารย์สายหยุด & หมอทราย เชียงใหม่", lat:18.822169, lng:98.987269, dest:"chiangmai"},
   {id:"cmr18", cat:"restaurant", name:"เฮือนเพ็ญ", note:"", q:"เฮือนเพ็ญ เชียงใหม่", lat:18.785871721725513, lng:98.98515075445175, dest:"chiangmai"},
   {id:"cmr19", cat:"restaurant", name:"กาแล", note:"", q:"กาแล เชียงใหม่", lat:18.79346, lng:98.945267, dest:"chiangmai"},
   {id:"cmr20", cat:"restaurant", name:"The Good View Bar And Restaurant เชียงใหม่", note:"", q:"The Good View Bar And Restaurant เชียงใหม่ เชียงใหม่", lat:18.79044117372106, lng:99.0037377923727, dest:"chiangmai"},
   {id:"cmr21", cat:"restaurant", name:"ข้าวเม่า-ข้าวฟ่าง เชียงใหม่", note:"", q:"ข้าวเม่า-ข้าวฟ่าง เชียงใหม่ เชียงใหม่", lat:18.73013545348045, lng:98.94365999847649, dest:"chiangmai"},
   {id:"cmr22", cat:"restaurant", name:"บ้านไร่ยามเย็น - Baanrai Yarmyen Restaurant", note:"", q:"บ้านไร่ยามเย็น - Baanrai Yarmyen Restaurant เชียงใหม่", lat:18.81242683253684, lng:99.0078043565154, dest:"chiangmai"},
   {id:"cmr23", cat:"restaurant", name:"ลำดีตี้ขัวแดง เชียงใหม่", note:"", q:"ลำดีตี้ขัวแดง เชียงใหม่ เชียงใหม่", lat:18.7984862348048, lng:99.03316107605747, dest:"chiangmai"},
-  {id:"cmr24", cat:"restaurant", name:"Rock Me Burger &amp; Bar นิมมานเหมินท์", note:"", q:"Rock Me Burger &amp; Bar นิมมานเหมินท์ เชียงใหม่", lat:18.795793, lng:98.968335, dest:"chiangmai"},
+  {id:"cmr24", cat:"restaurant", name:"Rock Me Burger & Bar นิมมานเหมินท์", note:"", q:"Rock Me Burger & Bar นิมมานเหมินท์ เชียงใหม่", lat:18.795793, lng:98.968335, dest:"chiangmai"},
   {id:"cmr25", cat:"restaurant", name:"คุ้มเวียงยอง", note:"", q:"คุ้มเวียงยอง เชียงใหม่", lat:18.77074530488059, lng:98.95019658531953, dest:"chiangmai"},
   {id:"cmr26", cat:"restaurant", name:"Ginger Farm One Nimman", note:"", q:"Ginger Farm One Nimman เชียงใหม่", lat:18.8000109, lng:98.9675131, dest:"chiangmai"},
   {id:"cmr27", cat:"restaurant", name:"กิ๋นลำกิ๋นดี สันทราย", note:"", q:"กิ๋นลำกิ๋นดี สันทราย เชียงใหม่", lat:18.86088879999999, lng:99.065505, dest:"chiangmai"},
   {id:"cmr28", cat:"restaurant", name:"แม่เพ็ญซีฟู๊ด ริมน้ำปิง", note:"", q:"แม่เพ็ญซีฟู๊ด ริมน้ำปิง เชียงใหม่", lat:18.802524819892692, lng:99.00319098834325, dest:"chiangmai"},
   {id:"cmr29", cat:"restaurant", name:"ครัวหลองข้าว เชียงใหม่", note:"", q:"ครัวหลองข้าว เชียงใหม่ เชียงใหม่", lat:18.91700598558, lng:98.95149724558, dest:"chiangmai"},
-  {id:"cmr30", cat:"restaurant", name:"เว-ฬา-ดี : We-La-Dee Cafe &amp; Restaurant", note:"", q:"เว-ฬา-ดี : We-La-Dee Cafe &amp; Restaurant เชียงใหม่", lat:18.8439818, lng:99.02830429999995, dest:"chiangmai"},
+  {id:"cmr30", cat:"restaurant", name:"เว-ฬา-ดี : We-La-Dee Cafe & Restaurant", note:"", q:"เว-ฬา-ดี : We-La-Dee Cafe & Restaurant เชียงใหม่", lat:18.8439818, lng:99.02830429999995, dest:"chiangmai"},
   {id:"cmr31", cat:"restaurant", name:"Baan Landai Fine Thai Cuisine กลางเวียง-เมืองเก่า(คูเมืองชั้นใน)", note:"", q:"Baan Landai Fine Thai Cuisine กลางเวียง-เมืองเก่า(คูเมืองชั้นใน) เชียงใหม่", lat:18.794096074727072, lng:98.9874205738306, dest:"chiangmai"},
   {id:"cmr32", cat:"restaurant", name:"เขยเจียงใหม่ อาหารเหนือ สาขาสันติธรรม", note:"", q:"เขยเจียงใหม่ อาหารเหนือ สาขาสันติธรรม เชียงใหม่", lat:18.800479344236063, lng:98.97827038541436, dest:"chiangmai"},
   {id:"cmr33", cat:"restaurant", name:"ท่าจีนชมจันทร์", note:"", q:"ท่าจีนชมจันทร์ เชียงใหม่", lat:18.811998705992444, lng:98.97175747901201, dest:"chiangmai"},
@@ -1194,7 +1196,7 @@ const CM_PLACES = [
   {id:"cmc6", cat:"cafe", name:"fimue 피므", note:"", q:"fimue 피므 เชียงใหม่", lat:18.796997, lng:98.970735, dest:"chiangmai"},
   {id:"cmc7", cat:"cafe", name:"WELL COFFEE STATION", note:"", q:"WELL COFFEE STATION เชียงใหม่", lat:18.815464, lng:98.983245, dest:"chiangmai"},
   {id:"cmc8", cat:"cafe", name:"The Baristro @ Ping river Ping River", note:"", q:"The Baristro @ Ping river Ping River เชียงใหม่", lat:18.81583577497465, lng:99.00024706497788, dest:"chiangmai"},
-  {id:"cmc9", cat:"cafe", name:"2bees Cafe &amp; Garden", note:"", q:"2bees Cafe &amp; Garden เชียงใหม่", lat:18.6978722, lng:98.8731883, dest:"chiangmai"},
+  {id:"cmc9", cat:"cafe", name:"2bees Cafe & Garden", note:"", q:"2bees Cafe & Garden เชียงใหม่", lat:18.6978722, lng:98.8731883, dest:"chiangmai"},
   {id:"cmc10", cat:"cafe", name:"temp.cnx", note:"", q:"temp.cnx เชียงใหม่", lat:18.788812, lng:98.961659, dest:"chiangmai"},
   {id:"cmc11", cat:"cafe", name:"Chic Ruedoo", note:"", q:"Chic Ruedoo เชียงใหม่", lat:18.76479149520556, lng:98.9989293772341, dest:"chiangmai"},
   {id:"cmc12", cat:"cafe", name:"Fern Forest Cafe", note:"", q:"Fern Forest Cafe เชียงใหม่", lat:18.79337938393546, lng:98.98202732205391, dest:"chiangmai"},
@@ -1202,10 +1204,10 @@ const CM_PLACES = [
   {id:"cmc14", cat:"restaurant", name:"Caramellow Cafe", note:"", q:"Caramellow Cafe เชียงใหม่", lat:18.768312348972223, lng:98.98095117485138, dest:"chiangmai"},
   {id:"cmc15", cat:"cafe", name:"Lamour Cafe บ้านเหลือง", note:"", q:"Lamour Cafe บ้านเหลือง เชียงใหม่", lat:18.776372655366, lng:98.949267288361, dest:"chiangmai"},
   {id:"cmc16", cat:"cafe", name:"Yelloo นิมมาน", note:"", q:"Yelloo นิมมาน เชียงใหม่", lat:18.800216, lng:98.967124, dest:"chiangmai"},
-  {id:"cmc17", cat:"cafe", name:"Claai Cafe&apos;&amp; Eatery คลายคาเฟ่ แอนด์ อีทเทอรี่", note:"", q:"Claai Cafe&apos;&amp; Eatery คลายคาเฟ่ แอนด์ อีทเทอรี่ เชียงใหม่", lat:18.880344223256856, lng:99.34814583510159, dest:"chiangmai"},
-  {id:"cmc18", cat:"cafe", name:"OHB Cafe &amp; Meal CHIANGMAI", note:"", q:"OHB Cafe &amp; Meal CHIANGMAI เชียงใหม่", lat:18.7903611, lng:99.0088611, dest:"chiangmai"},
-  {id:"cmc19", cat:"cafe", name:"Asama Coffee&amp;Roastery บริษัท อสมา คอฟฟี่ โรสเทอรี่ จำกัด", note:"", q:"Asama Coffee&amp;Roastery บริษัท อสมา คอฟฟี่ โรสเทอรี่ จำกัด เชียงใหม่", lat:18.765071626307, lng:98.953075725585, dest:"chiangmai"},
-  {id:"cmc20", cat:"cafe", name:"Cafe de Oasis &amp; Toby&apos;s Pizza", note:"", q:"Cafe de Oasis &amp; Toby&apos;s Pizza เชียงใหม่", lat:18.824918994907026, lng:98.95962525263974, dest:"chiangmai"},
+  {id:"cmc17", cat:"cafe", name:"Claai Cafe'& Eatery คลายคาเฟ่ แอนด์ อีทเทอรี่", note:"", q:"Claai Cafe'& Eatery คลายคาเฟ่ แอนด์ อีทเทอรี่ เชียงใหม่", lat:18.880344223256856, lng:99.34814583510159, dest:"chiangmai"},
+  {id:"cmc18", cat:"cafe", name:"OHB Cafe & Meal CHIANGMAI", note:"", q:"OHB Cafe & Meal CHIANGMAI เชียงใหม่", lat:18.7903611, lng:99.0088611, dest:"chiangmai"},
+  {id:"cmc19", cat:"cafe", name:"Asama Coffee&Roastery บริษัท อสมา คอฟฟี่ โรสเทอรี่ จำกัด", note:"", q:"Asama Coffee&Roastery บริษัท อสมา คอฟฟี่ โรสเทอรี่ จำกัด เชียงใหม่", lat:18.765071626307, lng:98.953075725585, dest:"chiangmai"},
+  {id:"cmc20", cat:"cafe", name:"Cafe de Oasis & Toby's Pizza", note:"", q:"Cafe de Oasis & Toby's Pizza เชียงใหม่", lat:18.824918994907026, lng:98.95962525263974, dest:"chiangmai"},
   {id:"cmc21", cat:"cafe", name:"Mars Cnx", note:"", q:"Mars Cnx เชียงใหม่", lat:18.7915538, lng:98.9784837, dest:"chiangmai"},
   {id:"cmc22", cat:"cafe", name:"GRAPH Contemporary", note:"", q:"GRAPH Contemporary เชียงใหม่", lat:18.787026475468203, lng:99.00888863950968, dest:"chiangmai"},
   {id:"cmc23", cat:"restaurant", name:"Pluto", note:"", q:"Pluto เชียงใหม่", lat:18.834971, lng:99.005151, dest:"chiangmai"},
@@ -1214,7 +1216,7 @@ const CM_PLACES = [
   {id:"cmc26", cat:"restaurant", name:"Nekoemon Cafe Chiang Mai", note:"", q:"Nekoemon Cafe Chiang Mai เชียงใหม่", lat:18.713351761397792, lng:99.05975908041, dest:"chiangmai"},
   {id:"cmc27", cat:"cafe", name:"Naturetalk Cafe", note:"", q:"Naturetalk Cafe เชียงใหม่", lat:18.888131093285985, lng:98.97820031270385, dest:"chiangmai"},
   {id:"cmc28", cat:"cafe", name:"Glin.cafe กลิ่น", note:"", q:"Glin.cafe กลิ่น เชียงใหม่", lat:18.79769424147, lng:98.979285936803, dest:"chiangmai"},
-  {id:"cmc29", cat:"cafe", name:"Tree&amp;co coffee (กาแฟ ทรีแอนด์โค)", note:"", q:"Tree&amp;co coffee (กาแฟ ทรีแอนด์โค) เชียงใหม่", lat:18.895614368102, lng:99.013501703739, dest:"chiangmai"},
+  {id:"cmc29", cat:"cafe", name:"Tree&co coffee (กาแฟ ทรีแอนด์โค)", note:"", q:"Tree&co coffee (กาแฟ ทรีแอนด์โค) เชียงใหม่", lat:18.895614368102, lng:99.013501703739, dest:"chiangmai"},
   {id:"cmc30", cat:"dessert", name:"Mooh Doughnuts เชียงใหม่", note:"", q:"Mooh Doughnuts เชียงใหม่ เชียงใหม่", lat:18.795598004966397, lng:98.96848384290952, dest:"chiangmai"},
   {id:"cmc31", cat:"cafe", name:"Undo Studio", note:"", q:"Undo Studio เชียงใหม่", lat:18.76158482686, lng:98.997897617519, dest:"chiangmai"},
   {id:"cmc32", cat:"dessert", name:"Under Over Cafe สวนดอก", note:"", q:"Under Over Cafe สวนดอก เชียงใหม่", lat:18.789000506871275, lng:98.97038021771601, dest:"chiangmai"},
@@ -1222,14 +1224,14 @@ const CM_PLACES = [
   {id:"cmc34", cat:"cafe", name:"EVERGREEN Coffee Matcha Bakery Suandok", note:"", q:"EVERGREEN Coffee Matcha Bakery Suandok เชียงใหม่", lat:18.786040166865, lng:98.970516588207, dest:"chiangmai"},
   {id:"cmc35", cat:"cafe", name:"No.39 Cafe", note:"", q:"No.39 Cafe เชียงใหม่", lat:18.780290522214273, lng:98.95168999999999, dest:"chiangmai"},
   {id:"cmc36", cat:"cafe", name:"A DAY IN CHIANG MAI COFFEE BREW", note:"", q:"A DAY IN CHIANG MAI COFFEE BREW เชียงใหม่", lat:18.776600961996, lng:98.996334488983, dest:"chiangmai"},
-  {id:"cmc37", cat:"cafe", name:"KRISP Cafe&apos; เชียงใหม่", note:"", q:"KRISP Cafe&apos; เชียงใหม่ เชียงใหม่", lat:18.8090608208348, lng:98.98248363286257, dest:"chiangmai"},
+  {id:"cmc37", cat:"cafe", name:"KRISP Cafe' เชียงใหม่", note:"", q:"KRISP Cafe' เชียงใหม่ เชียงใหม่", lat:18.8090608208348, lng:98.98248363286257, dest:"chiangmai"},
   {id:"cmc38", cat:"dessert", name:"Ss1254372 Cafe", note:"", q:"Ss1254372 Cafe เชียงใหม่", lat:18.794816277182438, lng:98.96839480307585, dest:"chiangmai"},
   {id:"cmc39", cat:"cafe", name:"Early Owls", note:"", q:"Early Owls เชียงใหม่", lat:18.799913, lng:98.986459, dest:"chiangmai"},
-  {id:"cmc40", cat:"cafe", name:"Koff &amp; Things", note:"", q:"Koff &amp; Things เชียงใหม่", lat:18.781115999999987, lng:98.98882300000015, dest:"chiangmai"},
+  {id:"cmc40", cat:"cafe", name:"Koff & Things", note:"", q:"Koff & Things เชียงใหม่", lat:18.781115999999987, lng:98.98882300000015, dest:"chiangmai"},
   {id:"cmc41", cat:"restaurant", name:"Sun Rays Cafe", note:"", q:"Sun Rays Cafe เชียงใหม่", lat:18.787733684335887, lng:98.9799891073923, dest:"chiangmai"},
   {id:"cmc42", cat:"restaurant", name:"ผลิ : phli cafe x khaosoi -", note:"", q:"ผลิ : phli cafe x khaosoi - เชียงใหม่", lat:18.843071, lng:99.0138084, dest:"chiangmai"},
   {id:"cmc43", cat:"cafe", name:"The Haus224 เชียงใหม่", note:"", q:"The Haus224 เชียงใหม่ เชียงใหม่", lat:18.794492, lng:98.9880368, dest:"chiangmai"},
-  {id:"cmc44", cat:"restaurant", name:"Fleur Cafe &amp; Eatery (เฟลอ คาเฟ่) -", note:"", q:"Fleur Cafe &amp; Eatery (เฟลอ คาเฟ่) - เชียงใหม่", lat:18.906802, lng:98.9068, dest:"chiangmai"},
+  {id:"cmc44", cat:"restaurant", name:"Fleur Cafe & Eatery (เฟลอ คาเฟ่) -", note:"", q:"Fleur Cafe & Eatery (เฟลอ คาเฟ่) - เชียงใหม่", lat:18.906802, lng:98.9068, dest:"chiangmai"},
   {id:"cmc45", cat:"cafe", name:"Chez Nous Artisan Baking Atelier(สันกำแพง) เชียงใหม่", note:"", q:"Chez Nous Artisan Baking Atelier(สันกำแพง) เชียงใหม่ เชียงใหม่", lat:18.775166199999994, lng:99.06013760000015, dest:"chiangmai"},
   {id:"cmc46", cat:"cafe", name:"The Baristro at Asian Style เอเชี่ยนสไตล์", note:"", q:"The Baristro at Asian Style เอเชี่ยนสไตล์ เชียงใหม่", lat:18.78992665631942, lng:98.95162314176561, dest:"chiangmai"},
   {id:"cmc47", cat:"restaurant", name:"Blue and Teak - Chang Moi", note:"", q:"Blue and Teak - Chang Moi เชียงใหม่", lat:18.78985412851955, lng:98.99719337001443, dest:"chiangmai"}
