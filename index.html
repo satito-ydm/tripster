@@ -769,6 +769,17 @@ a.fact:hover{border-color:var(--accent)}
 .setrow.danger .ico{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}
 .setrow.danger .tx b{color:var(--danger)}
 .linkrow{display:grid;gap:9px;margin-top:14px}
+/* พรีวิวทริปที่เพื่อนแชร์มา — อ่านทั้งใบได้ก่อนตัดสินใจก๊อป */
+.sheet-sub.warn{color:var(--sun-ink,#a86807)}
+.sp-list{max-height:46vh;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-top:4px}
+.sp-day{margin-bottom:14px}
+.sp-day h3{font-size:var(--fs-sm);margin:0 0 6px;display:flex;justify-content:space-between;align-items:baseline}
+.sp-day h3 span{font-weight:400;color:var(--ink-2)}
+.sp-day ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.sp-row{font-size:var(--fs-sm);line-height:1.5;display:flex;flex-wrap:wrap;gap:0 7px;align-items:baseline}
+.sp-row b{font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:4.2em}
+.sp-row.dim{color:var(--ink-2);font-style:italic}
+.sp-note{width:100%;padding-left:calc(4.2em + 7px);color:var(--ink-2)}
 .linkrow.two{grid-template-columns:1fr 1fr}
 .btn-quiet{
   background:var(--surface);border-color:var(--line-2);color:var(--ink-2);
@@ -2206,6 +2217,7 @@ function renderPlanDays(box, t){
       <span class="cnt">${t.days.length} วัน · ${stops} จุด</span></div>
     ${cards}
     <div class="linkrow"><button class="btn btn-quiet" id="addDayBtn">${IC.plus} เพิ่มอีกวัน</button></div>
+    <div class="linkrow"><button class="btn btn-quiet" id="shareTripBtn">${IC.go} แชร์ทริปนี้ให้เพื่อน</button></div>
     <div class="linkrow two">
       <button class="btn btn-quiet" id="renameTripBtn">${IC.edit} แก้ชื่อ / วันที่ทริป</button>
       <button class="btn btn-danger" id="delTripBtn">${IC.trash} ลบทริปนี้</button>
@@ -3263,6 +3275,176 @@ function setView(v){
   if(v === 'plan' && !state.trips.length && !$('#sheet').innerHTML) openTripSheet();
 }
 
+/* ---------- แชร์ทริปผ่านลิงก์ ----------
+   ทริปอ้างสถานที่ด้วย id เฉย ๆ และคลังสถานที่อยู่ในไฟล์นี้ที่ทั้งสองฝ่ายมีอยู่แล้ว
+   เลยส่งแค่โครงทริปไปในลิงก์ได้ ไม่ต้องมีเซิร์ฟเวอร์ ไม่ต้องมีบัญชีผู้ใช้
+   ทริปเต็มวัน 11 จุดคิดเป็นราว 380 ตัวอักษรหลัง # ซึ่งส่วนนี้ไม่ถูกส่งไปเซิร์ฟเวอร์ด้วย
+
+   ที่ผู้ใช้เพิ่มเอง (id ขึ้นต้น u) เพื่อนไม่มีในเครื่อง ต้องฝังไปเต็มใบ
+   รูปที่ผู้ใช้ใส่เองไม่ติดไป ตรงตามที่หน้าจัดการรูปเขียนไว้ */
+const SHARE_V = 1;
+const BUILTIN_PIDS = new Set(SEED.places.map(p => p.id));
+
+const b64urlEnc = u8 => { let s = ''; for(const b of u8) s += String.fromCharCode(b);
+  return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); };
+const b64urlDec = str => Uint8Array.from(
+  atob(str.replace(/-/g,'+').replace(/_/g,'/')), c => c.charCodeAt(0));
+
+/* ต้องรับ promise ของ writer ด้วย ไม่งั้นตอนคลายลิงก์ที่ขาด
+   จะเด้งเป็น unhandled rejection รกคอนโซล ทั้งที่ฝั่งอ่านดักไว้แล้ว */
+async function deflateRaw(u8){
+  const cs = new CompressionStream('deflate-raw');
+  const w = cs.writable.getWriter();
+  w.write(u8).catch(() => {}); w.close().catch(() => {});
+  return new Uint8Array(await new Response(cs.readable).arrayBuffer());
+}
+async function inflateRaw(u8){
+  const ds = new DecompressionStream('deflate-raw');
+  const w = ds.writable.getWriter();
+  w.write(u8).catch(() => {}); w.close().catch(() => {});
+  return new Response(ds.readable).text();
+}
+
+async function tripToCode(t){
+  const used = new Set();
+  const y = t.days.map(d => sortedItems(d).map(i => {
+    used.add(i.pid);
+    return [i.pid, i.time || '', i.note || ''];
+  }));
+  const payload = {v:SHARE_V, n:t.name, d:t.dest, y};
+  if(t.startDate) payload.s = t.startDate;
+
+  const extra = [...used].filter(id => !BUILTIN_PIDS.has(id))
+    .map(id => place(id)).filter(Boolean)
+    .map(p => { const {img, ...rest} = p; return rest; });   // รูปส่วนตัวไม่ติดไปกับลิงก์
+  if(extra.length) payload.u = extra;
+
+  const d0 = destOf(t.dest);
+  if(d0 && !DESTS.some(x => x.id === t.dest)){
+    const {cover, ...rest} = d0;   // cover เป็น base64 ก้อนใหญ่ ตัดทิ้ง
+    payload.x = rest;
+  }
+  return b64urlEnc(await deflateRaw(new TextEncoder().encode(JSON.stringify(payload))));
+}
+
+async function codeToTrip(code){
+  let o;
+  try{ o = JSON.parse(await inflateRaw(b64urlDec(code))); }
+  catch(e){ return {err:'ลิงก์ไม่สมบูรณ์ — อาจถูกตัดตอนคัดลอกหรือส่งต่อ ลองขอลิงก์ใหม่อีกครั้ง'}; }
+  if(!o || typeof o !== 'object' || !Array.isArray(o.y))
+    return {err:'ลิงก์ไม่สมบูรณ์ — อ่านเป็นทริปไม่ได้'};
+  if((o.v | 0) > SHARE_V)
+    return {err:'ลิงก์นี้มาจากแอปรุ่นใหม่กว่าที่เครื่องนี้มี — รีเฟรชหน้าเว็บแล้วเปิดลิงก์อีกครั้ง'};
+  return {trip:o};
+}
+
+const shareUrlFor = code => location.origin + location.pathname + '#t=' + code;
+function clearShareHash(){
+  if(location.hash.startsWith('#t='))
+    history.replaceState(null, '', location.origin + location.pathname + location.search);
+}
+
+async function openShareSheet(){
+  const t = currentTrip();
+  if(!t) return;
+  let url;
+  try{ url = shareUrlFor(await tripToCode(t)); }
+  catch(e){ return toast('สร้างลิงก์ไม่สำเร็จ — เบราว์เซอร์นี้อาจเก่าเกินไป'); }
+  const stops = t.days.reduce((n,x) => n + x.items.length, 0);
+  openSheet(`
+    <div class="sheet-pad">
+      <h2 id="sheetTitle">แชร์ “${esc(t.name)}”</h2>
+      <div class="sheet-sub">${t.days.length} วัน · ${stops} จุด · ลิงก์พาทริปไปทั้งใบ เพื่อนกดเปิดได้เลยโดยไม่ต้องสมัครอะไร</div>
+      <label class="field" style="margin-top:12px"><span>ลิงก์ทริป</span>
+        <input type="text" id="shareUrl" readonly value="${esc(url)}"></label>
+      <div class="sheet-sub" style="margin-top:10px">ลิงก์นี้เป็นภาพนิ่งของทริป ณ ตอนนี้ ถ้าแก้ทริปทีหลังต้องกดแชร์ใหม่ · รูปที่คุณใส่เองไม่ติดไปกับลิงก์</div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn" data-close>ปิด</button>
+      <button class="btn btn-solid" id="shareCopy">คัดลอกลิงก์</button>
+    </div>`);
+  const inp = $('#shareUrl');
+  if(inp) inp.addEventListener('focus', () => inp.select());
+}
+
+/* พรีวิวก่อน ไม่แตะทริปเดิมของคนรับจนกว่าจะกดก๊อป */
+let pendingShare = null;
+function openSharePreview(o){
+  pendingShare = o;
+  const lk = id => place(id) || (o.u || []).find(p => p.id === id);
+  const dn = destOf(o.d)?.name || o.x?.name || '';
+  let missing = 0, stops = 0;
+  const days = o.y.map((items, i) => {
+    const rows = (items || []).map(a => {
+      if(!Array.isArray(a)) return '';
+      stops++;
+      const p = lk(a[0]);
+      if(!p){ missing++;
+        return `<li class="sp-row dim">จุดนี้ไม่มีในเวอร์ชันของคุณ — จะถูกข้ามตอนก๊อป</li>`; }
+      return `<li class="sp-row"><b>${esc(a[1] || '')}</b> ${esc(p.name)}${
+        a[2] ? `<span class="sp-note">${esc(a[2])}</span>` : ''}</li>`;
+    }).join('');
+    return `<div class="sp-day"><h3>Day ${i+1}<span>${(items||[]).length} จุด</span></h3>
+      <ul>${rows || '<li class="sp-row dim">ยังว่าง</li>'}</ul></div>`;
+  }).join('');
+
+  openSheet(`
+    <div class="sheet-pad">
+      <h2 id="sheetTitle">${esc(o.n || 'ทริปที่แชร์มา')}</h2>
+      <div class="sheet-sub">${esc(dn)}${dn ? ' · ' : ''}${o.y.length} วัน · ${stops} จุด${
+        o.s ? ' · เริ่ม ' + esc(o.s) : ''}</div>
+      ${missing ? `<div class="sheet-sub warn">${missing} จุดในทริปนี้ไม่มีในแอปเวอร์ชันของคุณ ลองรีเฟรชหน้าเว็บเพื่อเอาข้อมูลล่าสุด</div>` : ''}
+      <div class="sp-list">${days}</div>
+      <div class="sheet-sub" style="margin-top:12px">ก๊อปแล้วจะเป็นทริปใหม่ของคุณ แก้ได้อิสระ ไม่กระทบทริปเดิมที่มีอยู่</div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn" data-share-skip>ไม่เอา</button>
+      <button class="btn btn-solid" data-share-copy>${IC.plus} ก๊อปมาเป็นของฉัน</button>
+    </div>`);
+}
+
+function importSharedTrip(o){
+  (o.u || []).forEach(p => { if(p && p.id && !place(p.id)) state.places.push({...p}); });
+  if(o.x && o.x.id && !destOf(o.x.id)) (state.dests = state.dests || []).push({...o.x});
+
+  const id = 't' + Date.now();
+  let dropped = 0;
+  const days = o.y.map((items, i) => ({
+    id: id + 'd' + (i+1), label: 'Day ' + (i+1),
+    items: (items || []).filter(a => {
+      const ok = Array.isArray(a) && place(a[0]);
+      if(!ok) dropped++;
+      return ok;
+    }).map(a => ({pid:a[0], time:a[1] || '09:00', note:a[2] || ''}))
+  }));
+  if(!days.length) days.push({id:id+'d1', label:'Day 1', items:[]});
+
+  const nm = (o.n || '').trim() || 'ทริปที่แชร์มา';
+  state.trips.push({id, name:nm, dest:o.d, startDate:o.s || '', days});
+  state.activeTrip = id; activeDayId = days[0].id;
+  activeDest = o.d; placesDest = null; activeFilter = 'all'; planDay = null;
+  pendingShare = null;
+  save(); closeSheet(); clearShareHash();
+  renderAll(); setView('plan');
+  toast('ก๊อป “' + nm + '” มาแล้ว' + (dropped ? ' · ข้าม ' + dropped + ' จุดที่ไม่มีในเวอร์ชันนี้' : ''));
+}
+
+async function handleShareHash(){
+  const m = /^#t=([A-Za-z0-9_-]+)$/.exec(location.hash || '');
+  if(!m) return;
+  const {trip, err} = await codeToTrip(m[1]);
+  if(err){
+    clearShareHash();
+    return openSheet(`
+      <div class="sheet-pad">
+        <h2 id="sheetTitle">เปิดลิงก์ทริปไม่ได้</h2>
+        <div class="sheet-sub">${esc(err)}</div>
+      </div>
+      <div class="sheet-actions"><button class="btn btn-solid" data-close>เข้าใจแล้ว</button></div>`);
+  }
+  openSharePreview(trip);
+}
+
 /* ---------- events ---------- */
 document.addEventListener('click', e => {
   const t = e.target;
@@ -3351,6 +3533,25 @@ document.addEventListener('click', e => {
     activeDest = currentTrip().dest; placesDest = null; activeFilter = 'all';
     save(); renderAll(); setView('plan'); return;
   }
+
+  if(t.closest('#shareTripBtn')){ openShareSheet(); return; }
+
+  if(t.closest('#shareCopy')){
+    const url = $('#shareUrl')?.value || '';
+    (async () => {
+      // บนมือถือแชร์ผ่านระบบตรงไปแอปแชทได้เลย ไม่ต้องผ่านคลิปบอร์ด
+      if(navigator.share){
+        try{ await navigator.share({title:'ทริปจาก Tripster', url}); return; }
+        catch(e){ if(e && e.name === 'AbortError') return; }
+      }
+      try{ await navigator.clipboard.writeText(url); toast('คัดลอกลิงก์แล้ว'); }
+      catch(e){ $('#shareUrl')?.select(); toast('เบราว์เซอร์ไม่ให้คัดลอกให้ — กด Ctrl/Cmd+C ได้เลย'); }
+    })();
+    return;
+  }
+
+  if(t.closest('[data-share-skip]')){ pendingShare = null; closeSheet(); clearShareHash(); return; }
+  if(t.closest('[data-share-copy]')){ if(pendingShare) importSharedTrip(pendingShare); return; }
 
   if(t.closest('#newTripBtn') || t.closest('#heroNewTrip') || t.closest('[data-newtrip]')){ openTripSheet(); return; }
 
@@ -3717,6 +3918,8 @@ document.addEventListener('keydown', e => {
 
 renderAll();
 setView('home');
+handleShareHash();
+addEventListener('hashchange', handleShareHash);
 if(gdMeta().on && gdUsable()) setTimeout(() => { gdSync(false).catch(() => {}); }, 1200);
 if(state.geo.on) nearby.start();
 </script>
