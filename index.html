@@ -560,10 +560,10 @@ a{color:inherit;text-decoration:none}
    เพราะใบจองจริงไม่ควรเปลี่ยนสีตามธีมแอป มันคือของนอกแอปที่มาฝากไว้ */
 .carbar{
   --on:#EAF7F4;
-  --on-2:color-mix(in srgb,#EAF7F4 78%,transparent);
-  --on-line:color-mix(in srgb,#EAF7F4 17%,transparent);
+  --on-2:color-mix(in srgb,#EAF7F4 90%,transparent);
+  --on-line:color-mix(in srgb,#EAF7F4 20%,transparent);
   margin-top:11px;padding:15px 15px 14px;border-radius:var(--r-lg);color:var(--on);
-  background:linear-gradient(147deg,#1B8078 0%,#136460 54%,#0C4A48 100%);
+  background:linear-gradient(147deg,#157069 0%,#0E5751 54%,#08403E 100%);
   box-shadow:0 10px 26px -16px rgba(9,58,54,.85);
 }
 .carbar .cb-head{display:flex;align-items:center;gap:11px}
@@ -599,7 +599,7 @@ a{color:inherit;text-decoration:none}
 .carbar .cb-leg i{font-style:normal;font-size:var(--fs-xs);color:var(--on-2)}
 .carbar .cb-leg b{font-size:var(--fs-sm);font-weight:700;color:var(--on);white-space:nowrap}
 .carbar .cb-span{
-  flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:#0C4A48;
+  flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:#08403E;
   padding:3px 9px;border-radius:999px;background:color-mix(in srgb,#EAF7F4 88%,transparent);
 }
 .carbar .cb-live{
@@ -615,10 +615,13 @@ a{color:inherit;text-decoration:none}
 }
 .carbar .cb-how b{color:var(--on);font-weight:700}
 .carbar .cb-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+/* ปุ่มหลักใช้ชุดสีส้มเหลืองเดียวกับ CTA ที่อื่นทั้งแอป ตัวอักษร navy บนพื้นส้ม
+   เป็นคู่สีที่แอปใช้อยู่แล้วและผ่านเกณฑ์คอนทราสต์ */
 .carbar .cb-acts .btn{
-  flex:1 1 100%;background:#fff;border-color:#fff;color:#0C4A48;box-shadow:none;
+  flex:1 1 100%;border:none;box-shadow:none;
+  background:var(--accent-strong);background-image:var(--sun-grad);color:var(--navy);
 }
-.carbar .cb-acts .btn:hover{background:color-mix(in srgb,#fff 88%,#1B8078)}
+.carbar .cb-acts .btn:hover{filter:brightness(1.05)}
 .carbar .cb-tel{
   flex:1 1 0;min-width:0;justify-content:center;
   display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:38px;border-radius:var(--r-md);
@@ -635,21 +638,6 @@ a{color:inherit;text-decoration:none}
 }
 .carbar .cb-ask:hover{background:color-mix(in srgb,#EAF7F4 10%,transparent);color:var(--on);border-style:solid}
 .carbar .cb-ask svg{width:15px;height:15px}
-.carbar .cb-how{
-  margin:9px 0 0;font-size:var(--fs-xs);color:var(--ink-2);line-height:1.65;
-  padding-top:9px;border-top:1px solid color-mix(in srgb,var(--sun) 24%,transparent);
-}
-.carbar .cb-how b{color:var(--ink);font-weight:700}
-.carbar .cb-acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
-.carbar .cb-acts .btn{flex:1 1 100%}
-.carbar .cb-tel{
-  flex:1 1 0;min-width:0;justify-content:center;
-  display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:38px;border-radius:var(--r-md);
-  font-size:var(--fs-sm);font-weight:700;color:var(--accent-text);text-decoration:none;
-  background:var(--surface);border:1px solid var(--line);
-}
-.carbar .cb-tel:hover{border-color:var(--sea);background:color-mix(in srgb,var(--sea) 8%,var(--surface))}
-.carbar .cb-tel svg{width:15px;height:15px}
 .destcard.newdest{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   padding:14px 12px;text-align:center;
