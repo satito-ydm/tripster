@@ -246,52 +246,93 @@ a{color:inherit;text-decoration:none}
 .sechead .more{font-size:var(--fs-sm);font-weight:600;color:var(--accent-text)}
 .sechead .cnt{font-size:var(--fs-xs);color:var(--ink-3);font-family:'IBM Plex Mono',monospace}
 
-/* ---------- timeline ---------- */
+/* ---------- timeline ----------
+   แกนซ้ายคือแกนของวัน ไม่ใช่เส้นประดับ ลูกปัดคือเวลาที่ถึง ช่องว่างระหว่างลูกปัด
+   คือระยะทางที่ต้องเดินทางจริง เลยเอา "ห่างจุดถัดไป" มาไว้บนเส้นแทนที่จะห้อย
+   ใต้การ์ด สีของแต่ละใบมาจากหมวดของที่นั้น ทั้งวันจึงอ่านเป็นจังหวะสีได้ */
 .timeline{display:flex;flex-direction:column}
-.tl-item{display:grid;grid-template-columns:52px 1fr;gap:12px;position:relative}
-.tl-rail{position:relative;padding-top:15px}
+.tl-item{--c:var(--accent);display:grid;grid-template-columns:64px 1fr;column-gap:11px;position:relative}
+.tl-rail{position:relative;padding:14px 12px 0 0;text-align:right}
+.tl-bead{
+  position:absolute;left:57px;top:16px;width:13px;height:13px;border-radius:50%;
+  background:var(--c);box-shadow:0 0 0 3.5px var(--app);z-index:1;
+}
+/* ช่องเวลาเป็น input จริง กว้างพอให้ "11:30" ไม่ถูกตัด เบราว์เซอร์ย่อให้ต่ำกว่านี้ไม่ได้ */
 .tl-rail input{
-  font-family:'IBM Plex Mono',monospace;font-size:var(--fs-sm);font-weight:500;
-  background:transparent;border:1px solid transparent;border-radius:6px;color:var(--ink);
-  padding:1px 2px;width:52px;text-align:right;font-variant-numeric:tabular-nums;
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;
+  background:transparent;border:1px solid transparent;border-radius:7px;color:var(--ink-2);
+  padding:2px 0;width:52px;text-align:right;font-variant-numeric:tabular-nums;
 }
 .tl-rail input::-webkit-calendar-picker-indicator{display:none}
-.tl-rail input:hover{border-color:var(--line-2)}
-.tl-rail input:focus{border-color:var(--accent);background:var(--surface)}
-.tl-item::before{content:"";position:absolute;left:60px;top:30px;bottom:0;width:2px;background:var(--line-2);border-radius:2px}
+.tl-rail input:hover{border-color:var(--line-2);color:var(--ink)}
+.tl-rail input:focus{border-color:var(--accent);background:var(--surface);color:var(--ink)}
+
+/* ช่วงเดินทาง — เส้นประวิ่งในคอลัมน์แกน ระยะทางเกาะอยู่บนเส้น */
+.tl-leg{
+  grid-column:1/-1;display:flex;align-items:center;gap:7px;
+  padding:5px 0 13px 64px;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;color:var(--ink-3);
+}
+.tl-leg svg{width:11px;height:11px}
+.tl-item::before{
+  content:"";position:absolute;left:62px;top:31px;bottom:2px;width:3px;border-radius:3px;
+  background:repeating-linear-gradient(to bottom,
+    color-mix(in srgb,var(--c) 45%,transparent) 0 3px,transparent 3px 9px);
+}
 .tl-item:last-child::before{display:none}
-.tl-dot{position:absolute;left:56px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--dot,var(--accent));box-shadow:0 0 0 3px var(--app);z-index:1}
-.tl-body{padding-bottom:10px;position:relative}
+
+/* เส้น "ตอนนี้" — ขึ้นเฉพาะวันที่ตรงกับวันนี้จริงเท่านั้น */
+.tl-now{display:flex;align-items:center;gap:9px;padding:3px 0 11px 8px}
+.tl-now b{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;letter-spacing:.02em;
+  color:#fff;background:var(--deep);padding:3px 10px;border-radius:999px;flex:0 0 auto;
+}
+.tl-now i{flex:1;height:2px;border-radius:2px;background:color-mix(in srgb,var(--deep) 34%,transparent)}
+
+.tl-body{position:relative;padding-bottom:6px}
 .tl-grip{
-  position:absolute;top:9px;right:9px;z-index:2;width:30px;height:30px;
-  border-radius:8px;display:grid;place-items:center;color:var(--ink-3);
+  position:relative;margin-left:auto;width:32px;height:32px;
+  border-radius:9px;display:grid;place-items:center;color:color-mix(in srgb,var(--c) 60%,var(--ink-3));
   background:transparent;border:1px solid transparent;cursor:grab;touch-action:none;
 }
-/* ตัวปุ่มเล็กเพื่อไม่ให้แย่งสายตาจากชื่อที่ แต่ขยายพื้นที่แตะให้ถึง 44px ตามเกณฑ์นิ้ว */
-.tl-grip::before{content:"";position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
-.tl-grip:hover{color:var(--ink-2);background:var(--app);border-color:var(--line)}
-.tl-grip:focus-visible{color:var(--ink-2);border-color:var(--accent)}
+/* ตัวปุ่มเล็กเพื่อไม่ให้แย่งสายตาจากปุ่มนำทาง แต่ขยายพื้นที่แตะให้ถึง 44px ตามเกณฑ์นิ้ว */
+.tl-grip::before{content:"";position:absolute;top:-6px;right:-6px;bottom:-6px;left:-6px}
+.tl-grip:hover{background:color-mix(in srgb,var(--c) 12%,transparent)}
+.tl-grip:focus-visible{border-color:var(--c)}
 .tl-grip svg{width:16px;height:16px}
-.tl-item.is-lift{position:relative;z-index:3;cursor:grabbing}
-.tl-item.is-lift .stop{border-color:var(--accent);box-shadow:var(--shadow-md)}
-.tl-item.is-lift .tl-grip{cursor:grabbing;color:var(--accent-text)}
+.tl-item.is-lift{z-index:3;cursor:grabbing}
+.tl-item.is-lift .stop{box-shadow:var(--shadow-md);border-color:var(--c)}
+.tl-item.is-lift .tl-grip{cursor:grabbing}
 /* ระหว่างลาก เวลาจะจางลงเพื่อบอกว่าช่องเวลาอยู่กับที่ ที่ย้ายคือสถานที่ */
-.timeline.is-sorting .tl-rail{opacity:.28}
+.timeline.is-sorting .tl-rail,.timeline.is-sorting .tl-leg{opacity:.26}
 .timeline.is-sorting .tl-item{transition:none}
-.timeline.is-sorting .stop-actions,.timeline.is-sorting .leg{opacity:.4}
+.timeline.is-sorting .stop-actions{opacity:.4}
 
 .stop{
-  width:100%;text-align:left;display:grid;grid-template-columns:64px 1fr;gap:12px;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
-  padding:10px 44px 10px 10px;box-shadow:var(--shadow-sm);
+  width:100%;text-align:left;display:grid;grid-template-columns:58px 1fr;gap:11px;align-items:center;
+  /* ไล่สีจากหมวดตรงซ้ายไปจางทางขวา ให้รูปกับชื่อที่นั่งอยู่บนสีของหมวดตัวเอง */
+  background:linear-gradient(101deg,
+    color-mix(in srgb,var(--c) 17%,var(--surface)) 0%,
+    color-mix(in srgb,var(--c) 6%,var(--surface)) 54%,
+    var(--surface) 100%);
+  border:1px solid color-mix(in srgb,var(--c) 22%,transparent);
+  border-radius:15px;padding:11px;
 }
-.stop:hover{border-color:var(--line-2)}
+.stop:hover{border-color:color-mix(in srgb,var(--c) 42%,transparent)}
+.stop .cover{width:58px;height:58px;border-radius:12px}
 .stop-txt{min-width:0}
-.stop h3{font-size:var(--fs-base);font-weight:600;line-height:1.35}
-.stop .sub{font-size:var(--fs-xs);color:var(--ink-2);margin-top:3px;display:flex;flex-wrap:wrap;gap:4px 9px;align-items:center}
-.stop-actions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
-.leg{display:flex;align-items:center;gap:6px;font-size:var(--fs-xs);color:var(--ink-3);padding:7px 0 10px 2px;font-family:'IBM Plex Mono',monospace}
-.leg svg{width:11px;height:11px}
+.stop h3{font-size:16.5px;font-weight:700;line-height:1.28;letter-spacing:-.01em}
+.stop .sub{font-size:var(--fs-xs);color:var(--ink-2);margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 9px;align-items:center}
+
+/* ปุ่มบนแถวเล็กลงและเงียบลง ให้สีของการ์ดเป็นตัวนำสายตาแทนปุ่มสิบเอ็ดใบ */
+.stop-actions{display:flex;align-items:center;gap:7px;margin:8px 0 0 2px}
+.tl-body .mini{font-size:var(--fs-xs);padding:6px 12px;min-height:32px;border-width:1px}
+.tl-body .mini svg{width:12px;height:12px}
+.tl-body .mini-go{
+  background:color-mix(in srgb,var(--c) 13%,var(--surface));
+  border-color:color-mix(in srgb,var(--c) 30%,transparent);color:var(--c);
+}
+.tl-body .mini-go:hover{background:color-mix(in srgb,var(--c) 20%,var(--surface))}
 
 /* ---------- pills / chips ---------- */
 .chip{
@@ -1826,6 +1867,17 @@ function addMinutes(hhmm, mins){
   return String(Math.floor(t/60)).padStart(2,'0') + ':' + String(t%60).padStart(2,'0');
 }
 const sortedItems = d => [...d.items].sort((a,b) => a.time.localeCompare(b.time));
+/* วันนี้ตรงกับวันที่เท่าไรของทริป — ใช้ตัดสินว่าจะขึ้นเส้น "ตอนนี้" ไหม
+   ทริปที่ยังไม่ได้ใส่วันเริ่มก็ไม่รู้ว่าวันไหนเป็นวันไหน จึงไม่ขึ้น */
+function dayIsToday(trip, idx){
+  if(!trip.startDate) return false;
+  const dt = new Date(trip.startDate + 'T00:00:00');
+  if(isNaN(dt)) return false;
+  dt.setDate(dt.getDate() + idx);
+  return dt.toDateString() === new Date().toDateString();
+}
+const nowHM = () => new Date().toTimeString().slice(0,5);
+
 function dayDate(trip, idx){
   if(!trip.startDate) return '';
   const dt = new Date(trip.startDate + 'T00:00:00');
@@ -2151,6 +2203,14 @@ function renderPlan(){
   const items = d ? sortedItems(d) : [];
   const rUrl = items.length ? routeUrl(items) : null;
 
+  /* เส้น "ตอนนี้" ขึ้นเฉพาะวันที่ตรงกับวันนี้จริง ลอยอยู่ในทริปเดือนหน้าก็เป็นการโกหก */
+  const liveHM = d && dayIsToday(t, t.days.indexOf(d)) ? nowHM() : null;
+  let nowAt = -1;
+  if(liveHM){
+    nowAt = items.findIndex(x => x.time > liveHM);
+    if(nowAt < 0) nowAt = items.length;
+  }
+
   const days = t.days.map((x,i) => {
     const ts = x.items.map(v => v.time).sort();
     const dt = dayDate(t, i);
@@ -2180,7 +2240,9 @@ function renderPlan(){
       <span class="cnt">${items.length ? items[0].time + ' – ' + items[items.length-1].time : 'ยังว่าง'}</span>
     </div>
     ${items.length
-      ? `<div class="timeline">${items.map((it,i) => stopHtml(it, items[i+1])).join('')}</div>
+      ? `<div class="timeline">${items.map((it,i) =>
+           (i === nowAt ? nowLineHtml(liveHM) : '') + stopHtml(it, items[i+1])).join('')
+         }${nowAt === items.length ? nowLineHtml(liveHM) : ''}</div>
          <div class="linkrow"><a class="btn btn-navy" href="${rUrl || '#'}"
            ${rUrl ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}
            >${IC.gmap} นำทางทั้งวัน · ${items.length} จุด</a></div>`
@@ -2247,10 +2309,12 @@ let tlDrag = null;
 const tlWrap = () => document.querySelector('#viewPlan .timeline');
 
 /* ย้ายโหนดไปอยู่ตรงตำแหน่งที่ตัวชี้อยู่ เทียบกับกึ่งกลางของเพื่อนบ้านแต่ละตัว */
+const tlRows = wrap => [...wrap.children].filter(x => x.dataset.key);   // กันเส้น "ตอนนี้" ออก
+
 function tlPlaceAt(y){
   const {el, wrap} = tlDrag;
   let before = null;
-  for(const s of wrap.children){
+  for(const s of tlRows(wrap)){
     if(s === el) continue;
     const r = s.getBoundingClientRect();
     if(y < r.top + r.height / 2){ before = s; break; }
@@ -2269,7 +2333,7 @@ document.addEventListener('pointerdown', e => {
   const grip = e.target.closest('[data-grip]');
   if(!grip || e.button > 0) return;
   const el = grip.closest('.tl-item'), wrap = el && el.parentElement;
-  if(!wrap || wrap.children.length < 2) return;   // จุดเดียวไม่มีอะไรให้สลับ
+  if(!wrap || tlRows(wrap).length < 2) return;   // จุดเดียวไม่มีอะไรให้สลับ
   tlDrag = {el, wrap, id:e.pointerId, moved:false};
   try{ grip.setPointerCapture(e.pointerId); }catch(err){}   // ตัวชี้หลุดไปแล้วก็ลากต่อได้ ไม่ต้องล้ม
   el.classList.add('is-lift');
@@ -2302,14 +2366,16 @@ document.addEventListener('keydown', e => {
   const grip = e.target.closest && e.target.closest('[data-grip]');
   if(!grip) return;
   const el = grip.closest('.tl-item'), wrap = el.parentElement;
-  const sib = e.key === 'ArrowUp' ? el.previousElementSibling : el.nextElementSibling;
+  const rows = tlRows(wrap), at = rows.indexOf(el);
+  const sib = rows[at + (e.key === 'ArrowUp' ? -1 : 1)];
   if(!sib) return;
   e.preventDefault();
   if(e.key === 'ArrowUp') wrap.insertBefore(el, sib); else wrap.insertBefore(sib, el);
-  const idx = [...wrap.children].indexOf(el);
+  const idx = tlRows(wrap).indexOf(el);
   tlCommit(wrap);
   // วาดใหม่แล้วปุ่มเดิมหายไป ต้องโฟกัสปุ่มจับของแถวที่ย้ายไปอยู่
-  tlWrap()?.children[idx]?.querySelector('[data-grip]')?.focus();
+  const w = tlWrap();
+  if(w) tlRows(w)[idx]?.querySelector('[data-grip]')?.focus();
 });
 
 /* ผูกลำดับใหม่บนหน้าจอกลับเข้า state โดยแจกเวลาเดิมของวันตามลำดับใหม่ */
@@ -2324,7 +2390,7 @@ function tlCommit(wrap){
     if(!pool.has(k)) pool.set(k, []);
     pool.get(k).push(it);
   });
-  const seq = [...wrap.children].map(x => pool.get(x.dataset.key)?.shift()).filter(Boolean);
+  const seq = tlRows(wrap).map(x => pool.get(x.dataset.key)?.shift()).filter(Boolean);
   if(seq.length !== d.items.length){ renderPlan(); return; }   // ไม่ตรงก็ถอย วาดของจริงใหม่
   const slots = d.items.map(it => it.time).sort((a,b) => a.localeCompare(b));
   seq.forEach((it, i) => { it.time = slots[i]; });
@@ -2333,32 +2399,37 @@ function tlCommit(wrap){
   refreshDrag();
 }
 
+/* เส้นบอกว่าตอนนี้อยู่ตรงไหนของวัน — เรียกจาก renderPlan เฉพาะวันที่ตรงกับวันนี้ */
+const nowLineHtml = hm => `<div class="tl-now"><b>ตอนนี้ ${esc(hm)}</b><i></i></div>`;
+
 function stopHtml(it, next){
   const p = place(it.pid);
   if(!p) return '';
   const c = CATS[p.cat];
-  const km = next ? legKm(it.pid, next.pid) : null;
-  return `<div class="tl-item" data-key="${esc(it.pid)}|${esc(it.time)}">
-    <span class="tl-dot" style="--dot:var(${c.v})"></span>
-    <div class="tl-rail"><input type="time" value="${esc(it.time)}" aria-label="เวลาของ ${esc(p.name)}"></div>
+  const km = (next && next.pid !== it.pid) ? legKm(it.pid, next.pid) : null;   // ที่เดิมต่อกันไม่ใช่การเดินทาง
+  const note = it.note || meta(p.id).addr || p.note;
+  return `<div class="tl-item" data-key="${esc(it.pid)}|${esc(it.time)}" style="--c:var(${c.v})">
+    <div class="tl-rail">
+      <span class="tl-bead"></span>
+      <input type="time" value="${esc(it.time)}" aria-label="เวลาของ ${esc(p.name)}">
+    </div>
     <div class="tl-body">
       <button class="stop" data-detail="${esc(p.id)}">
         <span class="cover" style="${coverStyle(p)}">${initialOf(p)}</span>
         <span class="stop-txt">
           <h3>${esc(p.name)}</h3>
           <span class="sub"><span class="chip" style="--c:var(${c.v})">${c.i}${esc(c.label)}</span>${rateHtml(p.id)}</span>
-          ${(it.note || meta(p.id).addr || p.note)
-            ? `<span class="sub"><span class="addr">${IC.pin}<span>${esc(it.note || meta(p.id).addr || p.note)}</span></span></span>` : ''}
+          ${note ? `<span class="sub"><span class="addr">${IC.pin}<span>${esc(note)}</span></span></span>` : ''}
         </span>
       </button>
-      <button type="button" class="tl-grip" data-grip
-        aria-label="ลากเพื่อสลับลำดับ ${esc(p.name)} — หรือกดแล้วใช้ลูกศรขึ้นลง">${IC_GRIP}</button>
       <div class="stop-actions">
         <a class="mini mini-go" href="${navUrlFor(p)}" target="_blank" rel="noopener">${IC.go} นำทาง</a>
         <button class="mini" data-remove="${esc(it.pid)}|${esc(it.time)}">เอาออก</button>
+        <button type="button" class="tl-grip" data-grip
+          aria-label="ลากเพื่อสลับลำดับ ${esc(p.name)} — หรือกดแล้วใช้ลูกศรขึ้นลง">${IC_GRIP}</button>
       </div>
-      ${km != null ? `<div class="leg">${IC.route} ห่างจุดถัดไป ${fmtKm(km)}</div>` : ''}
     </div>
+    ${km != null ? `<div class="tl-leg">${IC.route} ${fmtKm(km)}</div>` : ''}
   </div>`;
 }
 
@@ -4188,7 +4259,13 @@ if(gdMeta().on && gdUsable()) setTimeout(() => { gdSync(false).catch(() => {}); 
 /* นับถอยหลังเดินทุกนาที และเช็คอีกทีทุกครั้งที่กลับมาที่แท็บ
    เพราะเบราว์เซอร์หน่วง timer ของแท็บที่ถูกซ่อนไว้จนคลาดเวลาได้ */
 rentalCheck();
-setInterval(rentalCheck, 60000);
+setInterval(() => {
+  rentalCheck();
+  /* เส้น "ตอนนี้" วาดตอน renderPlan ทิ้งไว้เฉย ๆ มันจะค้างอยู่ที่เวลาเดิม
+     เลยวาดหน้าแผนใหม่ทุกนาที แต่เว้นตอนกำลังลากหรือกำลังพิมพ์อยู่ในหน้านั้น */
+  if(view === 'plan' && planDay && !tlDrag && !$('#viewPlan').contains(document.activeElement))
+    renderPlan();
+}, 60000);
 document.addEventListener('visibilitychange', () => { if(!document.hidden) rentalCheck(); });
 
 if(state.geo.on) nearby.start();
