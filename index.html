@@ -555,47 +555,84 @@ a{color:inherit;text-decoration:none}
 }
 .newdest-bar .nd-go svg{width:16px;height:16px}
 
-/* แถบรถเช่า — ขึ้นเฉพาะตอนทริปที่กำลังจัดอยู่ในจังหวัดที่มีรถจองไว้ */
+/* แถบรถเช่า — ขึ้นเฉพาะตอนทริปที่กำลังจัดอยู่ในจังหวัดที่มีรถจองไว้
+   สีเขียวน้ำเงินเข้มตรึงไว้ทั้งสองโหมด ไม่ผูกกับ --deep ที่สว่างขึ้นในโหมดมืด
+   เพราะใบจองจริงไม่ควรเปลี่ยนสีตามธีมแอป มันคือของนอกแอปที่มาฝากไว้ */
 .carbar{
-  margin-top:11px;padding:13px 14px;border-radius:var(--r-lg);
-  background:color-mix(in srgb,var(--sun) 10%,var(--surface));
-  border:1px solid color-mix(in srgb,var(--sun) 34%,transparent);
+  --on:#EAF7F4;
+  --on-2:color-mix(in srgb,#EAF7F4 78%,transparent);
+  --on-line:color-mix(in srgb,#EAF7F4 17%,transparent);
+  margin-top:11px;padding:15px 15px 14px;border-radius:var(--r-lg);color:var(--on);
+  background:linear-gradient(147deg,#1B8078 0%,#136460 54%,#0C4A48 100%);
+  box-shadow:0 10px 26px -16px rgba(9,58,54,.85);
 }
 .carbar .cb-head{display:flex;align-items:center;gap:11px}
 .carbar .cb-ic{
   flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
-  background:var(--accent-strong);background-image:var(--sun-grad);color:#fff;
+  background:color-mix(in srgb,#EAF7F4 16%,transparent);color:var(--on);
 }
 .carbar .cb-ic svg{width:21px;height:21px}
-.carbar .cb-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
-.carbar .cb-tx b{font-size:var(--fs-base);font-weight:700;color:var(--ink)}
-.carbar .cb-tx span{font-size:var(--fs-xs);color:var(--ink-2);line-height:1.5}
+.carbar .cb-tx{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.carbar .cb-tx b{font-size:var(--fs-base);font-weight:700;color:var(--on)}
+.carbar .cb-tx span{font-size:var(--fs-xs);color:var(--on-2);line-height:1.5}
+.carbar .cb-addr{
+  display:flex;align-items:flex-start;gap:6px;margin:9px 0 0;
+  font-size:var(--fs-xs);color:var(--on-2);line-height:1.55;
+}
+.carbar .cb-addr svg{width:12px;height:12px;flex:0 0 auto;margin-top:2px}
+
+/* โลโก้ร้านเช่าอยู่บนแผ่นขาว เพราะโลโก้ส่วนใหญ่ออกแบบมาให้อยู่บนพื้นขาว */
+.carbar .cb-logo{
+  flex:0 0 auto;height:34px;min-width:34px;padding:5px 9px;border-radius:9px;
+  background:#fff;display:grid;place-items:center;
+}
+.carbar .cb-logo img{height:100%;width:auto;max-width:96px;object-fit:contain;display:block}
+.carbar .cb-logo b{font-size:11px;font-weight:800;line-height:1.15;color:#12655F;text-align:center}
+
 .carbar .cb-when{
-  display:flex;align-items:center;gap:10px;margin-top:11px;padding-top:11px;
-  border-top:1px solid color-mix(in srgb,var(--sun) 24%,transparent);
+  display:flex;align-items:center;gap:10px;margin-top:13px;padding-top:13px;
+  border-top:1px solid var(--on-line);
 }
 .carbar .cb-leg{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 0}
 .carbar .cb-leg-end{align-items:flex-end;text-align:right}
-.carbar .cb-leg i{font-style:normal;font-size:var(--fs-xs);color:var(--ink-2)}
-.carbar .cb-leg b{font-size:var(--fs-sm);font-weight:700;color:var(--ink);white-space:nowrap}
+.carbar .cb-leg i{font-style:normal;font-size:var(--fs-xs);color:var(--on-2)}
+.carbar .cb-leg b{font-size:var(--fs-sm);font-weight:700;color:var(--on);white-space:nowrap}
 .carbar .cb-span{
-  flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:var(--accent-text);
-  padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--sea) 14%,var(--surface));
+  flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:#0C4A48;
+  padding:3px 9px;border-radius:999px;background:color-mix(in srgb,#EAF7F4 88%,transparent);
 }
 .carbar .cb-live{
-  margin-top:9px;padding:7px 11px;border-radius:var(--r-md);
+  margin-top:10px;padding:8px 11px;border-radius:var(--r-md);
   font-size:var(--fs-xs);font-weight:700;text-align:center;
-  background:color-mix(in srgb,var(--sea) 12%,var(--surface));color:var(--accent-text);
+  background:rgba(4,40,38,.32);color:var(--on);
 }
-.carbar .cb-live.is-using{background:color-mix(in srgb,var(--deep) 14%,var(--surface));color:var(--deep)}
-.carbar .cb-live.is-late{background:color-mix(in srgb,var(--danger) 13%,var(--surface));color:var(--danger)}
+.carbar .cb-live.is-using{background:rgba(4,40,38,.32);color:#9FE8C6}
+.carbar .cb-live.is-late{background:rgba(92,20,12,.45);color:#FFC7BC}
+.carbar .cb-how{
+  margin:11px 0 0;font-size:var(--fs-xs);color:var(--on-2);line-height:1.7;
+  padding-top:11px;border-top:1px solid var(--on-line);
+}
+.carbar .cb-how b{color:var(--on);font-weight:700}
+.carbar .cb-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.carbar .cb-acts .btn{
+  flex:1 1 100%;background:#fff;border-color:#fff;color:#0C4A48;box-shadow:none;
+}
+.carbar .cb-acts .btn:hover{background:color-mix(in srgb,#fff 88%,#1B8078)}
+.carbar .cb-tel{
+  flex:1 1 0;min-width:0;justify-content:center;
+  display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:38px;border-radius:var(--r-md);
+  font-size:var(--fs-sm);font-weight:700;color:var(--on);text-decoration:none;
+  background:color-mix(in srgb,#EAF7F4 12%,transparent);border:1px solid var(--on-line);
+}
+.carbar .cb-tel:hover{background:color-mix(in srgb,#EAF7F4 20%,transparent)}
+.carbar .cb-tel svg{width:15px;height:15px}
 .carbar .cb-ask{
-  display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:8px;
+  display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:9px;
   padding:9px 12px;border-radius:var(--r-md);font-size:var(--fs-xs);font-weight:700;
-  color:var(--accent-text);background:transparent;
-  border:1px dashed color-mix(in srgb,var(--sea) 46%,transparent);
+  color:var(--on-2);background:transparent;
+  border:1px dashed color-mix(in srgb,#EAF7F4 28%,transparent);
 }
-.carbar .cb-ask:hover{background:color-mix(in srgb,var(--sea) 9%,var(--surface));border-style:solid}
+.carbar .cb-ask:hover{background:color-mix(in srgb,#EAF7F4 10%,transparent);color:var(--on);border-style:solid}
 .carbar .cb-ask svg{width:15px;height:15px}
 .carbar .cb-how{
   margin:9px 0 0;font-size:var(--fs-xs);color:var(--ink-2);line-height:1.65;
@@ -2581,6 +2618,7 @@ function forYouPicks(){
 const RENTALS = {
   phuket: {
     brand:'Thai Rent A Car',
+    logo:'',   // ใส่พาธไฟล์โลโก้ที่นี่ เช่น 'img/thairentacar.svg' ว่างไว้ก็ขึ้นเป็นชื่อร้าน
     spot:'สนามบินภูเก็ต',
     how:'เคาน์เตอร์อยู่<b>ในอาคารผู้โดยสารภายในประเทศ</b> ชั้น 1 ขาเข้า อาคารใหม่ ส่วนตัวรถจอดรอ<b>นอกอาคาร</b> เดินออกไปได้เลย',
     addr:'211/2 ต.ไม้ขาว อ.ถลาง จ.ภูเก็ต 83110',
@@ -2705,9 +2743,12 @@ function rentalHtml(destId){
   return `<section class="carbar">
     <div class="cb-head">
       <span class="cb-ic">${IC_CAR}</span>
-      <span class="cb-tx"><b>รับรถที่${esc(r.spot)}</b>
-        <span>${esc(r.brand)} · ${esc(r.addr)}</span></span>
+      <span class="cb-tx"><b>รับรถที่${esc(r.spot)}</b></span>
+      <span class="cb-logo">${r.logo
+        ? `<img src="${esc(r.logo)}" alt="${esc(r.brand)}">`
+        : `<b>${esc(r.brand)}</b>`}</span>
     </div>
+    <p class="cb-addr">${IC.pin} ${esc(r.addr)}</p>
 
     <div class="cb-when">
       <span class="cb-leg"><i>รับรถ</i><b>${esc(fmtWhen(rentalWhen(r,'pick')))}</b></span>
