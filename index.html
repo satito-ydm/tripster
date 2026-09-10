@@ -497,6 +497,36 @@ a{color:inherit;text-decoration:none}
 }
 .newdest-bar .nd-go svg{width:16px;height:16px}
 
+/* แถบรถเช่า — ขึ้นเฉพาะตอนทริปที่กำลังจัดอยู่ในจังหวัดที่มีรถจองไว้ */
+.carbar{
+  margin-top:11px;padding:13px 14px;border-radius:var(--r-lg);
+  background:color-mix(in srgb,var(--sun) 10%,var(--surface));
+  border:1px solid color-mix(in srgb,var(--sun) 34%,transparent);
+}
+.carbar .cb-head{display:flex;align-items:center;gap:11px}
+.carbar .cb-ic{
+  flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:var(--accent-strong);background-image:var(--sun-grad);color:#fff;
+}
+.carbar .cb-ic svg{width:21px;height:21px}
+.carbar .cb-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
+.carbar .cb-tx b{font-size:var(--fs-base);font-weight:700;color:var(--ink)}
+.carbar .cb-tx span{font-size:var(--fs-xs);color:var(--ink-2);line-height:1.5}
+.carbar .cb-how{
+  margin:9px 0 0;font-size:var(--fs-xs);color:var(--ink-2);line-height:1.65;
+  padding-top:9px;border-top:1px solid color-mix(in srgb,var(--sun) 24%,transparent);
+}
+.carbar .cb-how b{color:var(--ink);font-weight:700}
+.carbar .cb-acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.carbar .cb-acts .btn{flex:1 1 100%}
+.carbar .cb-tel{
+  flex:1 1 0;min-width:0;justify-content:center;
+  display:inline-flex;align-items:center;gap:6px;padding:0 13px;height:38px;border-radius:var(--r-md);
+  font-size:var(--fs-sm);font-weight:700;color:var(--accent-text);text-decoration:none;
+  background:var(--surface);border:1px solid var(--line);
+}
+.carbar .cb-tel:hover{border-color:var(--sea);background:color-mix(in srgb,var(--sea) 8%,var(--surface))}
+.carbar .cb-tel svg{width:15px;height:15px}
 .destcard.newdest{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   padding:14px 12px;text-align:center;
@@ -1710,6 +1740,7 @@ const IC = {
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9Z"/></svg>',
   pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.6"/></svg>',
   pinFill:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8Zm0 10.6A2.6 2.6 0 1 1 12 7.4a2.6 2.6 0 0 1 0 5.2Z"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.6 5.6l1.4-1.9 3.7 1.5v3a1.7 1.7 0 0 1-1.9 1.7A15.6 15.6 0 0 1 4.5 5.4 1.7 1.7 0 0 1 6.2 3.5z"/></svg>',
   go:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 21 3l-8.5 18-2.3-7.2L3 11.5Z"/></svg>',
   plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
   close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>',
@@ -2325,6 +2356,42 @@ function forYouPicks(){
   return forYouIds.map(place).filter(Boolean);
 }
 
+/* รถเช่าที่จองไว้แล้ว — ผูกกับจังหวัด ขึ้นเฉพาะตอนทริปที่กำลังจัดอยู่จังหวัดนั้น
+   ไม่มีพิกัดให้ตั้งใจ เพราะ navUrl ค้นด้วยชื่อ+ที่อยู่แม่นกว่าหมุดที่เดาเอง (เคาน์เตอร์อยู่ในอาคาร) */
+const RENTALS = {
+  phuket: {
+    brand:'Thai Rent A Car',
+    spot:'สนามบินภูเก็ต',
+    how:'เคาน์เตอร์อยู่<b>ในอาคารผู้โดยสารภายในประเทศ</b> ชั้น 1 ขาเข้า อาคารใหม่ ส่วนตัวรถจอดรอ<b>นอกอาคาร</b> เดินออกไปได้เลย',
+    addr:'211/2 ต.ไม้ขาว อ.ถลาง จ.ภูเก็ต 83110',
+    q:'Thai Rent A Car Phuket Airport Domestic Terminal',
+    tels:[['087 505 0503','+66875050503'], ['082 668 5053','+66826685053']]
+  }
+};
+
+const IC_CAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+  + '<path d="M6.4 11.8 8 8.2a2 2 0 0 1 1.8-1.2h4.4a2 2 0 0 1 1.8 1.2l1.6 3.6"/>'
+  + '<path d="M4.6 11.8h14.8a1.6 1.6 0 0 1 1.6 1.6V17H3v-3.6a1.6 1.6 0 0 1 1.6-1.6Z"/>'
+  + '<path d="M6.6 17v1.5M17.4 17v1.5"/></svg>';
+
+function rentalHtml(destId){
+  const r = RENTALS[destId];
+  if(!r) return '';
+  return `<section class="carbar">
+    <div class="cb-head">
+      <span class="cb-ic">${IC_CAR}</span>
+      <span class="cb-tx"><b>รับรถที่${esc(r.spot)}</b>
+        <span>${esc(r.brand)} · ${esc(r.addr)}</span></span>
+    </div>
+    <p class="cb-how">${r.how}</p>
+    <div class="cb-acts">
+      <a class="btn" href="${navUrl(r.q)}" target="_blank" rel="noopener">${IC.go} นำทางไปเคาน์เตอร์</a>
+      ${r.tels.map(([show, dial]) =>
+        `<a class="cb-tel" href="tel:${esc(dial)}">${IC.phone} ${esc(show)}</a>`).join('')}
+    </div>
+  </section>`;
+}
+
 function tripCardHtml(x){
   const stops = x.days.reduce((n,d) => n + d.items.length, 0);
   return `<button class="tripcard" data-trip="${x.id}" aria-pressed="${x.id===state.activeTrip}">
@@ -2394,6 +2461,8 @@ function renderHome(){
     ${shown.length ? '' : `<div class="empty" style="margin-top:11px">
       <strong>ยังไม่มีจุดหมายแนว${esc(VIBES.find(v => v.id === activeVibe)?.label || '')}</strong>
       กด “เพิ่มที่ที่อยากไป” เพื่อเริ่มลิสต์ของคุณ หรือเลือกแนวอื่นดูก่อน</div>`}
+
+    ${t ? rentalHtml(t.dest) : ''}
 
     ${top.length ? `<div class="foryou">
         <div class="sechead"><h2>น่าแวะระหว่างทริป</h2>
