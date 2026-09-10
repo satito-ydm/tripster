@@ -261,12 +261,29 @@ a{color:inherit;text-decoration:none}
 .tl-item::before{content:"";position:absolute;left:60px;top:30px;bottom:0;width:2px;background:var(--line-2);border-radius:2px}
 .tl-item:last-child::before{display:none}
 .tl-dot{position:absolute;left:56px;top:17px;width:10px;height:10px;border-radius:50%;background:var(--dot,var(--accent));box-shadow:0 0 0 3px var(--app);z-index:1}
-.tl-body{padding-bottom:10px}
+.tl-body{padding-bottom:10px;position:relative}
+.tl-grip{
+  position:absolute;top:9px;right:9px;z-index:2;width:30px;height:30px;
+  border-radius:8px;display:grid;place-items:center;color:var(--ink-3);
+  background:transparent;border:1px solid transparent;cursor:grab;touch-action:none;
+}
+/* ตัวปุ่มเล็กเพื่อไม่ให้แย่งสายตาจากชื่อที่ แต่ขยายพื้นที่แตะให้ถึง 44px ตามเกณฑ์นิ้ว */
+.tl-grip::before{content:"";position:absolute;top:-7px;right:-7px;bottom:-7px;left:-7px}
+.tl-grip:hover{color:var(--ink-2);background:var(--app);border-color:var(--line)}
+.tl-grip:focus-visible{color:var(--ink-2);border-color:var(--accent)}
+.tl-grip svg{width:16px;height:16px}
+.tl-item.is-lift{position:relative;z-index:3;cursor:grabbing}
+.tl-item.is-lift .stop{border-color:var(--accent);box-shadow:var(--shadow-md)}
+.tl-item.is-lift .tl-grip{cursor:grabbing;color:var(--accent-text)}
+/* ระหว่างลาก เวลาจะจางลงเพื่อบอกว่าช่องเวลาอยู่กับที่ ที่ย้ายคือสถานที่ */
+.timeline.is-sorting .tl-rail{opacity:.28}
+.timeline.is-sorting .tl-item{transition:none}
+.timeline.is-sorting .stop-actions,.timeline.is-sorting .leg{opacity:.4}
 
 .stop{
   width:100%;text-align:left;display:grid;grid-template-columns:64px 1fr;gap:12px;
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
-  padding:10px;box-shadow:var(--shadow-sm);
+  padding:10px 44px 10px 10px;box-shadow:var(--shadow-sm);
 }
 .stop:hover{border-color:var(--line-2)}
 .stop-txt{min-width:0}
@@ -2215,6 +2232,107 @@ function renderPlanDays(box, t){
   refreshDrag();
 }
 
+const IC_GRIP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+  + '<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/>'
+  + '<circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/>'
+  + '<circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+
+/* ---------- ลากสลับลำดับจุดในวัน ----------
+   จุดถูกเรียงตามเวลาเสมอ (sortedItems) ลากแล้วสลับแค่ลำดับในอาร์เรย์จึงไม่พอ
+   พอวาดใหม่มันจะเด้งกลับที่เดิม รอบนี้เลยสลับ "เวลา" กันแทน ชุดเวลาของวัน
+   คงเดิมทุกช่อง เปลี่ยนแค่ว่าสถานที่ไหนไปอยู่ช่องไหน ตารางเวลาที่วางไว้
+   จึงไม่พังตามไปด้วย และ routeUrl กับลิงก์แชร์ที่อ่านลำดับจากเวลาก็ยังถูก */
+let tlDrag = null;
+
+const tlWrap = () => document.querySelector('#viewPlan .timeline');
+
+/* ย้ายโหนดไปอยู่ตรงตำแหน่งที่ตัวชี้อยู่ เทียบกับกึ่งกลางของเพื่อนบ้านแต่ละตัว */
+function tlPlaceAt(y){
+  const {el, wrap} = tlDrag;
+  let before = null;
+  for(const s of wrap.children){
+    if(s === el) continue;
+    const r = s.getBoundingClientRect();
+    if(y < r.top + r.height / 2){ before = s; break; }
+  }
+  if(before !== el.nextElementSibling) wrap.insertBefore(el, before);
+}
+
+/* ลากไปใกล้ขอบจอแล้วเลื่อนหน้าตาม ไม่งั้นย้ายข้ามจุดที่อยู่นอกจอไม่ได้ */
+function tlEdgeScroll(y){
+  const pad = 76;
+  if(y < pad) scrollBy(0, -Math.ceil((pad - y) / 5));
+  else if(y > innerHeight - pad) scrollBy(0, Math.ceil((y - (innerHeight - pad)) / 5));
+}
+
+document.addEventListener('pointerdown', e => {
+  const grip = e.target.closest('[data-grip]');
+  if(!grip || e.button > 0) return;
+  const el = grip.closest('.tl-item'), wrap = el && el.parentElement;
+  if(!wrap || wrap.children.length < 2) return;   // จุดเดียวไม่มีอะไรให้สลับ
+  tlDrag = {el, wrap, id:e.pointerId, moved:false};
+  try{ grip.setPointerCapture(e.pointerId); }catch(err){}   // ตัวชี้หลุดไปแล้วก็ลากต่อได้ ไม่ต้องล้ม
+  el.classList.add('is-lift');
+  wrap.classList.add('is-sorting');
+  e.preventDefault();
+});
+
+document.addEventListener('pointermove', e => {
+  if(!tlDrag || e.pointerId !== tlDrag.id) return;
+  tlDrag.moved = true;
+  tlEdgeScroll(e.clientY);
+  tlPlaceAt(e.clientY);
+  e.preventDefault();
+}, {passive:false});
+
+function tlEnd(e){
+  if(!tlDrag || (e && e.pointerId !== tlDrag.id)) return;
+  const {el, wrap, moved} = tlDrag;
+  tlDrag = null;
+  el.classList.remove('is-lift');
+  wrap.classList.remove('is-sorting');
+  if(moved) tlCommit(wrap);
+}
+document.addEventListener('pointerup', tlEnd);
+document.addEventListener('pointercancel', tlEnd);
+
+/* ลูกศรขึ้นลงบนปุ่มจับ ทำแบบเดียวกับลาก สำหรับคนที่ใช้คีย์บอร์ด */
+document.addEventListener('keydown', e => {
+  if(e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+  const grip = e.target.closest && e.target.closest('[data-grip]');
+  if(!grip) return;
+  const el = grip.closest('.tl-item'), wrap = el.parentElement;
+  const sib = e.key === 'ArrowUp' ? el.previousElementSibling : el.nextElementSibling;
+  if(!sib) return;
+  e.preventDefault();
+  if(e.key === 'ArrowUp') wrap.insertBefore(el, sib); else wrap.insertBefore(sib, el);
+  const idx = [...wrap.children].indexOf(el);
+  tlCommit(wrap);
+  // วาดใหม่แล้วปุ่มเดิมหายไป ต้องโฟกัสปุ่มจับของแถวที่ย้ายไปอยู่
+  tlWrap()?.children[idx]?.querySelector('[data-grip]')?.focus();
+});
+
+/* ผูกลำดับใหม่บนหน้าจอกลับเข้า state โดยแจกเวลาเดิมของวันตามลำดับใหม่ */
+function tlCommit(wrap){
+  const d = currentDay();
+  if(!d) return;
+  // ที่เดียวกันลงซ้ำในวันเดียวได้ (เช่น กลับที่พักตอนบ่ายแล้วอีกทีตอนดึก)
+  // คีย์จึงต้องเป็น pid+เวลา และเก็บเป็นคิวเผื่อซ้ำกันทั้งคู่
+  const pool = new Map();
+  d.items.forEach(it => {
+    const k = it.pid + '|' + it.time;
+    if(!pool.has(k)) pool.set(k, []);
+    pool.get(k).push(it);
+  });
+  const seq = [...wrap.children].map(x => pool.get(x.dataset.key)?.shift()).filter(Boolean);
+  if(seq.length !== d.items.length){ renderPlan(); return; }   // ไม่ตรงก็ถอย วาดของจริงใหม่
+  const slots = d.items.map(it => it.time).sort((a,b) => a.localeCompare(b));
+  seq.forEach((it, i) => { it.time = slots[i]; });
+  save();
+  renderPlan();
+  refreshDrag();
+}
+
 function stopHtml(it, next){
   const p = place(it.pid);
   if(!p) return '';
@@ -2233,6 +2351,8 @@ function stopHtml(it, next){
             ? `<span class="sub"><span class="addr">${IC.pin}<span>${esc(it.note || meta(p.id).addr || p.note)}</span></span></span>` : ''}
         </span>
       </button>
+      <button type="button" class="tl-grip" data-grip
+        aria-label="ลากเพื่อสลับลำดับ ${esc(p.name)} — หรือกดแล้วใช้ลูกศรขึ้นลง">${IC_GRIP}</button>
       <div class="stop-actions">
         <a class="mini mini-go" href="${navUrlFor(p)}" target="_blank" rel="noopener">${IC.go} นำทาง</a>
         <button class="mini" data-remove="${esc(it.pid)}|${esc(it.time)}">เอาออก</button>
