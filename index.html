@@ -512,6 +512,33 @@ a{color:inherit;text-decoration:none}
 .carbar .cb-tx{display:flex;flex-direction:column;gap:1px;min-width:0}
 .carbar .cb-tx b{font-size:var(--fs-base);font-weight:700;color:var(--ink)}
 .carbar .cb-tx span{font-size:var(--fs-xs);color:var(--ink-2);line-height:1.5}
+.carbar .cb-when{
+  display:flex;align-items:center;gap:10px;margin-top:11px;padding-top:11px;
+  border-top:1px solid color-mix(in srgb,var(--sun) 24%,transparent);
+}
+.carbar .cb-leg{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 0}
+.carbar .cb-leg-end{align-items:flex-end;text-align:right}
+.carbar .cb-leg i{font-style:normal;font-size:var(--fs-xs);color:var(--ink-2)}
+.carbar .cb-leg b{font-size:var(--fs-sm);font-weight:700;color:var(--ink);white-space:nowrap}
+.carbar .cb-span{
+  flex:0 0 auto;font-size:var(--fs-xs);font-weight:700;color:var(--accent-text);
+  padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--sea) 14%,var(--surface));
+}
+.carbar .cb-live{
+  margin-top:9px;padding:7px 11px;border-radius:var(--r-md);
+  font-size:var(--fs-xs);font-weight:700;text-align:center;
+  background:color-mix(in srgb,var(--sea) 12%,var(--surface));color:var(--accent-text);
+}
+.carbar .cb-live.is-using{background:color-mix(in srgb,var(--deep) 14%,var(--surface));color:var(--deep)}
+.carbar .cb-live.is-late{background:color-mix(in srgb,var(--danger) 13%,var(--surface));color:var(--danger)}
+.carbar .cb-ask{
+  display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:8px;
+  padding:9px 12px;border-radius:var(--r-md);font-size:var(--fs-xs);font-weight:700;
+  color:var(--accent-text);background:transparent;
+  border:1px dashed color-mix(in srgb,var(--sea) 46%,transparent);
+}
+.carbar .cb-ask:hover{background:color-mix(in srgb,var(--sea) 9%,var(--surface));border-style:solid}
+.carbar .cb-ask svg{width:15px;height:15px}
 .carbar .cb-how{
   margin:9px 0 0;font-size:var(--fs-xs);color:var(--ink-2);line-height:1.65;
   padding-top:9px;border-top:1px solid color-mix(in srgb,var(--sun) 24%,transparent);
@@ -1379,6 +1406,7 @@ const SEED = {
   saved: [],
   dests: [],
   geo: {on:false, radius:300, notified:{}},
+  rentalSeen: {},
   activeTrip: 't1',
   trips: [{
     id:'t1', name:'พาแม่ ๆ ลุยภูเก็ต', dest:DEFAULT_DEST, startDate:'',
@@ -1457,6 +1485,7 @@ function hydrate(d){
   if(!Array.isArray(d.dests)) d.dests = [];
   if(!d.geo || typeof d.geo !== 'object') d.geo = {on:false, radius:300, notified:{}};
   if(!d.geo.notified || typeof d.geo.notified !== 'object') d.geo.notified = {};
+  if(!d.rentalSeen || typeof d.rentalSeen !== 'object') d.rentalSeen = {};   /* ไม่ล้างรายวันแบบ geo.notified เพราะแต่ละหมุดต้องเตือนครั้งเดียวจบ */
   if(!GEO_RADII.includes(d.geo.radius)) d.geo.radius = 300;
   {  // ลบประวัติการเตือนของวันก่อน ๆ ทิ้ง เพื่อให้พรุ่งนี้เตือนที่เดิมได้อีก
     const today = new Date().toISOString().slice(0,10);
@@ -2364,6 +2393,7 @@ const RENTALS = {
     spot:'สนามบินภูเก็ต',
     how:'เคาน์เตอร์อยู่<b>ในอาคารผู้โดยสารภายในประเทศ</b> ชั้น 1 ขาเข้า อาคารใหม่ ส่วนตัวรถจอดรอ<b>นอกอาคาร</b> เดินออกไปได้เลย',
     addr:'211/2 ต.ไม้ขาว อ.ถลาง จ.ภูเก็ต 83110',
+    pickAt:'2026-09-13T11:30', dropAt:'2026-09-15T17:30',
     q:'Thai Rent A Car Phuket Airport Domestic Terminal',
     tels:[['087 505 0503','+66875050503'], ['082 668 5053','+66826685053']]
   }
@@ -2374,21 +2404,135 @@ const IC_CAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   + '<path d="M4.6 11.8h14.8a1.6 1.6 0 0 1 1.6 1.6V17H3v-3.6a1.6 1.6 0 0 1 1.6-1.6Z"/>'
   + '<path d="M6.6 17v1.5M17.4 17v1.5"/></svg>';
 
+/* หมุดเตือน — เตือนหมุดละครั้งเดียว จำไว้ใน state.rentalSeen ข้ามวันข้ามการรีเฟรช
+   หน้าเว็บยิงแจ้งเตือนได้เฉพาะตอนที่แอปเปิดอยู่ ไม่มี service worker คอยปลุก
+   เปิดแอปมาช้ากว่าหมุดเกิน RENTAL_GRACE จึงนับว่าเลยมาแล้ว ปิดหมุดเงียบ ๆ
+   ไม่ย้อนเด้ง "อีก 1 วัน" ทั้งที่ถึงเวลาไปแล้ว */
+const RENTAL_GRACE_MS = 6 * 3600e3;
+const RENTAL_MARKS = [
+  {k:'pick-1d', leg:'pick', before:1440, title:'พรุ่งนี้รับรถ'},
+  {k:'pick-3h', leg:'pick', before:180,  title:'อีก 3 ชั่วโมงรับรถ'},
+  {k:'pick-0',  leg:'pick', before:0,    title:'ถึงเวลารับรถแล้ว'},
+  {k:'drop-1d', leg:'drop', before:1440, title:'พรุ่งนี้ต้องคืนรถ'},
+  {k:'drop-3h', leg:'drop', before:180,  title:'อีก 3 ชั่วโมงต้องคืนรถ'},
+  {k:'drop-0',  leg:'drop', before:0,    title:'ถึงเวลาคืนรถแล้ว'}
+];
+
+const rentalWhen = (r, leg) => new Date(leg === 'pick' ? r.pickAt : r.dropAt);
+const fmtWhen = dt => dt.toLocaleDateString('th-TH', {weekday:'short', day:'numeric', month:'short'})
+  + ' ' + dt.toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'}) + ' น.';
+
+/* ช่วงเวลาเป็นคำพูด ตัดหน่วยที่เล็กเกินจะมีประโยชน์ทิ้ง */
+function fmtGap(ms){
+  const m = Math.max(0, Math.round(ms / 60000));
+  if(m < 60) return m + ' นาที';
+  const h = Math.floor(m / 60), mm = m % 60;
+  if(h < 24) return h + ' ชม.' + (mm ? ' ' + mm + ' น.' : '');
+  const d = Math.floor(h / 24), hh = h % 24;
+  return d + ' วัน' + (hh ? ' ' + hh + ' ชม.' : '');
+}
+
+/* สถานะรถ ณ ตอนนี้ — ใช้ทั้งบรรทัดนับถอยหลังในแถบและตัวเตือน */
+function rentalStatus(r, now = Date.now()){
+  const pick = rentalWhen(r, 'pick').getTime();
+  const drop = rentalWhen(r, 'drop').getTime();
+  if(now < pick) return {phase:'before', text:'อีก ' + fmtGap(pick - now) + ' ถึงเวลารับรถ'};
+  if(now < drop) return {phase:'using',  text:'กำลังใช้รถอยู่ · เหลืออีก ' + fmtGap(drop - now) + ' ต้องคืน'};
+  return {phase:'late', text:'เลยกำหนดคืนมาแล้ว ' + fmtGap(now - drop)};
+}
+
+/* ทุกจังหวัดที่มีรถจองไว้ ไม่ผูกกับทริปที่กำลังจัด เพราะรถถูกจองไว้จริง
+   สลับไปดูทริปจังหวัดอื่นอยู่ก็ยังต้องได้รับเตือนว่าถึงเวลาคืนรถ */
+function rentalCheck(){
+  const now = Date.now();
+  let dirty = false;
+  for(const [dest, r] of Object.entries(RENTALS)){
+    if(!r.pickAt || !r.dropAt) continue;
+    const due = {};
+    for(const mk of RENTAL_MARKS){
+      const key = dest + ':' + mk.k;
+      if(state.rentalSeen[key]) continue;
+      const at = rentalWhen(r, mk.leg).getTime() - mk.before * 60000;
+      if(now < at) continue;
+      state.rentalSeen[key] = new Date(at).toISOString();
+      dirty = true;
+      if(now - at > RENTAL_GRACE_MS) continue;   // เลยมานานแล้วก็แค่ปิดหมุด ไม่ต้องเด้ง
+      /* ปิดแอปทิ้งช่วงแล้วหมุดของขาเดียวกันถึงกำหนดพร้อมกันหลายอันได้
+         เด้งทุกอันก็ทับกันเองเพราะ toast มีช่องเดียว เอาอันที่ใกล้เวลาจริงที่สุดพอ */
+      if(!due[mk.leg] || mk.before < due[mk.leg].before) due[mk.leg] = mk;
+    }
+    for(const mk of Object.values(due)) rentalFire(r, mk);
+  }
+  if(dirty) save();
+  rentalPaint();
+}
+
+function rentalFire(r, mk){
+  const when = fmtWhen(rentalWhen(r, mk.leg));
+  const body = (mk.leg === 'pick' ? 'รับรถ ' : 'คืนรถ ') + when + ' · ' + r.brand + ' ' + r.spot;
+  if('Notification' in window && Notification.permission === 'granted'){
+    try{
+      const n = new Notification(mk.title, {body, tag:'rental-' + mk.k});
+      n.onclick = () => { window.focus(); n.close(); };
+      return;
+    }catch(e){}
+  }
+  toast(mk.title + ' — ' + body);   // ไม่ได้สิทธิ์แจ้งเตือน ใช้แถบในแอปแทน
+}
+
+/* อัปเดตเฉพาะบรรทัดนับถอยหลัง ไม่ re-render ทั้งหน้า จะได้ไม่เด้งสกรอลล์ */
+function rentalPaint(){
+  document.querySelectorAll('[data-rental-live]').forEach(el => {
+    const r = RENTALS[el.dataset.rentalLive];
+    if(!r) return;
+    const s = rentalStatus(r);
+    el.textContent = s.text;
+    el.className = 'cb-live is-' + s.phase;
+  });
+}
+
+async function rentalAskPermission(){
+  if(!('Notification' in window)) return toast('เบราว์เซอร์นี้ไม่รองรับการแจ้งเตือน');
+  if(Notification.permission === 'denied')
+    return toast('เบราว์เซอร์บล็อกไว้ ต้องไปเปิดในตั้งค่าเว็บไซต์เอง');
+  try{
+    const res = await Notification.requestPermission();
+    toast(res === 'granted' ? 'เปิดแจ้งเตือนแล้ว จะเตือนตอนใกล้เวลารับและคืนรถ' : 'ยังไม่ได้เปิดแจ้งเตือน');
+  }catch(e){ toast('ขอสิทธิ์แจ้งเตือนไม่สำเร็จ'); }
+  renderAll();
+}
+
 function rentalHtml(destId){
   const r = RENTALS[destId];
   if(!r) return '';
+  const s = rentalStatus(r);
+  const canAsk = 'Notification' in window && Notification.permission !== 'granted';
+  /* บริษัทเช่ารถนับวันแบบปัดขึ้น เศษของวันก็คิดเต็มวัน 13 ก.ย. 11:30 ถึง
+     15 ก.ย. 17:30 คือ 2 วัน 6 ชม. แต่ในใบจองขึ้นว่า 3 วัน ต้องตรงกับใบจอง */
+  const days = Math.max(1, Math.ceil(
+    (rentalWhen(r,'drop') - rentalWhen(r,'pick')) / 864e5));
   return `<section class="carbar">
     <div class="cb-head">
       <span class="cb-ic">${IC_CAR}</span>
       <span class="cb-tx"><b>รับรถที่${esc(r.spot)}</b>
         <span>${esc(r.brand)} · ${esc(r.addr)}</span></span>
     </div>
+
+    <div class="cb-when">
+      <span class="cb-leg"><i>รับรถ</i><b>${esc(fmtWhen(rentalWhen(r,'pick')))}</b></span>
+      <span class="cb-span">${days} วัน</span>
+      <span class="cb-leg cb-leg-end"><i>คืนรถ</i><b>${esc(fmtWhen(rentalWhen(r,'drop')))}</b></span>
+    </div>
+    <div class="cb-live is-${s.phase}" data-rental-live="${esc(destId)}">${esc(s.text)}</div>
+
     <p class="cb-how">${r.how}</p>
     <div class="cb-acts">
       <a class="btn" href="${navUrl(r.q)}" target="_blank" rel="noopener">${IC.go} นำทางไปเคาน์เตอร์</a>
       ${r.tels.map(([show, dial]) =>
         `<a class="cb-tel" href="tel:${esc(dial)}">${IC.phone} ${esc(show)}</a>`).join('')}
     </div>
+    ${canAsk ? `<button class="cb-ask" data-rental-ask>${IC.bell}
+      เปิดแจ้งเตือนก่อนถึงเวลารับและคืนรถ</button>` : ''}
   </section>`;
 }
 
@@ -3450,6 +3594,8 @@ document.addEventListener('click', e => {
   const tab = t.closest('.tabbar [role="tab"]');
   if(tab){ setView(tab.dataset.view); return; }
 
+  if(t.closest('[data-rental-ask]')){ rentalAskPermission(); return; }
+
   if(t.closest('#themeBtn')){
     const root = document.documentElement;
     const dark = root.getAttribute('data-theme') === 'dark'
@@ -3919,6 +4065,12 @@ setView('home');
 handleShareHash();
 addEventListener('hashchange', handleShareHash);
 if(gdMeta().on && gdUsable()) setTimeout(() => { gdSync(false).catch(() => {}); }, 1200);
+/* นับถอยหลังเดินทุกนาที และเช็คอีกทีทุกครั้งที่กลับมาที่แท็บ
+   เพราะเบราว์เซอร์หน่วง timer ของแท็บที่ถูกซ่อนไว้จนคลาดเวลาได้ */
+rentalCheck();
+setInterval(rentalCheck, 60000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) rentalCheck(); });
+
 if(state.geo.on) nearby.start();
 </script>
 </body>
